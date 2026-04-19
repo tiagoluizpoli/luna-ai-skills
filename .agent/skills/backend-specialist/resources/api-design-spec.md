@@ -4,11 +4,11 @@ All technical interfaces (REST APIs, Server Functions, CLI commands) must adhere
 
 ## 1. Response Standards
 
-### 1.1 Success Envelope
-Every successful response must follow this structure:
+We rely on **HTTP Status Codes** and atomic property presence to identify outcomes. The redundant `success: boolean` flag is explicitly forbidden.
+
+### 1.1 Success Envelope (Single Resource)
 ```json
 {
-  "success": true,
   "data": { ... },
   "metadata": {
     "timestamp": "ISO-8601",
@@ -18,10 +18,8 @@ Every successful response must follow this structure:
 ```
 
 ### 1.2 Error Envelope
-Every error response must follow this structure:
 ```json
 {
-  "success": false,
   "error": {
     "code": "SEMANTIC_ERROR_CODE",
     "message": "Human-readable description",
@@ -30,9 +28,27 @@ Every error response must follow this structure:
 }
 ```
 
-## 2. HTTP Status Codes
+### 1.3 Collection Envelope (Lists & Pagination)
+Collection responses must include standardized pagination metadata.
 
-We use semantic status codes to provide immediate context without parsing the body.
+```json
+{
+  "data": [ ... ],
+  "pagination": {
+    "total_items": 125,
+    "items_per_page": 20,
+    "current_page": 1,
+    "total_pages": 7,
+    "next_cursor": "base64_string_if_applicable",
+    "has_next_page": true
+  },
+  "metadata": {
+    "timestamp": "ISO-8601"
+  }
+}
+```
+
+## 2. HTTP Status Codes
 
 | Code | Usage |
 | :--- | :--- |
@@ -41,11 +57,13 @@ We use semantic status codes to provide immediate context without parsing the bo
 | **204 No Content** | Success for operations with no body (e.g., DELETE). |
 | **400 Bad Request** | Validation failed or client sent malformed data. |
 | **401 Unauthorized** | Session invalid or missing. |
-| **403 Forbidden** | Authenticated but lacks permissions for this resource. |
+| **403 Forbidden** | Authenticated but lacks permissions (ARBC denied). |
 | **404 Not Found** | Resource does not exist. |
 | **409 Conflict** | State conflict (e.g., duplicate unique field). |
 | **429 Too Many Requests** | Rate limit exceeded. |
-| **500 Server Error** | Unexpected failure (catch-all). |
+| **500 Server Error** | Unexpected failure. |
+
+---
 
 ## 3. Interaction Patterns
 
@@ -53,19 +71,7 @@ We use semantic status codes to provide immediate context without parsing the bo
 - **GET**: Must never have side effects.
 - **PUT**: Replaces a resource. Repeating produces the same result.
 - **DELETE**: Removes a resource. Repeating returns 204 or 404 but state remains "deleted".
-- **PATCH**: Partial update. Should be designed for idempotency where possible.
 
-### 3.2 Non-Idempotent Operations
-- **POST**: Creating resources or triggering complex state transitions. Use an `Idempotency-Key` header for safe retries.
-
-### 3.3 Pagination
-We prefer **Cursor-based pagination** for performance and consistency with Appwrite.
-```text
-GET /api/resources?limit=10&cursorAfter=XYZ
-```
-
-## 4. Resource Naming
-- Use plural nouns for collections: `/users`, `/posts`.
-- Use specific IDs for resource instances: `/users/123`.
-- Use sub-collections for nested resources: `/users/123/comments`.
-- Use snake_case for field names in request/response bodies.
+### 3.2 Pagination Strategy
+- **Offset-based**: For simple, small collections (using `page` and `limit`).
+- **Cursor-based**: For high-density, large collections (using `cursorAfter` and `limit`). Mandatory for Appwrite integrations.

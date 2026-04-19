@@ -27,16 +27,15 @@ If you detect any UI change required that is outside the explicit scope of the i
 3. **LOG THE DECISION**: Append to `.specify/memory/ui-decision-log.md`.
 4. **PROMPT THE USER**: Present the information for definitive approval before resuming.
 
-### 0.2 — Transactional Integrity Mandate
-Never leave data in an inconsistent state.
-- Use atomic operations where possible.
-- Implement manual rollback logic for complex multi-service operations.
-- Ensure all mutations are idempotent to allow safe retries.
+### 0.2 — Atomic Response Discipline
+Redundant success flags (e.g., `success: true`) are **forbidden**.
+- Outcomes are determined by **HTTP Status Codes** and the presence of atomic data or error objects.
+- Collections must include standardized pagination metadata for both page and cursor-based access.
 
 ### 0.3 — Public-First Selective Authentication
 Security is **Public-First**. Identity verification is NOT enforced by default for every resource.
 - Verification is an **opt-in** ability for specific routes as decided by the developer.
-- High-value resources must be explicitly protected.
+- High-value resources must be explicitly protected via centralized ARBC policies.
 
 ---
 
@@ -53,10 +52,10 @@ Every architectural decision must be audited against ALL five SOLID principles. 
 ### 1.2 — Structural Clean Architecture (4-Layer Blueprint)
 The codebase must be structured into four distinct, isolated layers to ensure separation of concerns:
 
-1. **Presentation Layer (`api/`, `cli/`, `presentation/`)**: The systematic entrance of the project. Manages transport protocols and input/output formatting.
+1. **Presentation Layer (`api/`, `cli/`, `presentation/`)**: The systematic entrance. Manages transport protocols and response envelopes.
 2. **Application Layer**: The orchestration core. Contains **Use Cases** that coordinate interactions between domain entities and infrastructure services.
 3. **Domain Layer**: The heart of the project. Contains core business entities, types, and central business rules.
-4. **Infrastructure Layer**: The boundary for **all** external interactions. Includes Repositories (DB/Storage), 3rd party service integrations, and cross-application connectivity logic.
+4. **Infrastructure Layer**: The boundary for **all** external interactions. Includes Repositories (DB/Storage), 3rd party SDKs, and connectivity logic.
 
 ---
 
@@ -64,12 +63,8 @@ The codebase must be structured into four distinct, isolated layers to ensure se
 
 ### 2.1 — Centralized ARBC
 All access decisions must be governed by a **Centralized Attribute Role-Based Control (ARBC)** system. 
-- Authority is determined by evaluating both the **User's Roles** and dynamic **Attributes** (User, Resource, and Environment).
+- Authority is determined by evaluating both the **User's Role** and dynamic **Attributes** (User, Resource, and Environment).
 - Access policies must be evaluated centrally to ensure consistent enforcement across all layers.
-
-### 2.2 — Performance & Observability
-- **Optimal Indexing**: Never query without a backing index.
-- **Structured Logging**: Log "Why" an action was taken and "Why" it failed. Use JSON for all server-side traces.
 
 ---
 
@@ -77,7 +72,9 @@ All access decisions must be governed by a **Centralized Attribute Role-Based Co
 
 | File | Purpose |
 |:---|:---|
-| [`resources/architecture-patterns.md`](file:///home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agent/skills/backend-specialist/resources/architecture-patterns.md) | In-depth patterns for the 4-layer architecture. |
+| [`resources/architecture-patterns.md`](file:///home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agent/skills/backend-specialist/resources/architecture-patterns.md) | Structural blueprint for the 4-layer architecture. |
+| [`resources/patterns-deep-dive.md`](file:///home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agent/skills/backend-specialist/resources/patterns-deep-dive.md) | Deep dive into Repositories, Services, and Mappers. |
+| [`resources/api-design-spec.md`](file:///home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agent/skills/backend-specialist/resources/api-design-spec.md) | Standards for Atomic Responses and Pagination Metadata. |
 | [`resources/arbc-framework.md`](file:///home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agent/skills/backend-specialist/resources/arbc-framework.md) | Blueprint for the Centralized Attribute Role-Based Control model. |
 | [`resources/security-checklist.md`](file:///home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agent/skills/backend-specialist/resources/security-checklist.md) | Non-negotiable checklist for secure backend development. |
 
@@ -88,3 +85,5 @@ All access decisions must be governed by a **Centralized Attribute Role-Based Co
 | [`examples/folder-structure-blueprint.md`](file:///home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agent/skills/backend-specialist/examples/folder-structure-blueprint.md) | Tree-view representation of the 4-layer structural blueprint. |
 | [`examples/arbc-policy-evaluator.ts`](file:///home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agent/skills/backend-specialist/examples/arbc-policy-evaluator.ts) | Implementation of a centralized ARBC evaluator. |
 | [`examples/repository-pattern-example.ts`](file:///home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agent/skills/backend-specialist/examples/repository-pattern-example.ts) | Gold-standard Repository implementation wrapping Appwrite. |
+| [`examples/error-handling.ts`](file:///home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agent/skills/backend-specialist/examples/error-handling.ts) | Structured typed error system and global handlers. |
+| [`examples/background-job-idempotency.ts`](file:///home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agent/skills/backend-specialist/examples/background-job-idempotency.ts) | Idempotent task execution and failure recovery. |

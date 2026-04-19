@@ -44,7 +44,7 @@ export async function processPayment(
       const existingJob = await databases.getDocument(DB_ID, JOBS_COLLECTION, idempotencyKey);
       
       if (existingJob.status === 'completed') {
-        return { success: true, message: 'Payment already processed previously.', data: existingJob.result };
+        return { data: existingJob.result, message: 'Payment already processed previously.' };
       }
       
       if (existingJob.status === 'processing') {
@@ -75,7 +75,7 @@ export async function processPayment(
       finishedAt: new Date().toISOString(),
     });
 
-    return { success: true, data: paymentResult };
+    return { data: paymentResult };
   } catch (error: any) {
     // 5. HANDLE FAILURE
     console.error(`[Job] Payment failed for key ${idempotencyKey}`, error);

@@ -38,7 +38,6 @@ export abstract class DomainError extends Error {
    */
   toPublicResponse() {
     return {
-      success: false,
       error: {
         code: this.code,
         message: this.message,
