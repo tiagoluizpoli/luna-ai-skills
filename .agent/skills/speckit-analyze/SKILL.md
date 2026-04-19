@@ -62,6 +62,9 @@ Identify inconsistencies, duplications, ambiguities, and underspecified items ac
 
 ## Execution Steps
 
+**PROMPT ENHANCEMENT**: Before processing any arguments or starting the analysis, you **MUST** invoke the `prompt-enhancer` protocol to transform the user's specific analysis focus into high-fidelity audit criteria.
+
+
 ### 1. Initialize Analysis Context
 
 Run `.specify/scripts/bash/check-prerequisites.sh --json --require-tasks --include-tasks` once from repo root and parse JSON for FEATURE_DIR and AVAILABLE_DOCS. Derive absolute paths:
@@ -150,6 +153,15 @@ Focus on high-signal findings. Limit to 50 findings total; aggregate remainder i
 - Data entities referenced in plan but absent in spec (or vice versa)
 - Task ordering contradictions (e.g., integration tasks before foundational setup tasks without dependency note)
 - Conflicting requirements (e.g., one requires Next.js while other specifies Vue)
+
+#### G. Testing Strategy Audit
+
+- **Requirements with no Test Case**: FR/US that lack a corresponding test scenario in `test-plan.md`.
+- **Exhaustive Scenario Gap**: Functional Requirements or critical flows that lack exhaustive scenarios (Happy, Edge, System, etc.) in the `tests/` directory.
+- **Test Gap**: Test cases in `test-plan.md` or `tests/*.md` that have no implementation tasks in `tasks.md`.
+- **Infrastructure Missing**: Requirements for E2E that lack necessary setup tasks (e.g., seeding, environment).
+- **Inconsistent Mappings**: Test case expected outcomes that conflict with functional requirements.
+
 
 ### 5. Severity Assignment
 

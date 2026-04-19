@@ -50,7 +50,23 @@ You **MUST** consider the user input before proceeding (if not empty).
     ```
 - If no hooks are registered or `.specify/extensions.yml` does not exist, skip silently
 
+## UI RED FLAG PROTOCOL
+
+You MUST strictly adhere to the UI Precision and Scope Enforcement principles of the project constitution. 
+
+If you detect any UI change required that is outside the explicit scope of the initial request (even small tweaks to alignment, colors, or radius):
+1. **STOP IMMEDIATELY**: DO NOT TOUCH THE CODE.
+2. **GATHER RICH DETAILS**: 
+   - State of the current UI.
+   - Exact nature of the proposed change.
+   - Anticipated impact on UX and token consistency.
+3. **LOG THE DECISION**: Use `write_to_file` to append a new entry to `.specify/memory/ui-decision-log.md` FOLLOWING the established table format, including date/time, detailed description, and semantic tags.
+4. **PROMPT THE USER**: Present the gathered information and the log entry to the user for definitive approval before resuming.
+
+
 ## Outline
+
+**PROMPT ENHANCEMENT**: Before processing any arguments or starting the implementation, you **MUST** invoke the `prompt-enhancer` protocol to transform the implementation tasks into a high-fidelity development brief. This will engage the **Frontend Specialist Squad** and mandate nanometer-level UI details.
 
 1. Run `.specify/scripts/bash/check-prerequisites.sh --json --require-tasks --include-tasks` from repo root and parse FEATURE_DIR and AVAILABLE_DOCS list. All paths must be absolute. For single quotes in args like "I'm Groot", use escape syntax: e.g 'I'\''m Groot' (or double-quote if possible: "I'm Groot").
 
@@ -86,8 +102,11 @@ You **MUST** consider the user input before proceeding (if not empty).
      - Automatically proceed to step 3
 
 3. Load and analyze the implementation context:
-   - **REQUIRED**: Read tasks.md for the complete task list and execution plan
+      - **FIRST STEP**: Invoke the `find-skills` specialist to analyze the task and load the required tech specialists (Appwrite, Frontend Genius, etc.).
+- **REQUIRED**: Read tasks.md for the complete task list and execution plan
    - **REQUIRED**: Read plan.md for tech stack, architecture, and file structure
+   - **REQUIRED**: Read test-plan.md for the mandatory testing strategy
+   - **IF EXISTS**: Read any .md files in `tests/` directory for exhaustive scenario coverage
    - **IF EXISTS**: Read data-model.md for entities and relationships
    - **IF EXISTS**: Read contracts/ for API specifications and test requirements
    - **IF EXISTS**: Read research.md for technical decisions and constraints
@@ -154,6 +173,7 @@ You **MUST** consider the user input before proceeding (if not empty).
    - **Setup first**: Initialize project structure, dependencies, configuration
    - **Tests before code**: If you need to write tests for contracts, entities, and integration scenarios
    - **Core development**: Implement models, services, CLI commands, endpoints
+   - **MANDATORY TDD**: Execute test tasks (BE/FE/E2E) before or alongside their corresponding implementation tasks. If local scenarios exist in `tests/*.md`, they MUST be treated as high-fidelity requirements that define task success.
    - **Integration work**: Database connections, middleware, logging, external services
    - **Polish and validation**: Unit tests, performance optimization, documentation
 

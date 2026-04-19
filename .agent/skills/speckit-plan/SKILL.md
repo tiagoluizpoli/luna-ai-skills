@@ -50,11 +50,27 @@ You **MUST** consider the user input before proceeding (if not empty).
     ```
 - If no hooks are registered or `.specify/extensions.yml` does not exist, skip silently
 
+## UI RED FLAG PROTOCOL
+
+You MUST strictly adhere to the UI Precision and Scope Enforcement principles of the project constitution. 
+
+If you detect any UI change required that is outside the explicit scope of the initial request (even small tweaks to alignment, colors, or radius):
+1. **STOP IMMEDIATELY**: Do not generate the plan or touch any code.
+2. **GATHER RICH DETAILS**: 
+   - State of the current UI.
+   - Exact nature of the proposed change.
+   - Anticipated impact on UX and token consistency.
+3. **LOG THE DECISION**: Use `write_to_file` to append a new entry to `.specify/memory/ui-decision-log.md` FOLLOWING the established table format, including date/time, detailed description, and semantic tags.
+4. **PROMPT THE USER**: Present the gathered information and the log entry to the user for definitive approval before resuming.
+
+
 ## Outline
+
+**PROMPT ENHANCEMENT**: Before processing any arguments or starting the plan, you **MUST** invoke the `prompt-enhancer` protocol to transform the user's intent into a high-fidelity architectural brief. This will engage the **Frontend Specialist Squad** and mandate nanometer-level UI details.
 
 1. **Setup**: Run `.specify/scripts/bash/setup-plan.sh --json` from repo root and parse JSON for FEATURE_SPEC, IMPL_PLAN, SPECS_DIR, BRANCH. For single quotes in args like "I'm Groot", use escape syntax: e.g 'I'\''m Groot' (or double-quote if possible: "I'm Groot").
 
-2. **Load context**: Read FEATURE_SPEC and `.specify/memory/constitution.md`. Load IMPL_PLAN template (already copied).
+2. **Load context**: Read FEATURE_SPEC and `.specify/memory/constitution.md`. Load IMPL_PLAN template (already copied). **MANDATORY**: Check for `tests/` directory in `FEATURE_DIR` and read any exhaustive test scenarios (`*.md`) for technical context.
 
 3. **Execute plan workflow**: Follow the structure in IMPL_PLAN template to:
    - Fill Technical Context (mark unknowns as "NEEDS CLARIFICATION")
@@ -63,6 +79,7 @@ You **MUST** consider the user input before proceeding (if not empty).
    - Phase 0: Generate research.md (resolve all NEEDS CLARIFICATION)
    - Phase 1: Generate data-model.md, contracts/, quickstart.md
    - Phase 1: Update agent context by running the agent script
+   - Phase 2: Generate test-plan.md (Mandatory BE, FE, and E2E scenarios)
    - Re-evaluate Constitution Check post-design
 
 4. **Stop and report**: Command ends after Phase 2 planning. Report branch, IMPL_PLAN path, and generated artifacts.
@@ -140,6 +157,23 @@ You **MUST** consider the user input before proceeding (if not empty).
    - Update the plan reference between the `<!-- SPECKIT START -->` and `<!-- SPECKIT END -->` markers in `AGENTS.md` to point to the plan file created in step 1 (the IMPL_PLAN path)
 
 **Output**: data-model.md, /contracts/*, quickstart.md, updated agent context file
+
+### Phase 2: Testing & Coverage Strategy
+
+**Prerequisites:** Phase 1 complete
+
+1. **Invoke Testing Specialists**: Call `test-coverage`, `test-backend`, `test-frontend`, and `test-e2e` to define the test architecture.
+
+2. **Consolidate Scenarios**: For every Functional Requirement (FR) and User Story (US) in the spec → Define Backend and Frontend test cases. **PRIORITY**: If exhaustive scenarios exist in `tests/*.md`, they MUST be treated as the authoritative source for these definitions.
+   - For every critical mission flow (Auth, Sync, Assets) → Define E2E journey test cases.
+
+3. **Consolidate in `test-plan.md`**:
+   - Mappings: FR-XXX -> [Test Case Name] -> [Expected Outcome].
+   - Coverage: Define specific % targets for the current feature scope.
+   - Guardrails: Define any custom `pnpm guard` checks needed.
+
+**Output**: test-plan.md
+
 
 ## Key rules
 
