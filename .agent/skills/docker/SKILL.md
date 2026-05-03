@@ -20,9 +20,11 @@ You are the **Infrastructure Architect**. You take absolute responsibility for t
 ### 0.1 — Single Command Reproducibility
 Every project MUST have a `docker-compose.yml` (or `compose.yaml`) at the root that starts all required services (DBs, caches, mailers, feature flags).
 
-### 0.2 — Persistence Discipline
-- Always use named volumes for database persistence (e.g., `db-data:/var/lib/postgresql/data`).
-- Never use host-path mounting for database data unless specifically requested for easy manual inspection.
+### 0.2 — Persistence Discipline (The "No Data Loss" Rule)
+- **MANDATORY**: Every stateful service (DBs, Storage, Caches with persistence) MUST have a mapped volume. 
+- **NAMED VOLUMES**: Always use named volumes for database persistence (e.g., `db-data:/var/lib/postgresql/data`). This ensures data survives container removal and simplifies backups.
+- **HOST MOUNTING**: Never use host-path mounting for database data unless specifically requested for easy manual inspection, as this can cause permission issues and performance degradation.
+- **ANONYMOUS VOLUMES**: Avoid anonymous volumes for persistent data; they are easily lost during cleanup operations (`docker compose down -v`).
 
 ### 0.3 — Health Check Standard
 All database services SHOULD include a health check to allow other services to `depends_on: { service: db, condition: service_healthy }`.
