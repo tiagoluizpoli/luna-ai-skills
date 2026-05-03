@@ -21,7 +21,7 @@ You are the **Lead Testing Engineer**. You take absolute responsibility for the 
 
 ### `/test.master`
 **The full-lifecycle testing command. Use this for new features.**
-1.  **Plan**: Invoke [**/test.plan**](file:///home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agent/skills/test-coverage-master/SKILL.md) to identify all success/failure paths.
+1.  **Plan**: Invoke [**/test.cases**](file:///home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agent/skills/test-cases/SKILL.md) to identify all success/failure paths.
 2.  **Mock**: Identify external dependencies and define the mocking strategy.
 3.  **Implement**: Write the tests across the pyramid layers identified in the plan.
 4.  **Verify**: Run the tests and ensure they pass before implementation.
