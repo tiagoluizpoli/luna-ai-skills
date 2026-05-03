@@ -35,7 +35,7 @@ mkdir -p .agent
 
 # 2. Link the core components
 ln -s "$SKILLS_REPO/.agent/skills" .agent/skills
-ln -s "$SKILLS_REPO/.specify" .
+ln -s "$SKILLS_REPO/.agent/workflows" .agent/workflows
 ln -s "$SKILLS_REPO/AGENTS.md" .
 ln -s "$SKILLS_REPO/SKILLS_OVERVIEW.md" .
 ```
@@ -50,7 +50,7 @@ Since symbolic links use local paths that may vary between machines, you should 
 ```bash
 # Ignore symlinked skills and config
 echo ".agent/skills" >> .gitignore
-echo ".specify" >> .gitignore
+echo ".agent/workflows" >> .gitignore
 echo "AGENTS.md" >> .gitignore
 echo "SKILLS_OVERVIEW.md" >> .gitignore
 ```
