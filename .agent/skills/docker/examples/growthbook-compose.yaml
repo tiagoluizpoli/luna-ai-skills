@@ -1,0 +1,23 @@
+services:
+  mongo:
+    image: mongo:7.0
+    restart: always
+    volumes:
+      - growthbook-mongo:/data/db
+
+  growthbook:
+    image: growthbook/growthbook:latest
+    restart: always
+    ports:
+      - "3000:3000"
+      - "3100:3100"
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/growthbook
+      - APP_ORIGIN=http://localhost:3000
+      - API_HOST=http://localhost:3100
+      - JWT_SECRET=${GB_JWT_SECRET:-growthbook-secret}
+    depends_on:
+      - mongo
+
+volumes:
+  growthbook-mongo:

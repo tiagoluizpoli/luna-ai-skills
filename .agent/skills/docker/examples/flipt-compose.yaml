@@ -1,0 +1,15 @@
+services:
+  flipt:
+    image: flipt/flipt:latest
+    restart: always
+    ports:
+      - "8080:8080" # UI/API
+      - "9000:9000" # gRPC
+    volumes:
+      - flipt-data:/var/lib/flipt
+    environment:
+      - FLIPT_DB_URL=file:/var/lib/flipt/flipt.db?cache=shared&_journal_mode=WAL
+      - FLIPT_UI_ENABLED=true
+
+volumes:
+  flipt-data:
