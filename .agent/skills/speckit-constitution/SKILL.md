@@ -74,6 +74,9 @@ Follow this execution flow:
 
 3. Draft the updated constitution content:
    - Replace every placeholder with concrete text (no bracketed tokens left except intentionally retained template slots that the project has chosen not to define yet—explicitly justify any left).
+   - **MANDATORY SECTIONS**: You MUST ensure the **"Technology Stack"** and **"Core Rules"** sections are present and fully defined.
+   - **Tech Stack Inference**: Identify core technologies from `package.json`, `bun.lock`, and directory structure (e.g., Next.js, Bun, Tailwind v4, Drizzle, Better Auth). Present these as a table: Category | Tool | Purpose.
+   - **Core Rules**: Define at least 3-5 non-negotiable rules (e.g., Clean Code, SOLID, Biome checks, Type Safety).
    - Preserve heading hierarchy and comments can be removed once replaced unless they still add clarifying guidance.
    - Ensure each Principle section: succinct name line, paragraph (or bullet list) capturing non‑negotiable rules, explicit rationale if not obvious.
    - Ensure Governance section lists amendment procedure, versioning policy, and compliance review expectations.
@@ -95,6 +98,7 @@ Follow this execution flow:
 
 6. Validation before final output:
    - No remaining unexplained bracket tokens.
+   - **Mandatory Content Check**: Verify that "Technology Stack" and "Core Rules" sections are not empty and contain relevant, project-specific information.
    - Version line matches report.
    - Dates ISO format YYYY-MM-DD.
    - Principles are declarative, testable, and free of vague language ("should" → replace with MUST/SHOULD rationale where appropriate).
