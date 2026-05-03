@@ -74,6 +74,18 @@ When presenting a test plan, use this structure:
 
 ---
 
-## Resources & Guides
-- [**The Edge Case Checklist**](file:///home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agent/skills/test-coverage-master/resources/edge-case-checklist.md): Common pitfalls to look for in every feature.
-- [**Pyramid ROI Guide**](file:///home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agent/skills/test-coverage-master/resources/pyramid-roi.md): Deciding where a test belongs.
+## 3. Identification Catalog (Examples & Heuristics)
+
+### Heuristics & Mental Models
+- [**Identification Heuristics**](file:///home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agent/skills/test-cases/resources/identification-heuristics.md): Mental models for finding "untestable" paths.
+- [**The Edge Case Checklist**](file:///home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agent/skills/test-cases/resources/edge-case-checklist.md): Common pitfalls to look for in every feature.
+
+### Coverage Plan Examples
+- [**User Profile Update**](file:///home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agent/skills/test-cases/examples/profile-update-coverage-plan.md): Standard CRUD with file uploads.
+- [**E-commerce Cart & Checkout**](file:///home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agent/skills/test-cases/examples/e-commerce-cart-coverage-plan.md): Complex state transitions and inventory races.
+- [**Authentication & Recovery**](file:///home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agent/skills/test-cases/examples/auth-flow-coverage-plan.md): Sensitive security flows and token management.
+
+---
+
+## 4. Resources & Guides
+- [**Pyramid ROI Guide**](file:///home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agent/skills/test-cases/resources/pyramid-roi.md): Deciding where a test belongs.
