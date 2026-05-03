@@ -45,7 +45,8 @@ Use `.env` files for configuration. Never hardcode passwords or sensitive ports 
 - [**Unleash**](file:///home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agent/skills/docker/examples/unleash-compose.yaml): Scalable feature management.
 - [**Flipt**](file:///home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agent/skills/docker/examples/flipt-compose.yaml): Cloud-native feature flagging.
 
-### Productivity Tools
+### Productivity Tools & Storage
+- [**MinIO (S3)**](file:///home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agent/skills/docker/examples/minio-compose.yaml): High-performance, S3-compatible object storage.
 - [**MailHog**](file:///home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agent/skills/docker/examples/mailhog-compose.yaml): Local SMTP testing with Web UI.
 - [**Adminer**](file:///home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agent/skills/docker/examples/adminer-compose.yaml): Lightweight database management UI.
 
