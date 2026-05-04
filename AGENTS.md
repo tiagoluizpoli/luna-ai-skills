@@ -1,6 +1,6 @@
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
-shell commands, and other important information, read the current plan
+shell commands, and other important information, read the current plan: specs/001-db-schema/plan.md
 <!-- SPECKIT END -->
 
 # Core Agent Protocol: Karpathy Guidelines
@@ -12,3 +12,10 @@ Every action, decision, and line of code MUST strictly adhere to the [**Karpathy
 2. **Simplicity First**: Write the absolute minimum code required. Reject speculation and over-abstraction.
 3. **Surgical Changes**: Touch only the necessary lines. Match style perfectly. Remove orphans created by your own changes.
 4. **Goal-Driven Execution**: Define clear success criteria for every task. verify each step before proceeding.
+
+## Task-by-Task Protocol
+Every task MUST be developed and validated individually.
+1. Perform the changes for a single task.
+2. Prompt the user for review and approval.
+3. Iterate based on feedback until the user is satisfied.
+4. Only proceed to the next task after explicit approval.
