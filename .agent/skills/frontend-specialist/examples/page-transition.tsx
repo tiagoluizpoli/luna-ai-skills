@@ -1,13 +1,13 @@
 /**
  * Page Transition — Full-page spring transition with AnimatePresence
  */
-import { AnimatePresence, motion } from 'framer-motion'
-import type { ReactNode } from 'react'
+import { AnimatePresence, motion } from 'framer-motion';
+import type { ReactNode } from 'react';
 
 interface PageTransitionProps {
-  children: ReactNode
+  children: ReactNode;
   /** Unique key per route (e.g., pathname) */
-  pageKey: string
+  pageKey: string;
 }
 
 const pageVariants = {
@@ -37,7 +37,7 @@ const pageVariants = {
       ease: 'easeIn',
     },
   },
-}
+};
 
 export function PageTransition({ children, pageKey }: PageTransitionProps) {
   return (
@@ -53,7 +53,7 @@ export function PageTransition({ children, pageKey }: PageTransitionProps) {
         {children}
       </motion.div>
     </AnimatePresence>
-  )
+  );
 }
 
 /**

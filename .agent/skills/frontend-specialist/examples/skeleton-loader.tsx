@@ -1,7 +1,7 @@
 /**
  * Skeleton Loader — Layout-matched with shimmer animation
  */
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils';
 
 function Shimmer({ className }: { className?: string }) {
   return (
@@ -10,17 +10,17 @@ function Shimmer({ className }: { className?: string }) {
         'animate-shimmer rounded-md',
         'bg-gradient-to-r from-muted via-muted-foreground/10 to-muted',
         'bg-[length:200%_100%]',
-        className
+        className,
       )}
     />
-  )
+  );
 }
 
 /** Matches a user profile card layout */
 export function ProfileCardSkeleton() {
   return (
     <div className="flex items-start gap-4 rounded-2xl border bg-card p-6">
-      <Shimmer className="h-14 w-14 rounded-full shrink-0" />
+      <Shimmer className="h-14 w-14 shrink-0 rounded-full" />
       <div className="flex-1 space-y-3">
         <Shimmer className="h-4 w-36" />
         <Shimmer className="h-3 w-24" />
@@ -30,7 +30,7 @@ export function ProfileCardSkeleton() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 /** Matches a metrics dashboard grid */
@@ -38,7 +38,7 @@ export function MetricGridSkeleton({ columns = 4 }: { columns?: number }) {
   return (
     <div className={cn('grid gap-4', `grid-cols-${columns}`)}>
       {Array.from({ length: columns }).map((_, i) => (
-        <div key={i} className="rounded-xl border bg-card p-6 space-y-4">
+        <div key={i} className="space-y-4 rounded-xl border bg-card p-6">
           <div className="flex justify-between">
             <Shimmer className="h-3 w-20" />
             <Shimmer className="h-4 w-4 rounded" />
@@ -48,15 +48,15 @@ export function MetricGridSkeleton({ columns = 4 }: { columns?: number }) {
         </div>
       ))}
     </div>
-  )
+  );
 }
 
 /** Matches a data table layout */
 export function TableSkeleton({ rows = 5 }: { rows?: number }) {
   return (
-    <div className="rounded-xl border overflow-hidden">
+    <div className="overflow-hidden rounded-xl border">
       {/* Header */}
-      <div className="flex gap-4 px-4 py-3 bg-muted/30 border-b">
+      <div className="flex gap-4 border-b bg-muted/30 px-4 py-3">
         <Shimmer className="h-3 w-8" />
         <Shimmer className="h-3 w-32 flex-1" />
         <Shimmer className="h-3 w-24" />
@@ -65,7 +65,10 @@ export function TableSkeleton({ rows = 5 }: { rows?: number }) {
       </div>
       {/* Rows */}
       {Array.from({ length: rows }).map((_, i) => (
-        <div key={i} className="flex gap-4 items-center px-4 py-3 border-b last:border-0">
+        <div
+          key={i}
+          className="flex items-center gap-4 border-b px-4 py-3 last:border-0"
+        >
           <Shimmer className="h-3 w-8" />
           <Shimmer className="h-3 w-40 flex-1" />
           <Shimmer className="h-3 w-24" />
@@ -74,7 +77,7 @@ export function TableSkeleton({ rows = 5 }: { rows?: number }) {
         </div>
       ))}
     </div>
-  )
+  );
 }
 
 /**

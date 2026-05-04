@@ -2,14 +2,14 @@
  * Premium Button — Gradient + inner shadow + spring hover + loading state
  */
 
-import { motion } from 'framer-motion'
-import { type ComponentPropsWithoutRef, forwardRef } from 'react'
-import { cn } from '@/lib/utils'
+import { motion } from 'framer-motion';
+import { type ComponentPropsWithoutRef, forwardRef } from 'react';
+import { cn } from '@/lib/utils';
 
 interface PremiumButtonProps extends ComponentPropsWithoutRef<'button'> {
-  variant?: 'primary' | 'secondary' | 'ghost'
-  size?: 'sm' | 'md' | 'lg'
-  loading?: boolean
+  variant?: 'primary' | 'secondary' | 'ghost';
+  size?: 'sm' | 'md' | 'lg';
+  loading?: boolean;
 }
 
 const variantStyles = {
@@ -25,16 +25,27 @@ const variantStyles = {
     'hover:bg-secondary/80',
   ].join(' '),
   ghost: 'text-muted-foreground hover:text-foreground hover:bg-muted/50',
-} as const
+} as const;
 
 const sizeStyles = {
   sm: 'h-8 px-3 text-xs rounded-md gap-1.5',
   md: 'h-10 px-4 text-sm rounded-lg gap-2',
   lg: 'h-12 px-6 text-base rounded-xl gap-2.5',
-} as const
+} as const;
 
 export const PremiumButton = forwardRef<HTMLButtonElement, PremiumButtonProps>(
-  ({ variant = 'primary', size = 'md', loading, className, children, disabled, ...props }, ref) => (
+  (
+    {
+      variant = 'primary',
+      size = 'md',
+      loading,
+      className,
+      children,
+      disabled,
+      ...props
+    },
+    ref,
+  ) => (
     <motion.button
       ref={ref}
       whileHover={{ y: -1 }}
@@ -47,19 +58,30 @@ export const PremiumButton = forwardRef<HTMLButtonElement, PremiumButtonProps>(
         variantStyles[variant],
         sizeStyles[size],
         loading && 'pointer-events-none',
-        className
+        className,
       )}
       disabled={disabled || loading}
       {...props}
     >
       {loading && (
-        <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
-          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+        <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">
+          <circle
+            className="opacity-25"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            strokeWidth="4"
+          />
+          <path
+            className="opacity-75"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+          />
         </svg>
       )}
       {children}
     </motion.button>
-  )
-)
-PremiumButton.displayName = 'PremiumButton'
+  ),
+);
+PremiumButton.displayName = 'PremiumButton';
