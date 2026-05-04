@@ -1,6 +1,6 @@
 /**
  * STRUCTURED ERROR HANDLING SYSTEM
- * 
+ *
  * Demonstrates:
  * 1. Base Domain Error classes.
  * 2. Semantic Error Codes.
@@ -25,7 +25,7 @@ export abstract class DomainError extends Error {
     public readonly code: ErrorCode,
     message: string,
     public readonly statusCode: number = 500,
-    public readonly details?: Record<string, any>
+    public readonly details?: Record<string, any>,
   ) {
     super(message);
     this.name = this.constructor.name;
@@ -61,7 +61,7 @@ export class NotFoundError extends DomainError {
 }
 
 export class UnauthorizedError extends DomainError {
-  constructor(message: string = 'Authentication required') {
+  constructor(message = 'Authentication required') {
     super(ErrorCode.UNAUTHORIZED, message, 401);
   }
 }
@@ -76,7 +76,7 @@ export function handleGlobalError(error: unknown) {
 
   // Handle Unexpected Errors
   console.error('[CriticalError]', error);
-  
+
   // Wrap in a generic Internal Error to avoid leaking system details
   const internalError = new InternalError('An unexpected error occurred');
   return internalError.toPublicResponse();

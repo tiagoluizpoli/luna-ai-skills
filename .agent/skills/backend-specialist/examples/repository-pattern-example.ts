@@ -1,6 +1,6 @@
 /**
  * GOLD STANDARD REPOSITORY PATTERN
- * 
+ *
  * Demonstrates:
  * 1. Decoupling Persistence (Appwrite) from Domain (Skill).
  * 2. Zod-first validation.
@@ -8,8 +8,8 @@
  * 4. Structured Error Handling.
  */
 
+import { type Databases, ID, Permission, Query, Role } from 'node-appwrite';
 import { z } from 'zod';
-import { Databases, ID, Permission, Role, Query } from 'node-appwrite';
 
 // 1. DOMAIN SCHEMA
 const SkillSchema = z.object({
@@ -46,7 +46,7 @@ const SkillMapper = {
       level: skill.level,
       category: skill.category,
     };
-  }
+  },
 };
 
 // 4. IMPLEMENTATION
@@ -58,7 +58,11 @@ export class AppwriteSkillRepository implements ISkillRepository {
 
   async findById(id: string): Promise<Skill | null> {
     try {
-      const doc = await this.databases.getDocument(this.databaseId, this.collectionId, id);
+      const doc = await this.databases.getDocument(
+        this.databaseId,
+        this.collectionId,
+        id,
+      );
       return SkillMapper.toDomain(doc);
     } catch (error: any) {
       if (error.code === 404) return null;
@@ -66,7 +70,10 @@ export class AppwriteSkillRepository implements ISkillRepository {
     }
   }
 
-  async create(data: Omit<Skill, 'id' | 'createdAt'>, userId: string): Promise<Skill> {
+  async create(
+    data: Omit<Skill, 'id' | 'createdAt'>,
+    userId: string,
+  ): Promise<Skill> {
     try {
       // Rule Zero: Validate before mutation
       const persistenceData = SkillMapper.toPersistence(data);
@@ -80,7 +87,7 @@ export class AppwriteSkillRepository implements ISkillRepository {
           Permission.read(Role.any()), // Public read
           Permission.update(Role.user(userId)), // Only owner can edit
           Permission.delete(Role.user(userId)), // Only owner can delete
-        ]
+        ],
       );
 
       return SkillMapper.toDomain(doc);
@@ -94,19 +101,25 @@ export class AppwriteSkillRepository implements ISkillRepository {
       const response = await this.databases.listDocuments(
         this.databaseId,
         this.collectionId,
-        [Query.equal('category', category)]
+        [Query.equal('category', category)],
       );
 
       return response.documents.map(SkillMapper.toDomain);
     } catch (error: any) {
-      throw new RepositoryError(`Failed to list skills for category ${category}`, error);
+      throw new RepositoryError(
+        `Failed to list skills for category ${category}`,
+        error,
+      );
     }
   }
 }
 
 // Custom Error class for repositories
 class RepositoryError extends Error {
-  constructor(message: string, public readonly originalError?: any) {
+  constructor(
+    message: string,
+    public readonly originalError?: any,
+  ) {
     super(message);
     this.name = 'RepositoryError';
   }

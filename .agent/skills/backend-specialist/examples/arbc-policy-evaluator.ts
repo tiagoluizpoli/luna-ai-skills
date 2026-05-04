@@ -1,6 +1,6 @@
 /**
  * ARBC (Attribute Role-Based Control) Evaluator
- * 
+ *
  * Demonstrates:
  * 1. Hybrid Role + Attribute evaluation.
  * 2. Centralized Authority Service.
@@ -36,7 +36,7 @@ interface Environment {
 // 2. THE ARBC EVALUATOR
 export class AuthorityService {
   /**
-   * Evaluates if a subject can perform an action on a resource 
+   * Evaluates if a subject can perform an action on a resource
    * within a given environment context.
    */
   public evaluate(params: {
@@ -61,14 +61,17 @@ export class AuthorityService {
   }
 
   private evaluatePolicies(
-    action: string, 
-    subject: User, 
-    resource: Resource, 
-    context: Environment
+    action: string,
+    subject: User,
+    resource: Resource,
+    context: Environment,
   ): boolean {
     // POLICY: Department Lock
     // "Users can only access resources within their own department"
-    if (resource.attributes.department && resource.attributes.department !== subject.attributes.department) {
+    if (
+      resource.attributes.department &&
+      resource.attributes.department !== subject.attributes.department
+    ) {
       return false;
     }
 
@@ -92,15 +95,19 @@ export class AuthorityService {
 async function handleUpdateDocument(userId: string, documentId: string) {
   const user = await userRepository.findById(userId);
   const resource = await documentRepository.findById(documentId);
-  const context = { ip: '...', isCorporateNetwork: true, timestamp: new Date() };
+  const context = {
+    ip: '...',
+    isCorporateNetwork: true,
+    timestamp: new Date(),
+  };
 
   const auth = new AuthorityService();
-  
+
   const isAllowed = auth.evaluate({
     action: 'document.update',
     subject: user,
     resource,
-    context
+    context,
   });
 
   if (!isAllowed) {

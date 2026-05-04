@@ -1,13 +1,13 @@
 /**
  * IDEMPOTENCY & BACKGROUND JOB SAFETY
- * 
+ *
  * Demonstrates:
  * 1. Safe retries for non-idempotent operations.
  * 2. State-aware processing.
  * 3. Lock/lease pattern for concurrency.
  */
 
-import { ID, Databases } from 'node-appwrite';
+import { type Databases, ID } from 'node-appwrite';
 
 /**
  * Scenario: Processing a payment.
@@ -17,7 +17,7 @@ export async function processPayment(
   idempotencyKey: string,
   userId: string,
   amount: number,
-  databases: Databases
+  databases: Databases,
 ) {
   const DB_ID = 'main';
   const JOBS_COLLECTION = 'jobs';
@@ -34,23 +34,30 @@ export async function processPayment(
         status: 'pending',
         type: 'payment',
         createdAt: new Date().toISOString(),
-      }
+      },
     );
     console.log(`[Job] Created new job for key ${idempotencyKey}`);
   } catch (error: any) {
     if (error.code === 409) {
       // Conflict: The key has already been used.
       // Retrieve the existing job to see if it's finished.
-      const existingJob = await databases.getDocument(DB_ID, JOBS_COLLECTION, idempotencyKey);
-      
+      const existingJob = await databases.getDocument(
+        DB_ID,
+        JOBS_COLLECTION,
+        idempotencyKey,
+      );
+
       if (existingJob.status === 'completed') {
-        return { data: existingJob.result, message: 'Payment already processed previously.' };
+        return {
+          data: existingJob.result,
+          message: 'Payment already processed previously.',
+        };
       }
-      
+
       if (existingJob.status === 'processing') {
         throw new Error('Payment is still being processed by another worker.');
       }
-      
+
       // If it's still 'pending' or 'failed', we can retry.
       console.log(`[Job] Retrying existing job for key ${idempotencyKey}`);
     } else {
@@ -67,19 +74,24 @@ export async function processPayment(
   // 3. EXECUTE THE ACTUAL OPERATION
   try {
     const paymentResult = await externalPaymentGateway.charge(userId, amount);
-    
+
     // 4. MARK AS COMPLETED WITH RESULT
-    const finalJob = await databases.updateDocument(DB_ID, JOBS_COLLECTION, idempotencyKey, {
-      status: 'completed',
-      result: paymentResult,
-      finishedAt: new Date().toISOString(),
-    });
+    const finalJob = await databases.updateDocument(
+      DB_ID,
+      JOBS_COLLECTION,
+      idempotencyKey,
+      {
+        status: 'completed',
+        result: paymentResult,
+        finishedAt: new Date().toISOString(),
+      },
+    );
 
     return { data: paymentResult };
   } catch (error: any) {
     // 5. HANDLE FAILURE
     console.error(`[Job] Payment failed for key ${idempotencyKey}`, error);
-    
+
     await databases.updateDocument(DB_ID, JOBS_COLLECTION, idempotencyKey, {
       status: 'failed',
       error: error.message,
@@ -93,5 +105,5 @@ export async function processPayment(
 const externalPaymentGateway = {
   charge: async (userId: string, amount: number) => {
     return { transactionId: 'txn_' + ID.unique(), amount, userId };
-  }
+  },
 };
