@@ -1,6 +1,7 @@
 // @ts-nocheck
-import { auth } from "@/lib/auth";
-import { toNextJsHandler } from "better-auth/next-js";
+
+import { toNextJsHandler } from 'better-auth/next-js';
+import { auth } from '@/lib/auth';
 
 /**
  * Standard Next.js Route Handler for Better Auth.
