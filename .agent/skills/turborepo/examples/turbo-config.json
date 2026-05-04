@@ -23,7 +23,7 @@
       "persistent": true
     },
     "transit": {
-       "dependsOn": ["^transit"]
+      "dependsOn": ["^transit"]
     }
   }
 }
