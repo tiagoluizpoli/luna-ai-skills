@@ -5,47 +5,50 @@
  * Includes three tiers: Global, Route, and Widget.
  */
 
-import { Component, type ErrorInfo, type ReactNode } from 'react'
+import { Component, type ErrorInfo, type ReactNode } from 'react';
 
 // ─── Types ────────────────────────────────────────────────────────
 interface ErrorBoundaryProps {
-  children: ReactNode
+  children: ReactNode;
   /** Fallback UI when an error occurs */
-  fallback?: ReactNode | ((props: FallbackProps) => ReactNode)
+  fallback?: ReactNode | ((props: FallbackProps) => ReactNode);
   /** Called when an error is caught (for logging/reporting) */
-  onError?: (error: Error, errorInfo: ErrorInfo) => void
+  onError?: (error: Error, errorInfo: ErrorInfo) => void;
   /** Reset keys — when these change, the error boundary resets */
-  resetKeys?: unknown[]
+  resetKeys?: unknown[];
 }
 
 interface ErrorBoundaryState {
-  hasError: boolean
-  error: Error | null
+  hasError: boolean;
+  error: Error | null;
 }
 
 export interface FallbackProps {
-  error: Error
-  resetErrorBoundary: () => void
+  error: Error;
+  resetErrorBoundary: () => void;
 }
 
 // ─── Error Boundary Component ─────────────────────────────────────
-export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+export class ErrorBoundary extends Component<
+  ErrorBoundaryProps,
+  ErrorBoundaryState
+> {
   constructor(props: ErrorBoundaryProps) {
-    super(props)
-    this.state = { hasError: false, error: null }
+    super(props);
+    this.state = { hasError: false, error: null };
   }
 
   static getDerivedStateFromError(error: Error): ErrorBoundaryState {
-    return { hasError: true, error }
+    return { hasError: true, error };
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     // Report to error tracking service
-    this.props.onError?.(error, errorInfo)
+    this.props.onError?.(error, errorInfo);
 
     // Always log in development
     if (process.env.NODE_ENV === 'development') {
-      console.error('[ErrorBoundary]', error, errorInfo.componentStack)
+      console.error('[ErrorBoundary]', error, errorInfo.componentStack);
     }
   }
 
@@ -53,39 +56,39 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
     // Reset when resetKeys change
     if (this.state.hasError && this.props.resetKeys) {
       const hasChanged = this.props.resetKeys.some(
-        (key, i) => key !== prevProps.resetKeys?.[i]
-      )
+        (key, i) => key !== prevProps.resetKeys?.[i],
+      );
       if (hasChanged) {
-        this.resetErrorBoundary()
+        this.resetErrorBoundary();
       }
     }
   }
 
   resetErrorBoundary = () => {
-    this.setState({ hasError: false, error: null })
-  }
+    this.setState({ hasError: false, error: null });
+  };
 
   render() {
     if (this.state.hasError && this.state.error) {
-      const { fallback } = this.props
+      const { fallback } = this.props;
       const fallbackProps: FallbackProps = {
         error: this.state.error,
         resetErrorBoundary: this.resetErrorBoundary,
-      }
+      };
 
       if (typeof fallback === 'function') {
-        return fallback(fallbackProps)
+        return fallback(fallbackProps);
       }
 
       if (fallback) {
-        return fallback
+        return fallback;
       }
 
       // Default fallback
-      return <DefaultErrorFallback {...fallbackProps} />
+      return <DefaultErrorFallback {...fallbackProps} />;
     }
 
-    return this.props.children
+    return this.props.children;
   }
 }
 
@@ -112,18 +115,22 @@ function DefaultErrorFallback({ error, resetErrorBoundary }: FallbackProps) {
         </svg>
       </div>
       <div>
-        <h3 className="text-sm font-semibold text-foreground">Something went wrong</h3>
-        <p className="mt-1 text-xs text-muted-foreground max-w-sm">{error.message}</p>
+        <h3 className="font-semibold text-foreground text-sm">
+          Something went wrong
+        </h3>
+        <p className="mt-1 max-w-sm text-muted-foreground text-xs">
+          {error.message}
+        </p>
       </div>
       <button
         type="button"
         onClick={resetErrorBoundary}
-        className="inline-flex items-center rounded-md bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
+        className="inline-flex items-center rounded-md bg-primary px-3 py-1.5 font-medium text-primary-foreground text-xs transition-colors hover:bg-primary/90"
       >
         Try Again
       </button>
     </div>
-  )
+  );
 }
 
 // ─── Specialized Fallbacks ────────────────────────────────────────
@@ -132,29 +139,34 @@ function DefaultErrorFallback({ error, resetErrorBoundary }: FallbackProps) {
 export function GlobalErrorFallback({ error }: FallbackProps) {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center gap-6">
-      <h1 className="text-2xl font-bold">Application Error</h1>
-      <p className="text-muted-foreground max-w-md text-center">{error.message}</p>
+      <h1 className="font-bold text-2xl">Application Error</h1>
+      <p className="max-w-md text-center text-muted-foreground">
+        {error.message}
+      </p>
       <button
         onClick={() => window.location.reload()}
-        className="rounded-lg bg-primary px-6 py-2 text-sm font-medium text-primary-foreground"
+        className="rounded-lg bg-primary px-6 py-2 font-medium text-primary-foreground text-sm"
       >
         Reload Application
       </button>
     </div>
-  )
+  );
 }
 
 /** Widget-level: Inline error with retry */
-export function WidgetErrorFallback({ error, resetErrorBoundary }: FallbackProps) {
+export function WidgetErrorFallback({
+  error,
+  resetErrorBoundary,
+}: FallbackProps) {
   return (
     <div className="flex items-center gap-3 rounded-md border border-destructive/20 px-3 py-2">
-      <span className="text-xs text-destructive">{error.message}</span>
+      <span className="text-destructive text-xs">{error.message}</span>
       <button
         onClick={resetErrorBoundary}
-        className="text-xs text-primary underline hover:no-underline"
+        className="text-primary text-xs underline hover:no-underline"
       >
         Retry
       </button>
     </div>
-  )
+  );
 }

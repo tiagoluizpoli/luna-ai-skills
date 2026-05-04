@@ -8,28 +8,28 @@
  * individual handlers would create memory pressure.
  */
 
-import { type ReactNode, useCallback } from 'react'
-import { cn } from '@/lib/utils'
+import { type ReactNode, useCallback } from 'react';
+import { cn } from '@/lib/utils';
 
 // ─── Types ────────────────────────────────────────────────────────
 interface Action {
-  id: string
-  label: string
-  icon?: ReactNode
-  variant?: 'default' | 'destructive'
+  id: string;
+  label: string;
+  icon?: ReactNode;
+  variant?: 'default' | 'destructive';
 }
 
 interface ListItem {
-  id: string
-  title: string
-  description: string
+  id: string;
+  title: string;
+  description: string;
 }
 
 interface DelegatedListProps {
-  items: ListItem[]
-  actions: Action[]
-  onAction: (actionId: string, itemId: string) => void
-  className?: string
+  items: ListItem[];
+  actions: Action[];
+  onAction: (actionId: string, itemId: string) => void;
+  className?: string;
 }
 
 // ─── Component ────────────────────────────────────────────────────
@@ -56,19 +56,19 @@ export function DelegatedList({
     (event: React.MouseEvent<HTMLDivElement>) => {
       // Walk up the DOM to find the closest action button
       const target = (event.target as HTMLElement).closest<HTMLElement>(
-        '[data-action]'
-      )
-      if (!target) return
+        '[data-action]',
+      );
+      if (!target) return;
 
-      const actionId = target.dataset.action
-      const itemId = target.dataset.itemId
+      const actionId = target.dataset.action;
+      const itemId = target.dataset.itemId;
 
       if (actionId && itemId) {
-        onAction(actionId, itemId)
+        onAction(actionId, itemId);
       }
     },
-    [onAction]
-  )
+    [onAction],
+  );
 
   return (
     // Single click handler on the container — delegated to all children
@@ -84,12 +84,12 @@ export function DelegatedList({
           role="listitem"
         >
           <div className="min-w-0 flex-1">
-            <p className="text-sm font-medium truncate">{item.title}</p>
-            <p className="text-xs text-muted-foreground truncate">
+            <p className="truncate font-medium text-sm">{item.title}</p>
+            <p className="truncate text-muted-foreground text-xs">
               {item.description}
             </p>
           </div>
-          <div className="flex gap-1 ml-4">
+          <div className="ml-4 flex gap-1">
             {actions.map((action) => (
               <button
                 key={action.id}
@@ -99,11 +99,11 @@ export function DelegatedList({
                 data-item-id={item.id}
                 className={cn(
                   'inline-flex items-center gap-1 rounded-md px-2 py-1',
-                  'text-xs font-medium transition-colors',
+                  'font-medium text-xs transition-colors',
                   'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
                   action.variant === 'destructive'
                     ? 'text-destructive hover:bg-destructive/10'
-                    : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                    : 'text-muted-foreground hover:bg-muted hover:text-foreground',
                 )}
               >
                 {action.icon}
@@ -114,7 +114,7 @@ export function DelegatedList({
         </div>
       ))}
     </div>
-  )
+  );
 }
 
 // ─── Usage Example ────────────────────────────────────────────────

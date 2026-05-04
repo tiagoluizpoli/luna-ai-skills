@@ -11,8 +11,13 @@
  * <Box as={motion.div} animate={{ opacity: 1 }}>Animated Box</Box>
  */
 
-import { type ComponentPropsWithoutRef, type ElementType, forwardRef, type ReactNode } from 'react'
-import { cn } from '@/lib/utils'
+import {
+  type ComponentPropsWithoutRef,
+  type ElementType,
+  forwardRef,
+  type ReactNode,
+} from 'react';
+import { cn } from '@/lib/utils';
 
 // ─── Type Utilities ───────────────────────────────────────────────
 
@@ -23,28 +28,25 @@ import { cn } from '@/lib/utils'
  * - Merges with the target element's native props
  * - Removes conflicts (OwnProps win over native props)
  */
-type PolymorphicProps<
-  E extends ElementType,
-  OwnProps = object,
-> = OwnProps &
+type PolymorphicProps<E extends ElementType, OwnProps = object> = OwnProps &
   Omit<ComponentPropsWithoutRef<E>, keyof OwnProps | 'as'> & {
-    as?: E
-  }
+    as?: E;
+  };
 
 /**
  * Extracts the ref type for a polymorphic component.
  */
 type PolymorphicRef<E extends ElementType> =
-  ComponentPropsWithoutRef<E> extends { ref?: infer R } ? R : never
+  ComponentPropsWithoutRef<E> extends { ref?: infer R } ? R : never;
 
 // ─── Box Component ────────────────────────────────────────────────
 
 type BoxOwnProps = {
-  children?: ReactNode
-  className?: string
-}
+  children?: ReactNode;
+  className?: string;
+};
 
-type BoxProps<E extends ElementType = 'div'> = PolymorphicProps<E, BoxOwnProps>
+type BoxProps<E extends ElementType = 'div'> = PolymorphicProps<E, BoxOwnProps>;
 
 /**
  * A polymorphic Box component.
@@ -57,22 +59,22 @@ type BoxProps<E extends ElementType = 'div'> = PolymorphicProps<E, BoxOwnProps>
  */
 export const Box = forwardRef(function Box<E extends ElementType = 'div'>(
   { as, className, children, ...props }: BoxProps<E>,
-  ref: PolymorphicRef<E>
+  ref: PolymorphicRef<E>,
 ) {
-  const Component = as || 'div'
+  const Component = as || 'div';
 
   return (
     <Component ref={ref} className={cn(className)} {...props}>
       {children}
     </Component>
-  )
+  );
 }) as <E extends ElementType = 'div'>(
-  props: BoxProps<E> & { ref?: PolymorphicRef<E> }
-) => JSX.Element
+  props: BoxProps<E> & { ref?: PolymorphicRef<E> },
+) => JSX.Element;
 
 // ─── Text Component (Polymorphic with variants) ───────────────────
 
-type TextVariant = 'h1' | 'h2' | 'h3' | 'h4' | 'body' | 'caption' | 'overline'
+type TextVariant = 'h1' | 'h2' | 'h3' | 'h4' | 'body' | 'caption' | 'overline';
 
 const textStyles: Record<TextVariant, string> = {
   h1: 'text-3xl font-bold tracking-tight',
@@ -81,8 +83,9 @@ const textStyles: Record<TextVariant, string> = {
   h4: 'text-lg font-medium',
   body: 'text-sm leading-relaxed',
   caption: 'text-xs text-muted-foreground',
-  overline: 'text-[10px] font-semibold uppercase tracking-widest text-muted-foreground',
-}
+  overline:
+    'text-[10px] font-semibold uppercase tracking-widest text-muted-foreground',
+};
 
 const defaultElements: Record<TextVariant, ElementType> = {
   h1: 'h1',
@@ -92,15 +95,15 @@ const defaultElements: Record<TextVariant, ElementType> = {
   body: 'p',
   caption: 'span',
   overline: 'span',
-}
+};
 
 type TextOwnProps = {
-  variant?: TextVariant
-  children?: ReactNode
-  className?: string
-}
+  variant?: TextVariant;
+  children?: ReactNode;
+  className?: string;
+};
 
-type TextProps<E extends ElementType = 'p'> = PolymorphicProps<E, TextOwnProps>
+type TextProps<E extends ElementType = 'p'> = PolymorphicProps<E, TextOwnProps>;
 
 /**
  * A polymorphic Text component with semantic variants.
@@ -112,9 +115,9 @@ type TextProps<E extends ElementType = 'p'> = PolymorphicProps<E, TextOwnProps>
  */
 export const Text = forwardRef(function Text<E extends ElementType = 'p'>(
   { as, variant = 'body', className, children, ...props }: TextProps<E>,
-  ref: PolymorphicRef<E>
+  ref: PolymorphicRef<E>,
 ) {
-  const Component = as || defaultElements[variant]
+  const Component = as || defaultElements[variant];
 
   return (
     <Component
@@ -124,7 +127,7 @@ export const Text = forwardRef(function Text<E extends ElementType = 'p'>(
     >
       {children}
     </Component>
-  )
+  );
 }) as <E extends ElementType = 'p'>(
-  props: TextProps<E> & { ref?: PolymorphicRef<E> }
-) => JSX.Element
+  props: TextProps<E> & { ref?: PolymorphicRef<E> },
+) => JSX.Element;

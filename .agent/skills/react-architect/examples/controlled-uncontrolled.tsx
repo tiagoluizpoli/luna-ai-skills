@@ -12,19 +12,20 @@ import {
   useCallback,
   useRef,
   useState,
-} from 'react'
-import { cn } from '@/lib/utils'
+} from 'react';
+import { cn } from '@/lib/utils';
 
 // ─── Types ────────────────────────────────────────────────────────
-interface ToggleProps extends Omit<ComponentPropsWithoutRef<'button'>, 'onChange'> {
+interface ToggleProps
+  extends Omit<ComponentPropsWithoutRef<'button'>, 'onChange'> {
   /** Controlled: current checked state */
-  checked?: boolean
+  checked?: boolean;
   /** Uncontrolled: initial checked state */
-  defaultChecked?: boolean
+  defaultChecked?: boolean;
   /** Callback when checked state changes (works in both modes) */
-  onCheckedChange?: (checked: boolean) => void
+  onCheckedChange?: (checked: boolean) => void;
   /** Label text */
-  label?: string
+  label?: string;
 }
 
 // ─── Component ────────────────────────────────────────────────────
@@ -39,41 +40,45 @@ export const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(
       disabled,
       ...props
     },
-    ref
+    ref,
   ) => {
     // Determine if controlled
-    const isControlled = controlledChecked !== undefined
-    const hasBeenControlled = useRef(isControlled)
+    const isControlled = controlledChecked !== undefined;
+    const hasBeenControlled = useRef(isControlled);
 
     // Warn if switching between controlled/uncontrolled
     if (process.env.NODE_ENV === 'development') {
       if (hasBeenControlled.current && !isControlled) {
-        console.warn('Toggle: Switching from controlled to uncontrolled. This is unsupported.')
+        console.warn(
+          'Toggle: Switching from controlled to uncontrolled. This is unsupported.',
+        );
       }
       if (!hasBeenControlled.current && isControlled) {
-        console.warn('Toggle: Switching from uncontrolled to controlled. This is unsupported.')
+        console.warn(
+          'Toggle: Switching from uncontrolled to controlled. This is unsupported.',
+        );
       }
     }
 
     // Internal state for uncontrolled mode
-    const [internalChecked, setInternalChecked] = useState(defaultChecked)
+    const [internalChecked, setInternalChecked] = useState(defaultChecked);
 
     // Resolve current value
-    const isChecked = isControlled ? controlledChecked : internalChecked
+    const isChecked = isControlled ? controlledChecked : internalChecked;
 
     const handleToggle = useCallback(() => {
-      if (disabled) return
+      if (disabled) return;
 
-      const nextValue = !isChecked
+      const nextValue = !isChecked;
 
       // Update internal state only in uncontrolled mode
       if (!isControlled) {
-        setInternalChecked(nextValue)
+        setInternalChecked(nextValue);
       }
 
       // Always fire callback (works in both modes)
-      onCheckedChange?.(nextValue)
-    }, [disabled, isChecked, isControlled, onCheckedChange])
+      onCheckedChange?.(nextValue);
+    }, [disabled, isChecked, isControlled, onCheckedChange]);
 
     return (
       <div className="flex items-center gap-3">
@@ -91,7 +96,7 @@ export const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(
             'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
             'disabled:cursor-not-allowed disabled:opacity-50',
             isChecked ? 'bg-primary' : 'bg-input',
-            className
+            className,
           )}
           {...props}
         >
@@ -100,15 +105,15 @@ export const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(
             className={cn(
               'pointer-events-none block h-5 w-5 rounded-full bg-background shadow-lg ring-0',
               'transition-transform duration-200 ease-in-out',
-              isChecked ? 'translate-x-5' : 'translate-x-0'
+              isChecked ? 'translate-x-5' : 'translate-x-0',
             )}
           />
         </button>
         {label && (
-          <span className="text-sm font-medium leading-none">{label}</span>
+          <span className="font-medium text-sm leading-none">{label}</span>
         )}
       </div>
-    )
-  }
-)
-Toggle.displayName = 'Toggle'
+    );
+  },
+);
+Toggle.displayName = 'Toggle';

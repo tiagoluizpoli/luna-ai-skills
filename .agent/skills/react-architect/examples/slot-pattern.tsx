@@ -18,13 +18,13 @@ import {
   forwardRef,
   isValidElement,
   type ReactNode,
-} from 'react'
-import { cn } from '@/lib/utils'
+} from 'react';
+import { cn } from '@/lib/utils';
 
 // ─── Slot Core ────────────────────────────────────────────────────
 
 interface SlotProps extends ComponentPropsWithoutRef<'div'> {
-  children: ReactNode
+  children: ReactNode;
 }
 
 /**
@@ -36,64 +36,67 @@ interface SlotProps extends ComponentPropsWithoutRef<'div'> {
  */
 export const Slot = forwardRef<HTMLElement, SlotProps>(
   ({ children, ...slotProps }, forwardedRef) => {
-    const child = Children.only(children)
+    const child = Children.only(children);
 
     if (!isValidElement(child)) {
       throw new Error(
         'Slot expects a single valid React element as its child. ' +
-          `Received: ${typeof child}`
-      )
+          `Received: ${typeof child}`,
+      );
     }
 
-    const childProps = child.props as Record<string, unknown>
+    const childProps = child.props as Record<string, unknown>;
 
     // Merge props
-    const mergedProps: Record<string, unknown> = { ...slotProps }
+    const mergedProps: Record<string, unknown> = { ...slotProps };
 
     for (const key of Object.keys(childProps)) {
       if (key === 'className') {
         // Concatenate classNames
         mergedProps.className = cn(
           slotProps.className as string,
-          childProps.className as string
-        )
+          childProps.className as string,
+        );
       } else if (key === 'style') {
         // Merge styles (child wins)
         mergedProps.style = {
           ...(slotProps.style || {}),
-          ...(childProps.style as object || {}),
-        }
-      } else if (key.startsWith('on') && typeof childProps[key] === 'function') {
+          ...((childProps.style as object) || {}),
+        };
+      } else if (
+        key.startsWith('on') &&
+        typeof childProps[key] === 'function'
+      ) {
         // Compose event handlers (both fire)
-        const slotHandler = (slotProps as Record<string, unknown>)[key]
-        const childHandler = childProps[key]
+        const slotHandler = (slotProps as Record<string, unknown>)[key];
+        const childHandler = childProps[key];
         if (typeof slotHandler === 'function') {
           mergedProps[key] = (...args: unknown[]) => {
-            ;(childHandler as Function)(...args)
-            ;(slotHandler as Function)(...args)
-          }
+            (childHandler as Function)(...args);
+            (slotHandler as Function)(...args);
+          };
         } else {
-          mergedProps[key] = childHandler
+          mergedProps[key] = childHandler;
         }
       } else if (!(key in slotProps)) {
         // Child props win for non-conflicting keys
-        mergedProps[key] = childProps[key]
+        mergedProps[key] = childProps[key];
       }
     }
 
     // Forward ref
-    mergedProps.ref = forwardedRef
+    mergedProps.ref = forwardedRef;
 
-    return cloneElement(child, mergedProps)
-  }
-)
-Slot.displayName = 'Slot'
+    return cloneElement(child, mergedProps);
+  },
+);
+Slot.displayName = 'Slot';
 
 // ─── Usage with Button ────────────────────────────────────────────
 
 interface ButtonProps extends ComponentPropsWithoutRef<'button'> {
-  asChild?: boolean
-  variant?: 'primary' | 'secondary' | 'ghost'
+  asChild?: boolean;
+  variant?: 'primary' | 'secondary' | 'ghost';
 }
 
 /**
@@ -109,30 +112,39 @@ interface ButtonProps extends ComponentPropsWithoutRef<'button'> {
  * </Button>
  */
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ asChild = false, variant = 'primary', className, children, ...props }, ref) => {
+  (
+    { asChild = false, variant = 'primary', className, children, ...props },
+    ref,
+  ) => {
     const classes = cn(
       'inline-flex items-center justify-center rounded-lg px-4 py-2',
-      'text-sm font-medium transition-colors',
+      'font-medium text-sm transition-colors',
       'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
-      variant === 'primary' && 'bg-primary text-primary-foreground hover:bg-primary/90',
-      variant === 'secondary' && 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
+      variant === 'primary' &&
+        'bg-primary text-primary-foreground hover:bg-primary/90',
+      variant === 'secondary' &&
+        'bg-secondary text-secondary-foreground hover:bg-secondary/80',
       variant === 'ghost' && 'hover:bg-accent hover:text-accent-foreground',
-      className
-    )
+      className,
+    );
 
     if (asChild) {
       return (
-        <Slot ref={ref as React.Ref<HTMLElement>} className={classes} {...props}>
+        <Slot
+          ref={ref as React.Ref<HTMLElement>}
+          className={classes}
+          {...props}
+        >
           {children}
         </Slot>
-      )
+      );
     }
 
     return (
       <button ref={ref} className={classes} {...props}>
         {children}
       </button>
-    )
-  }
-)
-Button.displayName = 'Button'
+    );
+  },
+);
+Button.displayName = 'Button';

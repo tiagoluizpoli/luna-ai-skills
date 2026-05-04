@@ -5,28 +5,28 @@
  * Essential for lists with 100+ items.
  */
 
-import { useVirtualizer } from '@tanstack/react-virtual'
-import { useRef } from 'react'
-import { cn } from '@/lib/utils'
+import { useVirtualizer } from '@tanstack/react-virtual';
+import { useRef } from 'react';
+import { cn } from '@/lib/utils';
 
 // ─── Types ────────────────────────────────────────────────────────
 interface VirtualListItem {
-  id: string
-  title: string
-  description: string
-  status: 'active' | 'inactive' | 'pending'
+  id: string;
+  title: string;
+  description: string;
+  status: 'active' | 'inactive' | 'pending';
 }
 
 interface VirtualListProps {
-  items: VirtualListItem[]
+  items: VirtualListItem[];
   /** Container height in pixels */
-  height?: number
+  height?: number;
   /** Estimated height of each row */
-  estimateSize?: number
+  estimateSize?: number;
   /** Extra items to render above/below viewport */
-  overscan?: number
-  className?: string
-  onItemClick?: (item: VirtualListItem) => void
+  overscan?: number;
+  className?: string;
+  onItemClick?: (item: VirtualListItem) => void;
 }
 
 // ─── Component ────────────────────────────────────────────────────
@@ -38,16 +38,16 @@ export function VirtualList({
   className,
   onItemClick,
 }: VirtualListProps) {
-  const parentRef = useRef<HTMLDivElement>(null)
+  const parentRef = useRef<HTMLDivElement>(null);
 
   const virtualizer = useVirtualizer({
     count: items.length,
     getScrollElement: () => parentRef.current,
     estimateSize: () => estimateSize,
     overscan,
-  })
+  });
 
-  const virtualItems = virtualizer.getVirtualItems()
+  const virtualItems = virtualizer.getVirtualItems();
 
   return (
     <div
@@ -63,7 +63,7 @@ export function VirtualList({
         }}
       >
         {virtualItems.map((virtualRow) => {
-          const item = items[virtualRow.index]
+          const item = items[virtualRow.index];
           return (
             <div
               key={virtualRow.key}
@@ -83,7 +83,7 @@ export function VirtualList({
                 className={cn(
                   'flex w-full items-center gap-4 border-b px-4 py-3',
                   'text-left transition-colors hover:bg-muted/50',
-                  'focus-visible:outline-none focus-visible:bg-muted'
+                  'focus-visible:bg-muted focus-visible:outline-none',
                 )}
               >
                 {/* Status indicator */}
@@ -92,27 +92,27 @@ export function VirtualList({
                     'h-2 w-2 shrink-0 rounded-full',
                     item.status === 'active' && 'bg-emerald-500',
                     item.status === 'inactive' && 'bg-zinc-400',
-                    item.status === 'pending' && 'bg-amber-500'
+                    item.status === 'pending' && 'bg-amber-500',
                   )}
                 />
                 {/* Content */}
                 <div className="min-w-0 flex-1">
-                  <p className="text-sm font-medium truncate">{item.title}</p>
-                  <p className="text-xs text-muted-foreground truncate">
+                  <p className="truncate font-medium text-sm">{item.title}</p>
+                  <p className="truncate text-muted-foreground text-xs">
                     {item.description}
                   </p>
                 </div>
                 {/* Index (for debugging) */}
-                <span className="text-[10px] font-mono text-muted-foreground tabular-nums">
+                <span className="font-mono text-[10px] text-muted-foreground tabular-nums">
                   #{virtualRow.index + 1}
                 </span>
               </button>
             </div>
-          )
+          );
         })}
       </div>
     </div>
-  )
+  );
 }
 
 // ─── Usage Example ────────────────────────────────────────────────

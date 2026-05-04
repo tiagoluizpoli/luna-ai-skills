@@ -12,39 +12,43 @@
  * </MouseTracker>
  */
 
-import { type ReactNode, useCallback, useRef, useState } from 'react'
+import { type ReactNode, useCallback, useRef, useState } from 'react';
 
 // ─── Types ────────────────────────────────────────────────────────
 interface MouseState {
-  x: number
-  y: number
-  isInside: boolean
+  x: number;
+  y: number;
+  isInside: boolean;
 }
 
 interface MouseTrackerProps {
   /** Render prop — receives mouse state, returns JSX */
-  children: (state: MouseState) => ReactNode
-  className?: string
+  children: (state: MouseState) => ReactNode;
+  className?: string;
 }
 
 // ─── Component ────────────────────────────────────────────────────
 export function MouseTracker({ children, className }: MouseTrackerProps) {
-  const [state, setState] = useState<MouseState>({ x: 0, y: 0, isInside: false })
-  const containerRef = useRef<HTMLDivElement>(null)
+  const [state, setState] = useState<MouseState>({
+    x: 0,
+    y: 0,
+    isInside: false,
+  });
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = containerRef.current?.getBoundingClientRect()
-    if (!rect) return
+    const rect = containerRef.current?.getBoundingClientRect();
+    if (!rect) return;
     setState({
       x: Math.round(e.clientX - rect.left),
       y: Math.round(e.clientY - rect.top),
       isInside: true,
-    })
-  }, [])
+    });
+  }, []);
 
   const handleMouseLeave = useCallback(() => {
-    setState(prev => ({ ...prev, isInside: false }))
-  }, [])
+    setState((prev) => ({ ...prev, isInside: false }));
+  }, []);
 
   return (
     <div
@@ -55,7 +59,7 @@ export function MouseTracker({ children, className }: MouseTrackerProps) {
     >
       {children(state)}
     </div>
-  )
+  );
 }
 
 // ─── Alternative: Render Prop via named prop ──────────────────────
@@ -72,11 +76,11 @@ export function MouseTracker({ children, className }: MouseTrackerProps) {
  */
 
 interface DataRendererProps<T> {
-  source: () => Promise<T>
-  render: (data: T) => ReactNode
-  fallback: ReactNode
-  error: (err: Error) => ReactNode
+  source: () => Promise<T>;
+  render: (data: T) => ReactNode;
+  fallback: ReactNode;
+  error: (err: Error) => ReactNode;
 }
 
 // This is the TYPE SIGNATURE — implementation would use Suspense/use() in React 19
-export type { DataRendererProps }
+export type { DataRendererProps };

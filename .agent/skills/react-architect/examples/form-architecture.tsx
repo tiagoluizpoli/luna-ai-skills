@@ -9,10 +9,10 @@
  * 5. Multi-field validation
  */
 
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
-import { cn } from '@/lib/utils'
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { cn } from '@/lib/utils';
 
 // ─── 1. Schema (Single Source of Truth) ───────────────────────────
 // This schema is shared between the form AND the server action.
@@ -23,24 +23,18 @@ export const createUserSchema = z.object({
     .string()
     .min(2, 'Name must be at least 2 characters')
     .max(50, 'Name must be less than 50 characters'),
-  email: z
-    .string()
-    .email('Please enter a valid email address'),
-  role: z
-    .enum(['admin', 'editor', 'viewer'], {
-      required_error: 'Please select a role',
-    }),
-  bio: z
-    .string()
-    .max(500, 'Bio must be less than 500 characters')
-    .optional(),
+  email: z.string().email('Please enter a valid email address'),
+  role: z.enum(['admin', 'editor', 'viewer'], {
+    required_error: 'Please select a role',
+  }),
+  bio: z.string().max(500, 'Bio must be less than 500 characters').optional(),
   notifications: z.object({
     email: z.boolean().default(true),
     push: z.boolean().default(false),
   }),
-})
+});
 
-type CreateUserFormData = z.infer<typeof createUserSchema>
+type CreateUserFormData = z.infer<typeof createUserSchema>;
 
 // ─── 2. Form Component ───────────────────────────────────────────
 
@@ -57,14 +51,14 @@ export function CreateUserForm() {
         push: false,
       },
     },
-  })
+  });
 
   const {
     register,
     handleSubmit,
     setError,
     formState: { errors, isSubmitting },
-  } = form
+  } = form;
 
   // ─── 3. Submit Handler ──────────────────────────────────────────
   const onSubmit = async (data: CreateUserFormData) => {
@@ -73,34 +67,34 @@ export function CreateUserForm() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
-      })
+      });
 
       if (!response.ok) {
-        const error = await response.json()
+        const error = await response.json();
 
         // Handle field-specific server errors
         if (error.field) {
           setError(error.field as keyof CreateUserFormData, {
             message: error.message,
-          })
-          return
+          });
+          return;
         }
 
         // Handle general server errors
-        setError('root', { message: error.message || 'Failed to create user' })
-        return
+        setError('root', { message: error.message || 'Failed to create user' });
+        return;
       }
 
       // Success — redirect, toast, etc.
     } catch {
-      setError('root', { message: 'Network error. Please try again.' })
+      setError('root', { message: 'Network error. Please try again.' });
     }
-  }
+  };
 
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="space-y-6 max-w-lg"
+      className="max-w-lg space-y-6"
       noValidate
     >
       {/* Root-level error (server errors, network errors) */}
@@ -109,16 +103,12 @@ export function CreateUserForm() {
           role="alert"
           className="rounded-lg border border-destructive/30 bg-destructive/5 px-4 py-3"
         >
-          <p className="text-sm text-destructive">{errors.root.message}</p>
+          <p className="text-destructive text-sm">{errors.root.message}</p>
         </div>
       )}
 
       {/* Name Field */}
-      <FormField
-        label="Full Name"
-        error={errors.name?.message}
-        required
-      >
+      <FormField label="Full Name" error={errors.name?.message} required>
         <input
           {...register('name')}
           type="text"
@@ -127,17 +117,13 @@ export function CreateUserForm() {
             'flex h-10 w-full rounded-lg border bg-background px-3 py-2 text-sm',
             'placeholder:text-muted-foreground',
             'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
-            errors.name && 'border-destructive focus-visible:ring-destructive'
+            errors.name && 'border-destructive focus-visible:ring-destructive',
           )}
         />
       </FormField>
 
       {/* Email Field */}
-      <FormField
-        label="Email"
-        error={errors.email?.message}
-        required
-      >
+      <FormField label="Email" error={errors.email?.message} required>
         <input
           {...register('email')}
           type="email"
@@ -146,27 +132,25 @@ export function CreateUserForm() {
             'flex h-10 w-full rounded-lg border bg-background px-3 py-2 text-sm',
             'placeholder:text-muted-foreground',
             'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
-            errors.email && 'border-destructive focus-visible:ring-destructive'
+            errors.email && 'border-destructive focus-visible:ring-destructive',
           )}
         />
       </FormField>
 
       {/* Role Select */}
-      <FormField
-        label="Role"
-        error={errors.role?.message}
-        required
-      >
+      <FormField label="Role" error={errors.role?.message} required>
         <select
           {...register('role')}
           className={cn(
             'flex h-10 w-full rounded-lg border bg-background px-3 py-2 text-sm',
             'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
             !form.getValues('role') && 'text-muted-foreground',
-            errors.role && 'border-destructive'
+            errors.role && 'border-destructive',
           )}
         >
-          <option value="" disabled>Select a role...</option>
+          <option value="" disabled>
+            Select a role...
+          </option>
           <option value="admin">Admin</option>
           <option value="editor">Editor</option>
           <option value="viewer">Viewer</option>
@@ -185,9 +169,9 @@ export function CreateUserForm() {
           placeholder="Tell us about yourself..."
           className={cn(
             'flex w-full rounded-lg border bg-background px-3 py-2 text-sm',
-            'placeholder:text-muted-foreground resize-none',
+            'resize-none placeholder:text-muted-foreground',
             'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
-            errors.bio && 'border-destructive'
+            errors.bio && 'border-destructive',
           )}
         />
       </FormField>
@@ -198,42 +182,46 @@ export function CreateUserForm() {
         disabled={isSubmitting}
         className={cn(
           'inline-flex h-10 w-full items-center justify-center rounded-lg',
-          'bg-primary px-4 text-sm font-medium text-primary-foreground',
-          'hover:bg-primary/90 transition-colors',
-          'disabled:pointer-events-none disabled:opacity-50'
+          'bg-primary px-4 font-medium text-primary-foreground text-sm',
+          'transition-colors hover:bg-primary/90',
+          'disabled:pointer-events-none disabled:opacity-50',
         )}
       >
         {isSubmitting ? 'Creating...' : 'Create User'}
       </button>
     </form>
-  )
+  );
 }
 
 // ─── 4. FormField Wrapper ─────────────────────────────────────────
 // Consistent field layout: Label → Input → Error/Helper
 
 interface FormFieldProps {
-  label: string
-  error?: string
-  helperText?: string
-  required?: boolean
-  children: React.ReactNode
+  label: string;
+  error?: string;
+  helperText?: string;
+  required?: boolean;
+  children: React.ReactNode;
 }
 
-function FormField({ label, error, helperText, required, children }: FormFieldProps) {
+function FormField({
+  label,
+  error,
+  helperText,
+  required,
+  children,
+}: FormFieldProps) {
   return (
     <div className="space-y-2">
-      <label className="text-sm font-medium leading-none">
+      <label className="font-medium text-sm leading-none">
         {label}
-        {required && <span className="text-destructive ml-1">*</span>}
+        {required && <span className="ml-1 text-destructive">*</span>}
       </label>
       {children}
-      {error && (
-        <p className="text-xs text-destructive">{error}</p>
-      )}
+      {error && <p className="text-destructive text-xs">{error}</p>}
       {!error && helperText && (
-        <p className="text-xs text-muted-foreground">{helperText}</p>
+        <p className="text-muted-foreground text-xs">{helperText}</p>
       )}
     </div>
-  )
+  );
 }
