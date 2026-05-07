@@ -50,25 +50,9 @@ You **MUST** consider the user input before proceeding (if not empty).
     ```
 - If no hooks are registered or `.specify/extensions.yml` does not exist, skip silently
 
-## UI RED FLAG PROTOCOL
-
-You MUST strictly adhere to the UI Precision and Scope Enforcement principles of the project constitution. 
-
-If you detect any UI change required that is outside the explicit scope of the initial request (even small tweaks to alignment, colors, or radius):
-1. **STOP IMMEDIATELY**: Do not write the spec or touch any code.
-2. **GATHER RICH DETAILS**: 
-   - State of the current UI.
-   - Exact nature of the proposed change.
-   - Anticipated impact on UX and token consistency.
-3. **LOG THE DECISION**: Use `write_to_file` to append a new entry to `.specify/memory/ui-decision-log.md` FOLLOWING the established table format, including date/time, detailed description, and semantic tags.
-4. **PROMPT THE USER**: Present the gathered information and the log entry to the user for definitive approval before resuming.
-
-
 ## Outline
 
-**PROMPT ENHANCEMENT**: Before processing the feature description, you **MUST** invoke the `prompt-enhancer` protocol. This will engage the **Frontend Specialist Squad** and mandate nanometer-level UI details.
-
-The text the user typed after `/speckit.specify` in the triggering message **is** the feature description. Assume you always have it available in this conversation even if `$ARGUMENTS` appears literally below. Do not ask the user to repeat it unless they provided an empty command.
+The text the user typed after `/speckit-specify` in the triggering message **is** the feature description. Assume you always have it available in this conversation even if `$ARGUMENTS` appears literally below. Do not ask the user to repeat it unless they provided an empty command.
 
 Given that feature description, do this:
 
@@ -114,10 +98,10 @@ Given that feature description, do this:
      }
      ```
      Write the actual resolved directory path value (for example, `specs/003-user-auth`), not the literal string `SPECIFY_FEATURE_DIRECTORY`.
-     This allows downstream commands (`/speckit.plan`, `/speckit.tasks`, etc.) to locate the feature directory without relying on git branch name conventions.
+     This allows downstream commands (`/speckit-plan`, `/speckit-tasks`, etc.) to locate the feature directory without relying on git branch name conventions.
 
    **IMPORTANT**:
-   - You must only create one feature per `/speckit.specify` invocation
+   - You must only create one feature per `/speckit-specify` invocation
    - The spec directory name and the git branch name are independent — they may be the same but that is the user's choice
    - The spec directory and file are always created by this command, never by the hook
 
@@ -188,7 +172,7 @@ Given that feature description, do this:
       
       ## Notes
       
-      - Items marked incomplete require spec updates before `/speckit.clarify` or `/speckit.plan`
+      - Items marked incomplete require spec updates before `/speckit-clarify` or `/speckit-plan`
       ```
 
    b. **Run Validation Check**: Review the spec against each checklist item:
@@ -197,7 +181,7 @@ Given that feature description, do this:
 
    c. **Handle Validation Results**:
 
-      - **If all items pass**: Mark checklist complete and proceed to step 7
+      - **If all items pass**: Mark checklist complete and proceed to step 8
 
       - **If items fail (excluding [NEEDS CLARIFICATION])**:
         1. List the failing items and specific issues
@@ -246,7 +230,7 @@ Given that feature description, do this:
    - `SPECIFY_FEATURE_DIRECTORY` — the feature directory path
    - `SPEC_FILE` — the spec file path
    - Checklist results summary
-   - Readiness for the next phase (`/speckit.clarify` or `/speckit.plan`)
+   - Readiness for the next phase (`/speckit-clarify` or `/speckit-plan`)
 
 9. **Check for extension hooks**: After reporting completion, check if `.specify/extensions.yml` exists in the project root.
    - If it exists, read it and look for entries under the `hooks.after_specify` key

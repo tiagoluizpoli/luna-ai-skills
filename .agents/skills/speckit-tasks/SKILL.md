@@ -50,25 +50,9 @@ You **MUST** consider the user input before proceeding (if not empty).
     ```
 - If no hooks are registered or `.specify/extensions.yml` does not exist, skip silently
 
-## UI RED FLAG PROTOCOL
-
-You MUST strictly adhere to the UI Precision and Scope Enforcement principles of the project constitution. 
-
-If you detect any UI change required that is outside the explicit scope of the initial request (even small tweaks to alignment, colors, or radius):
-1. **STOP IMMEDIATELY**: Do not generate tasks or touch any code.
-2. **GATHER RICH DETAILS**: 
-   - State of the current UI.
-   - Exact nature of the proposed change.
-   - Anticipated impact on UX and token consistency.
-3. **LOG THE DECISION**: Use `write_to_file` to append a new entry to `.specify/memory/ui-decision-log.md` FOLLOWING the established table format, including date/time, detailed description, and semantic tags.
-4. **PROMPT THE USER**: Present the gathered information and the log entry to the user for definitive approval before resuming.
-
-
 ## Outline
 
-**PROMPT ENHANCEMENT**: Before processing any arguments or starting the tasks breakdown, you **MUST** invoke the `prompt-enhancer` protocol to transform the user's focus and constraints into high-fidelity task criteria. This will engage the **Frontend Specialist Squad** and mandate nanometer-level UI details.
-
-1. **Setup**: Run `.specify/scripts/bash/check-prerequisites.sh --json` from repo root and parse FEATURE_DIR and AVAILABLE_DOCS list. All paths must be absolute. For single quotes in args like "I'm Groot", use escape syntax: e.g 'I'\''m Groot' (or double-quote if possible: "I'm Groot").
+1. **Setup**: Run `.specify/scripts/bash/setup-tasks.sh --json` from repo root and parse FEATURE_DIR, TASKS_TEMPLATE, and AVAILABLE_DOCS list. `FEATURE_DIR` and `TASKS_TEMPLATE` must be absolute paths when provided. `AVAILABLE_DOCS` is a list of document names/relative paths available under `FEATURE_DIR` (for example `research.md` or `contracts/`). For single quotes in args like "I'm Groot", use escape syntax: e.g 'I'\''m Groot' (or double-quote if possible: "I'm Groot").
 
 2. **Load design documents**: Read from FEATURE_DIR:
    - **Required**: plan.md (tech stack, libraries, structure), spec.md (user stories with priorities)
@@ -86,7 +70,7 @@ If you detect any UI change required that is outside the explicit scope of the i
    - Create parallel execution examples per user story
    - Validate task completeness (each user story has all needed tasks, independently testable)
 
-4. **Generate tasks.md**: Use `.specify/templates/tasks-template.md` as structure, fill with:
+4. **Generate tasks.md**: Read the tasks template from TASKS_TEMPLATE (from the JSON output above) and use it as structure. If TASKS_TEMPLATE is empty, fall back to `.specify/templates/tasks-template.md`. Fill with:
    - Correct feature name from plan.md
    - Phase 1: Setup tasks (project initialization)
    - Phase 2: Foundational tasks (blocking prerequisites for all user stories)
@@ -144,7 +128,7 @@ The tasks.md should be immediately executable - each task must be specific enoug
 
 **CRITICAL**: Tasks MUST be organized by user story to enable independent implementation and testing.
 
-**Tests are MANDATORY**: You MUST generate test tasks for every user story and functional requirement. Follow the strategy defined in `test-plan.md`. If exhaustive scenarios exist in `tests/*.md`, you MUST generate specific tasks for each scenario ID (e.g., TS-BE-001, TS-FE-002) to ensure verification of all edge and system failure cases.
+**Tests are OPTIONAL**: Only generate test tasks if explicitly requested in the feature specification or if user requests TDD approach.
 
 ### Checklist Format (REQUIRED)
 
@@ -208,6 +192,6 @@ Every task MUST strictly follow this format:
 - **Phase 1**: Setup (project initialization)
 - **Phase 2**: Foundational (blocking prerequisites - MUST complete before user stories)
 - **Phase 3+**: User Stories in priority order (P1, P2, P3...)
-  - Within each story: Mandatory Tests (BE/FE) → Models → Services → Endpoints → Integration
+  - Within each story: Tests (if requested) → Models → Services → Endpoints → Integration
   - Each phase should be a complete, independently testable increment
 - **Final Phase**: Polish & Cross-Cutting Concerns

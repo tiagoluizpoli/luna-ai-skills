@@ -74,9 +74,6 @@ Follow this execution flow:
 
 3. Draft the updated constitution content:
    - Replace every placeholder with concrete text (no bracketed tokens left except intentionally retained template slots that the project has chosen not to define yet—explicitly justify any left).
-   - **MANDATORY SECTIONS**: You MUST ensure the **"Technology Stack"** and **"Core Rules"** sections are present and fully defined.
-   - **Tech Stack Inference**: Identify core technologies from `package.json`, `bun.lock`, and directory structure (e.g., Next.js, Bun, Tailwind v4, Drizzle, Better Auth). Present these as a table: Category | Tool | Purpose.
-   - **Core Rules**: Define at least 3-5 non-negotiable rules (e.g., Clean Code, SOLID, Biome checks, Type Safety).
    - Preserve heading hierarchy and comments can be removed once replaced unless they still add clarifying guidance.
    - Ensure each Principle section: succinct name line, paragraph (or bullet list) capturing non‑negotiable rules, explicit rationale if not obvious.
    - Ensure Governance section lists amendment procedure, versioning policy, and compliance review expectations.
@@ -98,7 +95,6 @@ Follow this execution flow:
 
 6. Validation before final output:
    - No remaining unexplained bracket tokens.
-   - **Mandatory Content Check**: Verify that "Technology Stack" and "Core Rules" sections are not empty and contain relevant, project-specific information.
    - Version line matches report.
    - Dates ISO format YYYY-MM-DD.
    - Principles are declarative, testable, and free of vague language ("should" → replace with MUST/SHOULD rationale where appropriate).
@@ -122,3 +118,35 @@ If the user supplies partial updates (e.g., only one principle revision), still 
 If critical info missing (e.g., ratification date truly unknown), insert `TODO(<FIELD_NAME>): explanation` and include in the Sync Impact Report under deferred items.
 
 Do not create a new template; always operate on the existing `.specify/memory/constitution.md` file.
+
+## Post-Execution Checks
+
+**Check for extension hooks (after constitution update)**:
+Check if `.specify/extensions.yml` exists in the project root.
+- If it exists, read it and look for entries under the `hooks.after_constitution` key
+- If the YAML cannot be parsed or is invalid, skip hook checking silently and continue normally
+- Filter out hooks where `enabled` is explicitly `false`. Treat hooks without an `enabled` field as enabled by default.
+- For each remaining hook, do **not** attempt to interpret or evaluate hook `condition` expressions:
+  - If the hook has no `condition` field, or it is null/empty, treat the hook as executable
+  - If the hook defines a non-empty `condition`, skip the hook and leave condition evaluation to the HookExecutor implementation
+- For each executable hook, output the following based on its `optional` flag:
+  - **Optional hook** (`optional: true`):
+    ```
+    ## Extension Hooks
+
+    **Optional Hook**: {extension}
+    Command: `/{command}`
+    Description: {description}
+
+    Prompt: {prompt}
+    To execute: `/{command}`
+    ```
+  - **Mandatory hook** (`optional: false`):
+    ```
+    ## Extension Hooks
+
+    **Automatic Hook**: {extension}
+    Executing: `/{command}`
+    EXECUTE_COMMAND: {command}
+    ```
+- If no hooks are registered or `.specify/extensions.yml` does not exist, skip silently
