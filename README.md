@@ -35,11 +35,11 @@ mkdir -p .agent
 mkdir -p .agents
 
 # 2. Link the core components
-ln -s "$SKILLS_REPO/.agent/skills" .agent/skills
-ln -s "$SKILLS_REPO/.agent/workflows" .agent/workflows
-ln -s "$SKILLS_REPO/.agents/skills" .agents/skills
-ln -s "$SKILLS_REPO/AGENTS.md" .
-ln -s "$SKILLS_REPO/SKILLS_OVERVIEW.md" .
+ln -sfT "$SKILLS_REPO/.agent/skills" .agent/skills
+ln -sfT "$SKILLS_REPO/.agent/workflows" .agent/workflows
+ln -sfT "$SKILLS_REPO/.agents/skills" .agents/skills
+ln -sf "$SKILLS_REPO/AGENTS.md" AGENTS.md
+ln -sf "$SKILLS_REPO/SKILLS_OVERVIEW.md" SKILLS_OVERVIEW.md
 ```
 
 > [!IMPORTANT]
