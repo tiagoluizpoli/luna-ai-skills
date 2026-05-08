@@ -1,6 +1,6 @@
 ---
 name: drizzle-orm
-description: Drizzle ORM patterns for type branding and custom types. Use when working with Drizzle column definitions, branded types, or custom type conversions.
+description: Drizzle ORM and Database Schema specialist. Enforces high-performance patterns (e.g., $type<T>() vs customType), type-branded columns, and clean schema migrations. Must be engaged for any task involving database models, Drizzle column definitions, or data persistence strategy.
 source: https://github.com/EpicenterHQ/epicenter/tree/main/.agents/skills/drizzle-orm
 ---
 
