@@ -26,7 +26,7 @@ Before enhancing ANY prompt, you must internalize these non-negotiable standards
 |:---|:---|
 | **Project Constitution** | All code must be type-safe, modular, and aesthetic |
 | **Warnings as Errors** | Zero tolerance. Linting, type-safety, and a11y warnings are build failures |
-| **300-Line Component Limit** | If a component exceeds 300 lines, mandate Composite Pattern decomposition |
+| **300-Line File Limit** | If a file exceeds 300 lines, mandate modular decomposition |
 | **UI Red Flag Protocol** | Any UI change outside approved scope → STOP → GATHER → LOG → ASK |
 | **Named Exports Only** | No `export default`. Named exports for refactoring and tree-shaking |
 | **Test-First Development** | Tests before implementation when applicable |
@@ -62,11 +62,12 @@ Before enhancing ANY prompt, you must internalize these non-negotiable standards
 
 ```bash
 # Scan available skills at runtime
-SKILLS_DIR=$(find . -type d -name "skills" | grep -E "\.(agents|gemini)" | head -1)
-for dir in "$SKILLS_DIR"/*/; do
-  skill_name=$(basename "$dir")
-  desc=$(grep -m1 "^description:" "$dir/SKILL.md" 2>/dev/null | sed 's/description:[[:space:]]*//')
-  echo "SKILL: $skill_name | DESC: $desc"
+find . -type d -name "skills" | grep -E "\.agent(s)?|gemini" | while read SKILLS_DIR; do
+  for dir in "$SKILLS_DIR"/*/; do
+    skill_name=$(basename "$dir")
+    desc=$(grep -m1 "^description:" "$dir/SKILL.md" 2>/dev/null | sed 's/description:[[:space:]]*//')
+    echo "SKILL: $skill_name | DESC: $desc"
+  done
 done
 ```
 
@@ -106,7 +107,7 @@ Every enhanced prompt MUST include these governance blocks:
 #### A. Technical Constraints
 ```
 **GOVERNANCE:**
-- Components: ≤ 300 lines. Above → Composite Pattern decomposition.
+- Files: ≤ 300 lines. Above → modular decomposition into smaller files/components.
 - Exports: Named only. No `export default`.
 - Types: Full type safety. No `any`, no `as` casts without justification.
 - Quality Gate: `pnpm guard` must pass with zero warnings.
@@ -201,11 +202,12 @@ This is intentional: a hardcoded list becomes stale the moment a new skill is ad
 To see what specialists are currently available:
 
 ```bash
-SKILLS_DIR=$(find . -type d -name "skills" | grep -E "\.(agents|gemini)" | head -1)
-for dir in "$SKILLS_DIR"/*/; do
-  skill_name=$(basename "$dir")
-  desc=$(grep -m1 "^description:" "$dir/SKILL.md" 2>/dev/null | sed 's/description:[[:space:]]*//')
-  echo "$skill_name: $desc"
+find . -type d -name "skills" | grep -E "\.agent(s)?|gemini" | while read SKILLS_DIR; do
+  for dir in "$SKILLS_DIR"/*/; do
+    skill_name=$(basename "$dir")
+    desc=$(grep -m1 "^description:" "$dir/SKILL.md" 2>/dev/null | sed 's/description:[[:space:]]*//')
+    echo "$skill_name: $desc"
+  done
 done
 ```
 

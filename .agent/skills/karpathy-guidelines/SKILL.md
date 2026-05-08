@@ -33,6 +33,7 @@ Before implementing any Spec-Kit plan:
 - No "flexibility" or "configurability" that wasn't requested.
 - No error handling for impossible scenarios.
 - **The 200/50 Rule**: If you write 200 lines and it could be 50, rewrite it.
+- **File Atomicity**: No file should exceed 300 lines. Break down monolithic scripts (e.g., large seeds) into modular components or utility functions.
 
 ## 3. Surgical Changes (The "Minimal Footprint" Rule)
 **Touch only what you must. Clean up only your own mess.**

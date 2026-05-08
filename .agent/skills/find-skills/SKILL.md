@@ -27,7 +27,7 @@ Run the following bash command to find the skills directory:
 
 ```bash
 # Find the skills directory relative to the current workspace
-find . -type d -name "skills" | grep -E "\.(agents|gemini)" | head -1
+find . -type d -name "skills" | grep -E "\.agent(s)?|gemini" | head -1
 ```
 
 If the above returns nothing, try:
@@ -38,19 +38,20 @@ find . -maxdepth 5 -type f -name "SKILL.md" | head -5
 Use the parent-of-parent as the skills root.
 
 ### Step 1.2 — Scan All Available Skills
-
-```bash
-SKILLS_DIR="<path-from-step-1>"
-for dir in "$SKILLS_DIR"/*/; do
-  skill_name=$(basename "$dir")
-  skill_file="$dir/SKILL.md"
-  if [ -f "$skill_file" ]; then
-    frontmatter_name=$(grep -m1 "^name:" "$skill_file" | sed 's/name:[[:space:]]*//')
-    description=$(grep -m1 "^description:" "$skill_file" | sed 's/description:[[:space:]]*//')
-    echo "SKILL: $skill_name | NAME: $frontmatter_name | DESC: $description"
-  fi
-done
-```
+ 
+ ```bash
+ find . -type d -name "skills" | grep -E "\.agent(s)?|gemini" | while read SKILLS_DIR; do
+   for dir in "$SKILLS_DIR"/*/; do
+     skill_name=$(basename "$dir")
+     skill_file="$dir/SKILL.md"
+     if [ -f "$skill_file" ]; then
+       frontmatter_name=$(grep -m1 "^name:" "$skill_file" | sed 's/name:[[:space:]]*//')
+       description=$(grep -m1 "^description:" "$skill_file" | sed 's/description:[[:space:]]*//')
+       echo "SKILL: $skill_name | NAME: $frontmatter_name | DESC: $description"
+     fi
+   done
+ done
+ ```
 
 This produces a **live skill manifest** — the ground truth of what exists *right now*, not what was known when this file was written.
 

@@ -22,9 +22,10 @@ You are the **Principal Engineer**. You are the last line of defense before code
 
 ### Step 0.1 — Skill Scanner
 ```bash
-SKILLS_DIR=$(find . -type d -name "skills" | grep -E "\.(agents|gemini)" | head -1)
-for dir in "$SKILLS_DIR"/*/; do
-  echo "$(basename $dir): $(grep -m1 '^description:' $dir/SKILL.md 2>/dev/null | sed 's/description:[[:space:]]*//')"
+find . -type d -name "skills" | grep -E "\.agent(s)?|gemini" | while read SKILLS_DIR; do
+  for dir in "$SKILLS_DIR"/*/; do
+    echo "$(basename $dir): $(grep -m1 '^description:' $dir/SKILL.md 2>/dev/null | sed 's/description:[[:space:]]*//')"
+  done
 done
 ```
 Load domain specialists based on what the code touches. Full Load the `code-review` skill. Governance Load all others relevant to the changed files.
@@ -110,13 +111,13 @@ This is an active scanner, not a passive observation. Run the deprecated code sc
 - **I** — Interface Segregation: Are interfaces narrow and focused?
 - **D** — Dependency Inversion: Do high-level modules depend on abstractions, not concretions?
 
-**God Class/Component Detector:**
+**God File Detector:**
 ```bash
 # Flag any file exceeding 300 lines
 git diff --name-only HEAD | while read f; do
   lines=$(wc -l < "$f" 2>/dev/null)
   if [ "$lines" -gt 300 ]; then
-    echo "⚠️  GOD CLASS: $f ($lines lines) — exceeds 300-line limit"
+    echo "⚠️  GOD FILE: $f ($lines lines) — exceeds 300-line limit"
   fi
 done
 ```
@@ -127,6 +128,7 @@ done
 - Prop drilling > 2 levels → Context or composition
 - Inline event handlers in JSX (for complex logic) → extract named handlers
 - Magic numbers/strings → named constants
+- Monolithic one-file scripts (e.g. large seeds) → break into modular utils
 
 ---
 
@@ -364,8 +366,8 @@ find . -name "*.ts" -o -name "*.tsx" | \
   xargs grep -n "componentDidMount\|componentWillMount\|ReactDOM.render\|React.FC\|any\b" \
   2>/dev/null
 
-# God class scan across entire codebase
-find . \( -name "*.ts" -o -name "*.tsx" \) | \
+# God file scan across entire codebase
+find . \( -name "*.ts" -o -name "*.tsx" -o -name "*.js" \) | \
   grep -v node_modules | \
   while read f; do
     lines=$(wc -l < "$f")
