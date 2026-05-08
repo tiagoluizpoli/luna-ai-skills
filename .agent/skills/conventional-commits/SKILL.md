@@ -35,32 +35,32 @@ If staged changes span multiple unrelated packages or functional areas:
 
 ## 1. Commit Types
 
-| Type | Use Case |
-|:---|:---|
-| `feat` | A new feature for the user. |
-| `fix` | A bug fix for the user. |
-| `docs` | Documentation only changes. |
-| `style` | Formatting, missing semi-colons, etc (no code changes). |
-| `refactor` | A code change that neither fixes a bug nor adds a feature. |
-| `perf` | A code change that improves performance. |
-| `test` | Adding missing tests or correcting existing tests. |
-| `build` | Changes that affect the build system or external dependencies. |
-| `ci` | Changes to CI configuration files and scripts. |
-| `chore` | Other changes that don't modify src or test files. |
-| `revert` | Reverts a previous commit. |
+| Type       | Use Case                                                       |
+| :--------- | :------------------------------------------------------------- |
+| `feat`     | A new feature for the user.                                    |
+| `fix`      | A bug fix for the user.                                        |
+| `docs`     | Documentation only changes.                                    |
+| `style`    | Formatting, missing semi-colons, etc (no code changes).        |
+| `refactor` | A code change that neither fixes a bug nor adds a feature.     |
+| `perf`     | A code change that improves performance.                       |
+| `test`     | Adding missing tests or correcting existing tests.             |
+| `build`    | Changes that affect the build system or external dependencies. |
+| `ci`       | Changes to CI configuration files and scripts.                 |
+| `chore`    | Other changes that don't modify src or test files.             |
+| `revert`   | Reverts a previous commit.                                     |
 
 ---
 
 ## Resources
 
-| File | Purpose |
-|:---|:---|
-| [`resources/monorepo-scopes.md`](file:///home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agent/skills/conventional-commits/resources/monorepo-scopes.md) | Standardized scopes for this repository. |
+| File                                                                                                                                                            | Purpose                                                            |
+| :-------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------- |
+| [`resources/monorepo-scopes.md`](file:///home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agent/skills/conventional-commits/resources/monorepo-scopes.md)   | Standardized scopes for this repository.                           |
 | [`resources/breaking-changes.md`](file:///home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agent/skills/conventional-commits/resources/breaking-changes.md) | How to document breaking changes using `!` and `BREAKING CHANGE:`. |
 
 ## Examples
 
-| File | Scenario |
-|:---|:---|
-| [`examples/atomic-commits.md`](file:///home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agent/skills/conventional-commits/examples/atomic-commits.md) | Comparison of bad vs. gold-standard commit messages. |
+| File                                                                                                                                                                      | Scenario                                                       |
+| :------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :------------------------------------------------------------- |
+| [`examples/atomic-commits.md`](file:///home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agent/skills/conventional-commits/examples/atomic-commits.md)                 | Comparison of bad vs. gold-standard commit messages.           |
 | [`examples/multi-package-workflow.md`](file:///home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agent/skills/conventional-commits/examples/multi-package-workflow.md) | Workflow for splitting changes across `apps/` and `packages/`. |
