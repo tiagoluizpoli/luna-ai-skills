@@ -30,14 +30,12 @@ In the terminal, navigate to the root directory of the project where you want to
 # Define the path to your luna-ai-skills repo
 SKILLS_REPO="/path/to/luna-ai-skills"
 
-# 1. Ensure the .agent and .agents directories exist
-mkdir -p .agent
+# 1. Ensure the .agents directory exists
 mkdir -p .agents
 
 # 2. Link the core components
-ln -s "$SKILLS_REPO/.agent/skills" .agent/skills
-ln -s "$SKILLS_REPO/.agent/workflows" .agent/workflows
 ln -s "$SKILLS_REPO/.agents/skills" .agents/skills
+ln -s "$SKILLS_REPO/.agents/workflows" .agents/workflows
 ln -s "$SKILLS_REPO/AGENTS.md" .
 ln -s "$SKILLS_REPO/SKILLS_OVERVIEW.md" .
 ```
@@ -51,9 +49,8 @@ Since symbolic links use local paths that may vary between machines, you should 
 
 ```bash
 # Ignore symlinked skills and config
-echo ".agent/skills" >> .gitignore
-echo ".agent/workflows" >> .gitignore
 echo ".agents/skills" >> .gitignore
+echo ".agents/workflows" >> .gitignore
 echo "AGENTS.md" >> .gitignore
 echo "SKILLS_OVERVIEW.md" >> .gitignore
 ```
