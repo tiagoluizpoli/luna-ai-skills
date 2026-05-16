@@ -190,6 +190,7 @@ done
 - **Shotgun Surgery**: One change requires edits in many unrelated files → structural issue
 - **Data Clumps**: The same 3-5 parameters always appear together → make a type/interface
 - **Switch Statements on Type**: A long switch on `typeof` or `kind` → polymorphism
+- **Loose Parameters**: Parameters passed directly instead of as an object → **Object Parameters Only** (mandatory, even for a single parameter). Types MUST be defined above the usage.
 - **Temporary Variables in loops**: Often signals need for a `reduce` or `map`
 
 **Naming Conventions:**
@@ -244,6 +245,13 @@ type State =
 
 // REQUIRED: Branded types for domain IDs
 type UserId = string & { readonly __brand: 'UserId' };
+
+// REQUIRED: Type options must be derived from const arrays
+export const STATUS_OPTIONS = ['pending', 'confirmed'] as const;
+type Status = typeof STATUS_OPTIONS[number];
+
+// REQUIRED: Optional Property Getters must handle undefined explicitly
+// PROMPT USER: When this violation occurs, analyze the context, explain what the code does, suggest one of the 3 structural paths, and ask the user which to take.
 ```
 
 ---

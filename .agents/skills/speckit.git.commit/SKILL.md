@@ -1,0 +1,1 @@
+../../../.specify/extensions/git/commands/speckit.git.commit.md

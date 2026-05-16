@@ -253,6 +253,76 @@ function processItems(items: readonly Item[]) { ... }
 
 ---
 
+### Pattern 7: Types from Const Arrays
+
+Never define type options directly in an interface. Instead, declare them as a `const` array of strings, and derive the type from it. The array must be the single source of truth.
+
+```typescript
+// ❌ BLOCKED: Options defined directly in the interface
+interface Assignment {
+  status: 'pending' | 'confirmed' | 'declined';
+}
+
+// ✅ REQUIRED: Const array as single source of truth
+export const STATUS_OPTIONS = ['pending', 'confirmed', 'declined'] as const;
+export type Status = typeof STATUS_OPTIONS[number];
+
+interface Assignment {
+  status: Status;
+}
+```
+
+---
+
+### Pattern 8: Optional Property Getters
+
+If a private property is optional, its getter must handle the `undefined` case structurally. It cannot simply return the strict type, nor can it bypass the type system using `as Type`.
+
+**Context/Reasoning**: When a private property is optional (e.g., `_timestamp?: Date` or `_value?: string`), it can be `undefined` at runtime. If the getter is strongly typed to return `Date` or `string`, casting it via `return this._property as Type;` is **strictly forbidden**. Casting doesn't do anything at runtime; it just tricks TypeScript into thinking the value is defined when it might actually be `undefined`, masking a potential runtime crash. We should never force an undefinable property to be evaluated as definitely defined just to satisfy the compiler.
+
+**⚠️ PROMPT RULE**: Whenever a reviewer sees a violation of this rule (either returning it implicitly or tricking TS via `as Type`), they **MUST prompt the user** to ask which of the 3 structural paths they want to take. Before asking, the reviewer MUST analyze the code and its context, provide an explanation of what the code does, and offer a specific suggestion on which path the user should choose.
+
+```typescript
+// ❌ BLOCKED: Returning strict type when the underlying field is optional
+class Event {
+  private _timestamp?: Date;
+  get timestamp(): Date {
+    return this._timestamp; // Type unsafe
+  }
+}
+
+// ❌ BLOCKED: Tricking TypeScript with an unsafe cast
+class Event {
+  private _timestamp?: Date;
+  get timestamp(): Date {
+    return this._timestamp as Date; // TRICKS TS, STILL UNDEFINED AT RUNTIME
+  }
+}
+
+// ✅ REQUIRED: Must explicitly handle the undefined case structurally
+class Event {
+  private _timestamp?: Date;
+
+  // Path 1: Return Type | undefined
+  get timestamp(): Date | undefined {
+    return this._timestamp;
+  }
+
+  // Path 2: Fallback to new instance/default
+  get timestamp(): Date {
+    return this._timestamp ?? new Date();
+  }
+
+  // Path 3: Throw an error if not defined
+  get timestamp(): Date {
+    if (!this._timestamp) throw new Error('Timestamp is not defined');
+    return this._timestamp;
+  }
+}
+```
+
+---
+
 ## Type Safety Scanner
 
 ```bash

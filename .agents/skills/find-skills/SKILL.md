@@ -104,33 +104,26 @@ For each candidate skill, assign a relevance score:
 
 ## Phase 3: Squad Assembly
 
-### 3.1 — Compose the Squad with Appropriate Loading Depth
+### 3.1 — Compose the Squad (No Limits)
 
-The goal is not to cap the number of skills — it's to load each skill at the **right depth** for the task phase. Context bloat comes from loading too many skills **fully**, not from engaging many skills at a signal level.
+**CRITICAL RULE: DO NOT LIMIT THE NUMBER OF SKILLS.**
+You must ensure the implementation has all the context and rules it needs to prevent code review rejections and architectural drift.
 
-**Three loading modes:**
-
-| Mode | Load | When |
-|:---|:---|:---|
-| **Full Load** | Entire `SKILL.md` | Skill is directly producing artifacts for this task |
-| **Governance Load** | Frontmatter + constraint sections only | Skill's rules constrain the work but it's not the main implementer |
-| **Signal Load** | `name:` + `description:` only | Skill's domain is adjacent — useful for planning awareness |
-
-**Rules for loading decisions:**
-1. **Full Load**: The skill whose primary domain matches the deliverable. Read everything.
-2. **Governance Load**: Skills whose rules constrain the implementation. Read their "must-do" sections.
-3. **Signal Load**: Skills that are peripherally relevant. Note them but don't spend context on them.
-4. **Phase matters**: Planning sessions can Signal Load dozens of skills. Implementation should Full Load 2-4 maximum.
+**Dynamic Contextual Matching Instructions:**
+1. **Read Everything**: Read the description of every single skill from the live manifest generated in Phase 1.
+2. **Contextual Evaluation**: Compare every available skill against the task at hand, the formal specification (`spec.md`), the `plan.md`, the `tasks.md`, and the specific technologies involved.
+3. **Load All Relevant Context**: If a skill relates to the task, governs the technologies used, or constrains the deliverables, **load its full context**. 
+4. **No Arbitrary Caps**: Never artificially cap the squad size (e.g., do not restrict yourself to 2-5 agents). If 10 skills are relevant to ensure a flawless implementation, load all 10. You must have as much context and rules as possible.
 
 ### 3.2 — Synthesize the Composite Persona
 
 When multiple skills are engaged, you don't just list them — you **synthesize their perspectives** into a unified composite expert:
 
-> "For this task, I am operating as a synthesis of the **React Architect** (component pattern enforcement), **Frontend Specialist** (visual precision and motion), and **Tailwind Architect** (v4 CSS-first token usage). Their combined perspective means: I will decompose the component using the Composite Pattern, apply spring-physics animations with proper reduced-motion fallbacks, and use `@theme` tokens exclusively — no arbitrary values."
+> "For this task, I am operating as a synthesis of the **React Architect** (component pattern enforcement), **Frontend Specialist** (visual precision), **Tailwind Architect** (v4 CSS tokens), and **Code Review** (clean code and type safety limits). Their combined perspective means: I will decompose the component, apply spring-physics animations, use `@theme` tokens exclusively, and enforce the 300-line strict limit."
 
 ### 3.3 — Announce the Squad
 
-Always announce who you've called in, their loading depth, and **why**:
+Always announce who you've called in and **why** they were contextually matched to the task and spec:
 
 ```
 🔍 SKILL SCAN COMPLETE — Live manifest loaded from .agents/skills/
@@ -141,11 +134,12 @@ Always announce who you've called in, their loading depth, and **why**:
   - Artifact: React component, Tailwind CSS, shadcn dialog
 
 ⚡ SQUAD ASSEMBLED:
-  FULL LOAD    → react-architect    (component decomposition, form patterns)
-  FULL LOAD    → shadcn-specialist  (Dialog + Form composition with Radix)
-  GOV LOAD     → tailwind-architect (v4 token usage, class composition rules)
-  GOV LOAD     → frontend-specialist (spacing grid, focus states, a11y rules)
-  SIGNAL ONLY  → code-review        (300-line limit noted)
+  LOADED → react-architect       (matched to: component decomposition, form patterns)
+  LOADED → shadcn-specialist     (matched to: Dialog + Form composition with Radix)
+  LOADED → tailwind-architect    (matched to: styling, v4 token usage, class composition rules)
+  LOADED → frontend-specialist   (matched to: spacing grid, focus states, a11y rules)
+  LOADED → code-review           (matched to: type safety, God File prevention)
+  LOADED → zod-4                 (matched to: input validation at system boundaries)
 ```
 
 ---

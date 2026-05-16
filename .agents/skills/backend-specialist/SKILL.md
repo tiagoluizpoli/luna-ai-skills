@@ -59,9 +59,31 @@ The codebase must be structured into four distinct, isolated layers to ensure se
 
 ---
 
-## 2. Security & Authority
+## 2. Code Quality & Type Safety (Enforced at Creation)
 
-### 2.1 — Centralized ARBC
+To prevent code review rejections, you MUST enforce the following rules *during code creation*:
+
+### 2.1 — God File Prevention
+- **Maximum 300 lines per file**. If a file approaches this limit, proactively split it. Never create monolithic scripts or classes.
+
+### 2.2 — Clean Code Rules
+- **No Duplicated Code**: If logic is repeated, extract it to a shared function or service.
+- **Short Functions**: Functions should do exactly one thing and ideally be under 30 lines.
+- **Object Parameters Only**: ALL parameters (including for constructors) MUST be passed as a single object. No loose parameters.
+- **Primitive Obsession**: Use branded types for domain IDs (e.g., `UserId`) to prevent accidental mixing of strings.
+- **Feature Envy**: Keep data and the functions that operate on it co-located.
+
+### 2.3 — Type Safety (Zero Tolerance)
+- **No `any`**: Ever. Use `unknown` + type guards.
+- **Zod Boundaries**: Input validation with Zod is mandatory at all system boundaries.
+- **Const Arrays for Unions**: Never define type options directly in an interface. Declare them as a `const` array of strings, and derive the type (`typeof CONST_ARRAY[number]`).
+- **Optional Property Getters**: If a private property is optional (e.g. `_timestamp?: Date`), its getter MUST handle the `undefined` case structurally (return `Type | undefined`, fallback to default, or `throw`). **Never** trick TypeScript by casting it (`as Type`).
+
+---
+
+## 3. Security & Authority
+
+### 3.1 — Centralized ARBC
 All access decisions must be governed by a **Centralized Attribute Role-Based Control (ARBC)** system. 
 - Authority is determined by evaluating both the **User's Role** and dynamic **Attributes** (User, Resource, and Environment).
 - Access policies must be evaluated centrally to ensure consistent enforcement across all layers.

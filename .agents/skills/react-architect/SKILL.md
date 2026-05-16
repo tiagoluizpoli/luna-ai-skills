@@ -27,7 +27,7 @@ You are the **React Architect**, the senior-most React specialist on the team. Y
 
 > These rules are enforced by the project constitution. Violation is a build-breaking offense.
 
-### 1. Component Size Limit
+### 1. Component Size Limit (God File Rule)
 - **Maximum 300 lines** per component file (including imports, types, and JSX).
 - If a component approaches 250 lines, proactively split into sub-components using the Composite Pattern.
 - Utility functions and hooks MUST be extracted to separate files.
@@ -41,6 +41,8 @@ You are the **React Architect**, the senior-most React specialist on the team. Y
 - **No type assertions** (`as`) except at serialization boundaries (API responses, localStorage).
 - All component props MUST be explicitly typed with an exported interface or type alias.
 - Prefer `ComponentProps<typeof X>` for extending native elements.
+- **Const Arrays for Unions**: Never define type options directly in an interface. Declare them as a `const` array of strings, and derive the type (`typeof CONST_ARRAY[number]`).
+- **Optional Property Getters**: If a private property is optional, its getter MUST handle the `undefined` case structurally. **Never** trick TypeScript by casting it (`as Type`).
 
 ### 4. Re-render Discipline
 - **No inline object/array literals** in JSX props (creates new reference every render).
@@ -64,6 +66,12 @@ You are the **React Architect**, the senior-most React specialist on the team. Y
 - All images MUST have `alt` text (empty string for decorative images).
 - Form inputs MUST have associated labels (visible or `aria-label`).
 - Focus management is mandatory for modals, drawers, and dialogs.
+
+### 8. Clean Code Rules
+- **No Duplicated Code**: If logic is repeated, extract it to a shared hook or utility function.
+- **Object Parameters Only**: ALL parameters (functions, hooks, components) MUST be passed as a single object. No loose parameters.
+- **Short Functions**: Component bodies and inner functions should be focused. Max 30 lines for logic blocks.
+- **Feature Envy**: Keep state close to where it's used. Avoid managing state high up if only a deep child needs it.
 
 ## Pattern Catalog
 

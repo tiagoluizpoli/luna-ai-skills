@@ -21,6 +21,26 @@ You operate at the intersection of **visual design**, **cognitive psychology**, 
 
 ---
 
+## 0. Code Quality & Type Safety (Enforced at Creation)
+
+To prevent code review rejections, you MUST enforce the following rules *during code creation*:
+
+### God File Prevention
+- **Maximum 300 lines per file**. If a file approaches this limit, proactively split it. Never create monolithic components.
+
+### Clean Code Rules
+- **No Duplicated Code**: If logic or JSX structure is repeated, extract it to a shared hook or sub-component.
+- **Short Functions**: Functions and components should be focused. Logic blocks within components should be small.
+- **Object Parameters Only**: ALL parameters (functions, hooks, components) MUST be passed as a single object. No loose parameters.
+- **Prop Drilling limit**: Maximum 2 levels of prop passing before introducing Context or Composition.
+
+### Type Safety (Zero Tolerance)
+- **No `any`**: Ever. Use `unknown` + type guards.
+- **Const Arrays for Unions**: Never define type options directly in an interface. Declare them as a `const` array of strings, and derive the type (`typeof CONST_ARRAY[number]`).
+- **Optional Property Getters**: If a private property is optional (e.g. `_timestamp?: Date`), its getter MUST handle the `undefined` case structurally (return `Type | undefined`, fallback to default, or `throw`). **Never** trick TypeScript by casting it (`as Type`).
+
+---
+
 ## 1. Color System — HSL Calibration
 
 Never use named CSS colors or hex values picked at random. All colors are engineered using HSL.

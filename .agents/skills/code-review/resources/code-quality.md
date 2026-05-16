@@ -230,6 +230,45 @@ const processOrder = async (order: Order) => {
 
 ---
 
+### 11. Loose Parameters (Mandatory Object Parameters)
+
+**Definition**: Passing parameters directly in constructors, functions, or methods instead of using a single object parameter.
+
+**Rule**: ALL parameters (even a single one) MUST be passed as a named property within an object.
+
+```typescript
+// ❌ SMELL: Loose parameters in constructor/function
+constructor(name: string, lastName: string, age: number) { ... }
+function updateSkill(id: string, name: string) { ... }
+function setStatus(active: boolean) { ... }
+
+// ✅ REFACTOR: Use a single object parameter with a defined type
+interface UserProps {
+  name: string;
+  lastName: string;
+  age: number;
+}
+constructor({ name, lastName, age }: UserProps) { ... }
+
+interface UpdateSkillParams {
+  id: string;
+  name: string;
+}
+function updateSkill({ id, name }: UpdateSkillParams) { ... }
+
+interface StatusParams {
+  active: boolean;
+}
+function setStatus({ active }: StatusParams) { ... }
+```
+
+**Type Definition Rule**:
+- The type or interface for the object parameter MUST be defined **above** where it is used (in the same file or imported).
+- **Never** use inline type definitions within the function/constructor signature.
+
+
+---
+
 ### 10. Dead Code — Detection Scanner
 
 ```bash
