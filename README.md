@@ -34,10 +34,26 @@ SKILLS_REPO="/path/to/luna-ai-skills"
 mkdir -p .agents
 
 # 2. Link the core components
-ln -s "$SKILLS_REPO/.agents/skills" .agents/skills
-ln -s "$SKILLS_REPO/.agents/workflows" .agents/workflows
-ln -s "$SKILLS_REPO/AGENTS.md" .
-ln -s "$SKILLS_REPO/SKILLS_OVERVIEW.md" .
+ln -sfnT "$SKILLS_REPO/.agents/skills" .agents/skills
+ln -sfnT "$SKILLS_REPO/.agents/workflows" .agents/workflows
+ln -sfnT "$SKILLS_REPO/AGENTS.md" AGENTS.md
+ln -sfnT "$SKILLS_REPO/SKILLS_OVERVIEW.md" SKILLS_OVERVIEW.md
+
+# 3. Ensure Speckit directory exists
+mkdir -p .specify
+
+# 4. Remove existing Speckit local configurations/folders (if any) to enforce single source of truth
+rm -rf .specify/templates .specify/workflows .specify/scripts .specify/extensions .specify/integrations .specify/extensions.yml .specify/integration.json .specify/init-options.json
+
+# 5. Link Speckit core components (leaving .specify/memory local)
+ln -sfnT "$SKILLS_REPO/.specify/templates" .specify/templates
+ln -sfnT "$SKILLS_REPO/.specify/workflows" .specify/workflows
+ln -sfnT "$SKILLS_REPO/.specify/scripts" .specify/scripts
+ln -sfnT "$SKILLS_REPO/.specify/extensions" .specify/extensions
+ln -sfnT "$SKILLS_REPO/.specify/integrations" .specify/integrations
+ln -sfnT "$SKILLS_REPO/.specify/extensions.yml" .specify/extensions.yml
+ln -sfnT "$SKILLS_REPO/.specify/integration.json" .specify/integration.json
+ln -sfnT "$SKILLS_REPO/.specify/init-options.json" .specify/init-options.json
 ```
 
 > [!IMPORTANT]
@@ -53,6 +69,16 @@ echo ".agents/skills" >> .gitignore
 echo ".agents/workflows" >> .gitignore
 echo "AGENTS.md" >> .gitignore
 echo "SKILLS_OVERVIEW.md" >> .gitignore
+
+# Ignore symlinked Speckit configuration
+echo ".specify/templates" >> .gitignore
+echo ".specify/workflows" >> .gitignore
+echo ".specify/scripts" >> .gitignore
+echo ".specify/extensions" >> .gitignore
+echo ".specify/integrations" >> .gitignore
+echo ".specify/extensions.yml" >> .gitignore
+echo ".specify/integration.json" >> .gitignore
+echo ".specify/init-options.json" >> .gitignore
 ```
 
 This prevents your local symlinks from being committed to the target project's repository.

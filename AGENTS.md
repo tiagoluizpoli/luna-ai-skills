@@ -1,6 +1,6 @@
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
-shell commands, and the current implementation plan, you MUST read the `agents.local.md` file located in the root directory of the current project.
+shell commands, and other important information, read the current plan
 <!-- SPECKIT END -->
 
 # Core Agent Protocol: Karpathy Guidelines
