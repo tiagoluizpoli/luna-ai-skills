@@ -18,3 +18,7 @@ This repository contains the Luna AI Skills Ecosystem, which powers autonomous a
   - [x] Align on terminology and update `CONTEXT.md` glossary.
   - [x] Initialize local context files (This file).
   - [x] Create `.agents/skills/ralph-loop/SKILL.md` with instructions, Phase 0 permissions request, and 10-iteration loop lifecycle.
+
+- **Plan**: Create the `ralph-loop` bash script.
+  - [x] Create `ralph-loop.sh` with interactive prompts, automatic `agy` execution, and termination parsing.
+  - [x] Update `README.md` to include symlink and gitignore setup instructions for `ralph-loop.sh`.

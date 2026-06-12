@@ -8,6 +8,9 @@ Central glossary for terms used in the Luna AI Skills Ecosystem.
 An autonomous, iterative, instruction-based execution cycle where the agent reads tasks/prompts and checks specified issues to perform code updates, logging progress to a tracking file. The loop executes for a maximum of 10 iterations per run, stopping early on success or blockages.
 _Avoid_: Baton loop, build loop (which specifically refers to the Stitch build loop)
 
+**Ralph Loop Script**:
+A bash script (`/ralph-loop.sh`) that automates the execution of the Ralph Loop by running the `agy` CLI in a loop with `--dangerously-skip-permissions` to skip user prompts, and reading `/progress.txt` to handle termination.
+
 **Prompt MD**:
 The markdown file containing task-specific instructions or prompt content, located at the repository root (`/prompt.md`). It supports YAML frontmatter specifying fields like `issueId` and `maxIterations`.
 _Avoid_: next-prompt.md

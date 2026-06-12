@@ -38,6 +38,7 @@ ln -sfnT "$SKILLS_REPO/.agents/skills" .agents/skills
 ln -sfnT "$SKILLS_REPO/.agents/workflows" .agents/workflows
 ln -sfnT "$SKILLS_REPO/AGENTS.md" AGENTS.md
 ln -sfnT "$SKILLS_REPO/SKILLS_OVERVIEW.md" SKILLS_OVERVIEW.md
+ln -sfnT "$SKILLS_REPO/ralph-loop.sh" ralph-loop.sh
 
 # 3. Ensure Speckit directory exists
 mkdir -p .specify
@@ -69,6 +70,7 @@ echo ".agents/skills" >> .gitignore
 echo ".agents/workflows" >> .gitignore
 echo "AGENTS.md" >> .gitignore
 echo "SKILLS_OVERVIEW.md" >> .gitignore
+echo "ralph-loop.sh" >> .gitignore
 
 # Ignore symlinked Speckit configuration
 echo ".specify/templates" >> .gitignore
