@@ -2,25 +2,51 @@
 issueId: auto
 ---
 
-# MANDATORY CONTEXT
+# Ralph Loop Prompt
 
-Read `.plan/RULES.md` first.
-Then read `agents.local.md`.
-Then read `.plan/PRD.md`.
-Then read `.plan/index.md`.
+## Mandatory Context
 
-# TASK SELECTION
+Read in this order:
 
-Pick the next task from `.plan/index.md`.
+1. `.plan/RULES.md`
+2. `agents.local.md` if it exists
+3. `.plan/PRD.md`
+4. `.plan/index.md`
+5. the current epic and task files for the selected work
+6. `.plan/.run-summary.md`
 
-If there are no more tasks, emit `<promise>NO MORE TASKS</promise>`.
+## Work Selection
 
-# EXECUTION
+- Select only dependency-safe executable work.
+- Never pick blocked work.
+- Use task-file sub-task metadata as the atomic source of truth.
+- Use `.plan/helper-scripts/sync-state.sh` after state mutations.
 
-Complete only the selected task.
+If no executable work remains, emit `<promise>NO MORE TASKS</promise>`.
 
-If anything blocks completion, emit `<promise>ABORT</promise>`.
+## Retrieval Phase
 
-# LOGGING
+Before implementation, determine whether the selected work touches:
 
-Write the outcome to `.plan/progress.txt`.
+- previously-worked files
+- archived PRDs or epics
+- existing blockers or prior failed attempts
+- past decisions that should be reused instead of rediscovered
+
+If yes, run `.plan/helper-scripts/retrieve-history.sh`.
+
+- Retrieval is deterministic and tool-driven first.
+- Up to three bounded retrieval rounds are allowed.
+- If context is still insufficient after the third round, block the sub-task
+  with reason `insufficient-historical-context`.
+
+## Execution
+
+- Complete only the selected sub-task.
+- Respect `default-model`, `model`, and `escalate-if` metadata.
+- Persist retries and escalation state in `.plan/.run-state.json`.
+- Log meaningful progress to `.plan/progress.txt`.
+- Append durable structured events to `.plan/.run-history.jsonl`.
+- Update `.plan/.run-summary.md` only with durable conclusions.
+
+If no other executable work remains after a blocker, emit `<promise>ABORT</promise>`.

@@ -8,11 +8,12 @@ blocked-by: []
 
 ## About this Epic
 
-[One paragraph explaining what this epic exists to accomplish.]
+Replace this placeholder epic with real execution context for the target
+repository.
 
 ## Context
 
-- [Relevant route, module, service, or domain context]
+- Replace with relevant domain or module context.
 
 ## Child Tasks
 

@@ -9,15 +9,15 @@ default-model: medium
 
 ## What to Build
 
-[One paragraph explaining what this task implements and why it exists.]
+Replace this placeholder task with a real task generated from the current PRD.
 
 ## Context
 
-[Background context: relevant routes, DB tables, external services, prior or related tasks.]
+Add relevant files, modules, or prior decisions here.
 
 ## Acceptance Criteria
 
-- [ ] Replace this line with a real, checkable acceptance criterion.
+- [ ] Replace this line with a real acceptance criterion.
 
 ## Sub-Tasks
 
@@ -29,13 +29,13 @@ escalate-if: []
 blocked-by: []
 
 what-to-do:
-- [Specific instruction.]
+- Replace this placeholder with a real instruction.
 
 files-to-touch:
 - `path/to/file.ts`
 
 verification:
-- [A command, URL, or test name.]
+- Replace with a real command, test, or URL.
 
 #### Execution Notes
 

@@ -1,0 +1,12 @@
+{
+  "currentRunId": null,
+  "currentPrdId": null,
+  "currentEpicId": null,
+  "currentTaskId": null,
+  "currentSubTaskId": null,
+  "attemptCount": 0,
+  "retrievalRound": 0,
+  "lastModel": null,
+  "escalated": false,
+  "lastFailureReason": null
+}

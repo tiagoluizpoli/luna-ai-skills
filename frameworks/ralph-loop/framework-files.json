@@ -1,0 +1,30 @@
+{
+  "frameworkName": "ralph-loop",
+  "starterRoot": "frameworks/ralph-loop/.plan",
+  "managedFiles": [
+    ".plan/prompt.md",
+    ".plan/RULES.md",
+    ".plan/helper-scripts/archive-run.sh",
+    ".plan/helper-scripts/retrieve-history.sh",
+    ".plan/helper-scripts/sync-state.sh",
+    ".plan/helper-scripts/validate-prereqs.sh",
+    ".plan/shared/epic-template.md",
+    ".plan/shared/task-template.md",
+    ".plan/.framework"
+  ],
+  "workflowOwnedFiles": [
+    ".plan/PRD.md",
+    ".plan/index.md",
+    ".plan/backlog.md",
+    ".plan/progress.txt",
+    ".plan/.run-state.json",
+    ".plan/.run-history.jsonl",
+    ".plan/.run-summary.md",
+    ".plan/epics/.gitkeep",
+    ".plan/grilling/.gitkeep",
+    ".plan/prds/.gitkeep",
+    ".plan/sessions/.gitkeep",
+    ".plan/archive/.gitkeep",
+    ".plan/summaries/.gitkeep"
+  ]
+}

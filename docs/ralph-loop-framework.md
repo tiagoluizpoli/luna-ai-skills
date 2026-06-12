@@ -18,17 +18,18 @@ The current `neighborhood-showcase` workflow is already a coherent framework, bu
 
 - `.plan/prompt.md`
 - `.plan/RULES.md`
-- `agents.local.md`
 - `.plan/PRD.md`
 - `.plan/progress.txt`
-- `.specify/memory/index.md`
-- `.specify/memory/epics/*`
-- `.specify/memory/prds/*`
-- `.specify/memory/backlog.md`
-- `.specify/memory/deferred_backlog.md`
-- `.specify/memory/grilling_history.md`
-- `.specify/memory/sessions/*`
-- `.specify/memory/shared/*`
+- `.plan/index.md`
+- `.plan/epics/*`
+- `.plan/prds/*`
+- `.plan/backlog.md`
+- `.plan/grilling/*`
+- `.plan/sessions/*`
+- `.plan/shared/*`
+- `.plan/.run-state.json`
+- `.plan/.run-history.jsonl`
+- `.plan/.run-summary.md`
 
 Only the path is wrong. The workflow itself is not SpecKit.
 
@@ -43,18 +44,20 @@ Only the path is wrong. The workflow itself is not SpecKit.
 - the workflow contract:
   - `.plan/prompt.md`
   - `.plan/RULES.md`
-  - `agents.local.md`
   - `.plan/PRD.md`
   - `.plan/progress.txt`
+  - `.plan/.run-state.json`
+  - `.plan/.run-history.jsonl`
+  - `.plan/.run-summary.md`
 - the planning and execution workspace:
   - PRD versions
-  - issue decomposition
   - epics
   - tasks
   - subtasks
   - grilling history
-  - deferred backlog
   - session logs
+  - archive and summaries
+  - helper scripts
 
 ### SpecKit owns
 
@@ -77,9 +80,7 @@ Only the path is wrong. The workflow itself is not SpecKit.
 - `.agents/skills/karpathy-guidelines`
 - `.agents/skills/prompt-enhancer`
 - `.agents/skills/code-review`
-- `.agents/skills/find-skills`
 - `.agents/skills/conventional-commits`
-- `.agents/workflows/*`
 
 ## Proposed New Workspace
 
@@ -101,15 +102,24 @@ Reasoning:
 ```text
 .plan/
   backlog.md
-  deferred-backlog.md
   grilling/
   index.md
   prds/
   epics/
   sessions/
+  summaries/
+  archive/
+  .run-state.json
+  .run-history.jsonl
+  .run-summary.md
   shared/
     epic-template.md
     task-template.md
+  helper-scripts/
+    archive-run.sh
+    retrieve-history.sh
+    sync-state.sh
+    validate-prereqs.sh
   prompt.md
   RULES.md
   PRD.md
@@ -118,7 +128,7 @@ Reasoning:
 
 ### Root-level contract files
 
-Keep only this at the repo root:
+Keep only this optional file at the repo root:
 
 - `agents.local.md`
 
@@ -131,12 +141,9 @@ Everything else in the Ralph Loop workflow contract should live under `.plan/`.
 .specify/memory/prds/*                  -> .plan/prds/*
 .specify/memory/epics/*                 -> .plan/epics/*
 .specify/memory/backlog.md              -> .plan/backlog.md
-.specify/memory/deferred_backlog.md     -> .plan/deferred-backlog.md
 .specify/memory/grilling_history.md     -> .plan/grilling/history.md
 .specify/memory/sessions/*              -> .plan/sessions/*
 .specify/memory/shared/*                -> .plan/shared/*
-.specify/memory/test_coverage_plan.md   -> .plan/test-coverage-plan.md
-.specify/memory/ui-decision-log.md      -> .plan/ui-decision-log.md
 prompt.md                               -> .plan/prompt.md
 RULES.md                                -> .plan/RULES.md
 PRD.md                                  -> .plan/PRD.md
@@ -160,10 +167,10 @@ Add sharable source material for consumer repos, likely in a directory such as:
 
 That directory should eventually hold:
 
-- starter `.plan/RULES.md`
-- starter `.plan/prompt.md`
-- starter `.plan/PRD.md`
-- starter `.plan/shared/*` templates
+- starter `.plan/` files
+- helper scripts
+- skill manifest metadata
+- installer bootstrap and package
 - migration notes from `.specify/memory` and root workflow files to `.plan/`
 
 ### Phase 3: migrate a consumer repo
@@ -185,13 +192,25 @@ This repository should support two optional modes:
 
 They can coexist in the same repo, but neither should pretend to own the other's state.
 
+## Current Framework Package
+
+The current implementation lives under `frameworks/ralph-loop/` and now includes:
+
+- starter `.plan/` assets
+- `.plan/helper-scripts/*`
+- `skills-manifest.json`
+- `framework-files.json`
+- `installer/install.sh`
+- `installer/package.json`
+- `installer/src/index.mjs`
+
 ## Immediate Next Work
 
 - [x] Import `ralph-loop-hermes.sh` into this repository.
 - [x] Rename the Antigravity runner to `ralph-loop-agy.sh`.
 - [ ] Audit the Ralph Loop workflow files used in `neighborhood-showcase`.
-- [ ] Create a sharable starter layout for `.plan/`.
-- [ ] Update consumer prompt/rules conventions to use `.plan/` instead of `.specify/memory` and root files.
+- [x] Create a sharable starter layout for `.plan/`.
+- [x] Update consumer prompt/rules conventions to use `.plan/` instead of `.specify/memory` and root files.
 - [ ] Migrate `neighborhood-showcase` as the first consumer.
 - [ ] Leave SpecKit intact and documented as a separate optional framework.
 

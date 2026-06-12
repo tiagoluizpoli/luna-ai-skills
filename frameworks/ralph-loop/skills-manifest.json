@@ -1,0 +1,328 @@
+{
+  "framework": "ralph-loop",
+  "defaultBundle": "ralph-loop-core",
+  "bundles": [
+    {
+      "id": "ralph-loop-core",
+      "label": "Ralph Loop Core",
+      "defaultSelected": true,
+      "skills": [
+        "to-epic-issues",
+        "commit",
+        "code-review"
+      ]
+    },
+    {
+      "id": "architecture",
+      "label": "Architecture",
+      "defaultSelected": false,
+      "skills": [
+        "backend-specialist",
+        "frontend-specialist",
+        "react-architect",
+        "tailwind-architect",
+        "shadcn-specialist"
+      ]
+    },
+    {
+      "id": "testing",
+      "label": "Testing",
+      "defaultSelected": false,
+      "skills": [
+        "test-master"
+      ]
+    },
+    {
+      "id": "diagnostics",
+      "label": "Diagnostics",
+      "defaultSelected": false,
+      "skills": [
+        "diagnose"
+      ]
+    }
+  ],
+  "skills": [
+    {
+      "id": "to-epic-issues",
+      "publicName": "to-epic-issues",
+      "sourcePath": ".agents/skills/to-epic-issues",
+      "selectable": true,
+      "defaultSelected": true,
+      "supportedTargets": [
+        "codex-local",
+        "hermes-global"
+      ],
+      "installPathTemplates": {
+        "codex-local": ".agents/skills/luna-ai/to-epic-issues",
+        "hermes-global": "~/.hermes/skills/luna-ai/to-epic-issues"
+      },
+      "localDependencies": [],
+      "externalPrerequisites": [
+        "to-issues"
+      ]
+    },
+    {
+      "id": "commit",
+      "publicName": "commit",
+      "sourcePath": ".agents/skills/commit",
+      "selectable": true,
+      "defaultSelected": true,
+      "supportedTargets": [
+        "codex-local",
+        "hermes-global"
+      ],
+      "installPathTemplates": {
+        "codex-local": ".agents/skills/luna-ai/commit",
+        "hermes-global": "~/.hermes/skills/luna-ai/commit"
+      },
+      "localDependencies": [
+        "conventional-commits"
+      ],
+      "externalPrerequisites": []
+    },
+    {
+      "id": "code-review",
+      "publicName": "code-review",
+      "sourcePath": ".agents/skills/code-review",
+      "selectable": true,
+      "defaultSelected": true,
+      "supportedTargets": [
+        "codex-local",
+        "hermes-global"
+      ],
+      "installPathTemplates": {
+        "codex-local": ".agents/skills/luna-ai/code-review",
+        "hermes-global": "~/.hermes/skills/luna-ai/code-review"
+      },
+      "localDependencies": [],
+      "externalPrerequisites": []
+    },
+    {
+      "id": "backend-specialist",
+      "publicName": "backend-specialist",
+      "sourcePath": ".agents/skills/backend-specialist",
+      "selectable": true,
+      "defaultSelected": false,
+      "supportedTargets": [
+        "codex-local",
+        "hermes-global"
+      ],
+      "installPathTemplates": {
+        "codex-local": ".agents/skills/luna-ai/backend-specialist",
+        "hermes-global": "~/.hermes/skills/luna-ai/backend-specialist"
+      },
+      "localDependencies": [],
+      "externalPrerequisites": []
+    },
+    {
+      "id": "frontend-specialist",
+      "publicName": "frontend-specialist",
+      "sourcePath": ".agents/skills/frontend-specialist",
+      "selectable": true,
+      "defaultSelected": false,
+      "supportedTargets": [
+        "codex-local",
+        "hermes-global"
+      ],
+      "installPathTemplates": {
+        "codex-local": ".agents/skills/luna-ai/frontend-specialist",
+        "hermes-global": "~/.hermes/skills/luna-ai/frontend-specialist"
+      },
+      "localDependencies": [],
+      "externalPrerequisites": []
+    },
+    {
+      "id": "react-architect",
+      "publicName": "react-architect",
+      "sourcePath": ".agents/skills/react-architect",
+      "selectable": true,
+      "defaultSelected": false,
+      "supportedTargets": [
+        "codex-local",
+        "hermes-global"
+      ],
+      "installPathTemplates": {
+        "codex-local": ".agents/skills/luna-ai/react-architect",
+        "hermes-global": "~/.hermes/skills/luna-ai/react-architect"
+      },
+      "localDependencies": [],
+      "externalPrerequisites": []
+    },
+    {
+      "id": "tailwind-architect",
+      "publicName": "tailwind-architect",
+      "sourcePath": ".agents/skills/tailwind-architect",
+      "selectable": true,
+      "defaultSelected": false,
+      "supportedTargets": [
+        "codex-local",
+        "hermes-global"
+      ],
+      "installPathTemplates": {
+        "codex-local": ".agents/skills/luna-ai/tailwind-architect",
+        "hermes-global": "~/.hermes/skills/luna-ai/tailwind-architect"
+      },
+      "localDependencies": [],
+      "externalPrerequisites": []
+    },
+    {
+      "id": "shadcn-specialist",
+      "publicName": "shadcn-specialist",
+      "sourcePath": ".agents/skills/shadcn-specialist",
+      "selectable": true,
+      "defaultSelected": false,
+      "supportedTargets": [
+        "codex-local",
+        "hermes-global"
+      ],
+      "installPathTemplates": {
+        "codex-local": ".agents/skills/luna-ai/shadcn-specialist",
+        "hermes-global": "~/.hermes/skills/luna-ai/shadcn-specialist"
+      },
+      "localDependencies": [],
+      "externalPrerequisites": []
+    },
+    {
+      "id": "test-master",
+      "publicName": "test-master",
+      "sourcePath": ".agents/skills/test-master",
+      "selectable": true,
+      "defaultSelected": false,
+      "supportedTargets": [
+        "codex-local",
+        "hermes-global"
+      ],
+      "installPathTemplates": {
+        "codex-local": ".agents/skills/luna-ai/test-master",
+        "hermes-global": "~/.hermes/skills/luna-ai/test-master"
+      },
+      "localDependencies": [
+        "test-cases",
+        "test-backend",
+        "test-frontend",
+        "test-e2e",
+        "test-coverage"
+      ],
+      "externalPrerequisites": []
+    },
+    {
+      "id": "diagnose",
+      "publicName": "diagnose",
+      "sourcePath": ".agents/skills/diagnose",
+      "selectable": true,
+      "defaultSelected": false,
+      "supportedTargets": [
+        "codex-local",
+        "hermes-global"
+      ],
+      "installPathTemplates": {
+        "codex-local": ".agents/skills/luna-ai/diagnose",
+        "hermes-global": "~/.hermes/skills/luna-ai/diagnose"
+      },
+      "localDependencies": [],
+      "externalPrerequisites": []
+    },
+    {
+      "id": "conventional-commits",
+      "publicName": "conventional-commits",
+      "sourcePath": ".agents/skills/conventional-commits",
+      "selectable": false,
+      "defaultSelected": false,
+      "supportedTargets": [
+        "codex-local",
+        "hermes-global"
+      ],
+      "installPathTemplates": {
+        "codex-local": ".agents/skills/luna-ai/conventional-commits",
+        "hermes-global": "~/.hermes/skills/luna-ai/conventional-commits"
+      },
+      "localDependencies": [],
+      "externalPrerequisites": []
+    },
+    {
+      "id": "test-cases",
+      "publicName": "test-cases",
+      "sourcePath": ".agents/skills/test-cases",
+      "selectable": false,
+      "defaultSelected": false,
+      "supportedTargets": [
+        "codex-local",
+        "hermes-global"
+      ],
+      "installPathTemplates": {
+        "codex-local": ".agents/skills/luna-ai/test-cases",
+        "hermes-global": "~/.hermes/skills/luna-ai/test-cases"
+      },
+      "localDependencies": [],
+      "externalPrerequisites": []
+    },
+    {
+      "id": "test-backend",
+      "publicName": "test-backend",
+      "sourcePath": ".agents/skills/test-backend",
+      "selectable": false,
+      "defaultSelected": false,
+      "supportedTargets": [
+        "codex-local",
+        "hermes-global"
+      ],
+      "installPathTemplates": {
+        "codex-local": ".agents/skills/luna-ai/test-backend",
+        "hermes-global": "~/.hermes/skills/luna-ai/test-backend"
+      },
+      "localDependencies": [],
+      "externalPrerequisites": []
+    },
+    {
+      "id": "test-frontend",
+      "publicName": "test-frontend",
+      "sourcePath": ".agents/skills/test-frontend",
+      "selectable": false,
+      "defaultSelected": false,
+      "supportedTargets": [
+        "codex-local",
+        "hermes-global"
+      ],
+      "installPathTemplates": {
+        "codex-local": ".agents/skills/luna-ai/test-frontend",
+        "hermes-global": "~/.hermes/skills/luna-ai/test-frontend"
+      },
+      "localDependencies": [],
+      "externalPrerequisites": []
+    },
+    {
+      "id": "test-e2e",
+      "publicName": "test-e2e",
+      "sourcePath": ".agents/skills/test-e2e",
+      "selectable": false,
+      "defaultSelected": false,
+      "supportedTargets": [
+        "codex-local",
+        "hermes-global"
+      ],
+      "installPathTemplates": {
+        "codex-local": ".agents/skills/luna-ai/test-e2e",
+        "hermes-global": "~/.hermes/skills/luna-ai/test-e2e"
+      },
+      "localDependencies": [],
+      "externalPrerequisites": []
+    },
+    {
+      "id": "test-coverage",
+      "publicName": "test-coverage",
+      "sourcePath": ".agents/skills/test-coverage",
+      "selectable": false,
+      "defaultSelected": false,
+      "supportedTargets": [
+        "codex-local",
+        "hermes-global"
+      ],
+      "installPathTemplates": {
+        "codex-local": ".agents/skills/luna-ai/test-coverage",
+        "hermes-global": "~/.hermes/skills/luna-ai/test-coverage"
+      },
+      "localDependencies": [],
+      "externalPrerequisites": []
+    }
+  ]
+}

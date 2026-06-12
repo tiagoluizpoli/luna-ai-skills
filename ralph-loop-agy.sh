@@ -147,7 +147,7 @@ for ((i=1; i<=MAX_ITERATIONS; i++)); do
 
   # CRITICAL: every iteration is a fresh session (no --continue).
   # State lives in .plan/, agents.local.md, and git — not in the conversation.
-  agy --dangerously-skip-permissions --print-timeout 15m --print "Start the Ralph Loop iteration $i. Read .plan/RULES.md FIRST (canonical engineering rules), then agents.local.md, then .plan/PRD.md, then .plan/index.md (single source of truth for epics and tasks), then the current epic and task files. Pick the next task, complete ONLY that task, then log your status to .plan/progress.txt. Recent commits: $recent_commits" | tee "$tmpfile"
+  agy --dangerously-skip-permissions --print-timeout 15m --print "Start the Ralph Loop iteration $i. Read .plan/RULES.md FIRST (canonical engineering rules), then agents.local.md if it exists, then .plan/PRD.md, then .plan/index.md (single source of truth for epics and tasks), then the current epic and task files. Pick the next task, complete ONLY that task, then log your status to .plan/progress.txt. Recent commits: $recent_commits" | tee "$tmpfile"
   
   cmd_status=$?
   end_time=$(date +%s)
