@@ -13,14 +13,6 @@ Every action, decision, and line of code MUST strictly adhere to the [**Karpathy
 3. **Surgical Changes**: Touch only the necessary lines. Match style perfectly. Remove orphans created by your own changes.
 4. **Goal-Driven Execution**: Define clear success criteria for every task. verify each step before proceeding.
 
-## Task-by-Task Implementation Flow
-Every task (the smallest individual item, not the phase) MUST be developed and validated strictly one at a time using the following flow:
-1. **Plan & Present**: Present the specific task and explain exactly what will be done (a micro-plan for that task).
-2. **Wait for Approval**: Stop and wait for the user to visualize and approve the micro-plan. If the user is not satisfied, iterate back and forth until they approve.
-3. **Implement**: Only after explicit approval, implement the code for that specific task.
-4. **Review & Validate**: After implementation, present the changes so the user can perform a code review on that particular task.
-5. **Proceed**: Only move to the next task in the list when the user is completely satisfied with the current task's implementation.
-
 # Core SpecKit Protocol: Prompt Enhancement & UI Red Flags
 
 Whenever executing any SpecKit command (e.g., `/speckit.specify`, `/speckit.plan`, or any command from the `.agents` directory), you MUST strictly adhere to the following global rules:
