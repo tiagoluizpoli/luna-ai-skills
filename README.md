@@ -38,7 +38,9 @@ ln -sfnT "$SKILLS_REPO/.agents/skills" .agents/skills
 ln -sfnT "$SKILLS_REPO/.agents/workflows" .agents/workflows
 ln -sfnT "$SKILLS_REPO/AGENTS.md" AGENTS.md
 ln -sfnT "$SKILLS_REPO/SKILLS_OVERVIEW.md" SKILLS_OVERVIEW.md
-ln -sfnT "$SKILLS_REPO/ralph-loop.sh" ralph-loop.sh
+ln -sfnT "$SKILLS_REPO/ralph-loop-agy.sh" ralph-loop-agy.sh
+ln -sfnT "$SKILLS_REPO/ralph-loop-codex.sh" ralph-loop-codex.sh
+ln -sfnT "$SKILLS_REPO/ralph-loop-hermes.sh" ralph-loop-hermes.sh
 
 # 3. Ensure Speckit directory exists
 mkdir -p .specify
@@ -70,7 +72,9 @@ echo ".agents/skills" >> .gitignore
 echo ".agents/workflows" >> .gitignore
 echo "AGENTS.md" >> .gitignore
 echo "SKILLS_OVERVIEW.md" >> .gitignore
-echo "ralph-loop.sh" >> .gitignore
+echo "ralph-loop-agy.sh" >> .gitignore
+echo "ralph-loop-codex.sh" >> .gitignore
+echo "ralph-loop-hermes.sh" >> .gitignore
 
 # Ignore symlinked Speckit configuration
 echo ".specify/templates" >> .gitignore
@@ -84,3 +88,8 @@ echo ".specify/init-options.json" >> .gitignore
 ```
 
 This prevents your local symlinks from being committed to the target project's repository.
+
+## Framework Planning
+
+The current Ralph Loop framework plan lives in [docs/ralph-loop-framework.md](/home/tiago/01-dev-env/personal-repos/luna-ai-skills/docs/ralph-loop-framework.md).
+The ownership-boundary companion for SpecKit versus the general skill library lives in [docs/speckit-split-plan.md](/home/tiago/01-dev-env/personal-repos/luna-ai-skills/docs/speckit-split-plan.md).
