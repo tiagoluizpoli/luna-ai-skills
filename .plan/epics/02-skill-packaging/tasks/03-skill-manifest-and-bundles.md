@@ -22,6 +22,8 @@ dependency resolution.
 - [x] Core and add-on bundles are represented explicitly.
 - [x] Each skill records dependencies and target paths.
 - [x] Dependency-only skills are represented as non-selectable.
+- [x] `luna-to-prd` is included in the core bundle with `to-prd` as an external
+      prerequisite.
 
 ## Sub-Tasks
 
@@ -45,3 +47,4 @@ verification:
 #### Execution Notes
 
 - Completed in `a3716bf`.
+- Reopened to add `luna-to-prd` to the core bundle and metadata.

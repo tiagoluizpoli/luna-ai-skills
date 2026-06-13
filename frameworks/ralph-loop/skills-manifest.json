@@ -7,6 +7,7 @@
       "label": "Ralph Loop Core",
       "defaultSelected": true,
       "skills": [
+        "luna-to-prd",
         "to-epic-issues",
         "commit",
         "code-review"
@@ -42,6 +43,25 @@
     }
   ],
   "skills": [
+    {
+      "id": "luna-to-prd",
+      "publicName": "luna-to-prd",
+      "sourcePath": ".agents/skills/luna-to-prd",
+      "selectable": true,
+      "defaultSelected": true,
+      "supportedTargets": [
+        "codex-local",
+        "hermes-global"
+      ],
+      "installPathTemplates": {
+        "codex-local": ".agents/skills/luna-ai/luna-to-prd",
+        "hermes-global": "~/.hermes/skills/luna-ai/luna-to-prd"
+      },
+      "localDependencies": [],
+      "externalPrerequisites": [
+        "to-prd"
+      ]
+    },
     {
       "id": "to-epic-issues",
       "publicName": "to-epic-issues",

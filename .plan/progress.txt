@@ -3,3 +3,4 @@
 [2026-06-12 20:15:00] Implemented the framework source: starter assets, helper scripts, skill manifest, new `commit` skill, rewritten `.plan` `to-epic-issues`, and installer package.
 [2026-06-12 20:35:00] Verified local install, update, adoption, and `--all` bundle behavior against clean throwaway Git repositories under `/tmp`.
 [2026-06-13 09:00:00] Created the repo's own live `.plan` workspace, documented the grilling session, generated the implementation PRD, and recorded completed vs remaining tasks.
+[2026-06-13 09:25:00] Added `luna-to-prd` as a framework-owned wrapper skill for the `.plan` PRD thin-index flow and updated the core skill bundle metadata.
