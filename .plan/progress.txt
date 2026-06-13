@@ -1,0 +1,5 @@
+[2026-06-12 18:10:00] Started extended grilling session for the installable Ralph Loop framework. Captured framework scope, ownership boundaries, installer expectations, and runtime-state decisions.
+[2026-06-12 19:05:00] Finalized the `.plan` contract: single backlog, run-state/history/summary files, helper scripts, namespaced skill installs, and managed-vs-workflow-owned file rules.
+[2026-06-12 20:15:00] Implemented the framework source: starter assets, helper scripts, skill manifest, new `commit` skill, rewritten `.plan` `to-epic-issues`, and installer package.
+[2026-06-12 20:35:00] Verified local install, update, adoption, and `--all` bundle behavior against clean throwaway Git repositories under `/tmp`.
+[2026-06-13 09:00:00] Created the repo's own live `.plan` workspace, documented the grilling session, generated the implementation PRD, and recorded completed vs remaining tasks.
