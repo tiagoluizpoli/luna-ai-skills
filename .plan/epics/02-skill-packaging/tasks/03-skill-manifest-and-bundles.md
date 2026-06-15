@@ -24,6 +24,8 @@ dependency resolution.
 - [x] Dependency-only skills are represented as non-selectable.
 - [x] `luna-to-prd` is included in the core bundle with `to-prd` as an external
       prerequisite.
+- [x] `luna-grill-with-docs` is included in the core bundle with
+      `grill-with-docs` as an external prerequisite.
 
 ## Sub-Tasks
 
@@ -48,3 +50,5 @@ verification:
 
 - Completed in `a3716bf`.
 - Reopened to add `luna-to-prd` to the core bundle and metadata.
+- Reopened again to add `luna-grill-with-docs` to the core bundle and
+  metadata.

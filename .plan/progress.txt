@@ -4,3 +4,4 @@
 [2026-06-12 20:35:00] Verified local install, update, adoption, and `--all` bundle behavior against clean throwaway Git repositories under `/tmp`.
 [2026-06-13 09:00:00] Created the repo's own live `.plan` workspace, documented the grilling session, generated the implementation PRD, and recorded completed vs remaining tasks.
 [2026-06-13 09:25:00] Added `luna-to-prd` as a framework-owned wrapper skill for the `.plan` PRD thin-index flow and updated the core skill bundle metadata.
+[2026-06-15 10:15:00] Added `luna-grill-with-docs` as a framework-owned wrapper skill for persistent `.plan/grilling/` session state and updated the core skill bundle metadata.

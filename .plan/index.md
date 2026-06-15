@@ -41,6 +41,7 @@
 | T-05 | E-02 | Rewrite `to-epic-issues` for `.plan` output | done | — | `.plan/epics/02-skill-packaging/tasks/02-plan-based-to-epic-issues.md` |
 | T-06 | E-02 | Add skill bundles and dependency metadata | done | — | `.plan/epics/02-skill-packaging/tasks/03-skill-manifest-and-bundles.md` |
 | T-13 | E-02 | Create the `luna-to-prd` wrapper skill | done | — | `.plan/epics/02-skill-packaging/tasks/04-create-luna-to-prd-skill.md` |
+| T-14 | E-02 | Create the `luna-grill-with-docs` wrapper skill | done | — | `.plan/epics/02-skill-packaging/tasks/05-create-luna-grill-with-docs-skill.md` |
 | T-07 | E-03 | Build bootstrap and Node installer | done | — | `.plan/epics/03-installer-and-verification/tasks/01-build-installer.md` |
 | T-08 | E-03 | Verify install, update, and adoption on clean local repos | done | — | `.plan/epics/03-installer-and-verification/tasks/02-local-verification.md` |
 | T-09 | E-03 | Validate the public GitHub bootstrap path | ready | — | `.plan/epics/03-installer-and-verification/tasks/03-public-bootstrap-validation.md` |

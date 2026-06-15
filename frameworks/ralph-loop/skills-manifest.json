@@ -7,6 +7,7 @@
       "label": "Ralph Loop Core",
       "defaultSelected": true,
       "skills": [
+        "luna-grill-with-docs",
         "luna-to-prd",
         "to-epic-issues",
         "commit",
@@ -43,6 +44,25 @@
     }
   ],
   "skills": [
+    {
+      "id": "luna-grill-with-docs",
+      "publicName": "luna-grill-with-docs",
+      "sourcePath": ".agents/skills/luna-grill-with-docs",
+      "selectable": true,
+      "defaultSelected": true,
+      "supportedTargets": [
+        "codex-local",
+        "hermes-global"
+      ],
+      "installPathTemplates": {
+        "codex-local": ".agents/skills/luna-ai/luna-grill-with-docs",
+        "hermes-global": "~/.hermes/skills/luna-ai/luna-grill-with-docs"
+      },
+      "localDependencies": [],
+      "externalPrerequisites": [
+        "grill-with-docs"
+      ]
+    },
     {
       "id": "luna-to-prd",
       "publicName": "luna-to-prd",
