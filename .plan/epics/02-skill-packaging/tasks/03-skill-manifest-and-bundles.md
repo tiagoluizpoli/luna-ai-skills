@@ -26,6 +26,8 @@ dependency resolution.
       prerequisite.
 - [x] `luna-grill-with-docs` is included in the core bundle with
       `grill-with-docs` as an external prerequisite.
+- [x] `luna-to-issues` is included in the core bundle with `to-issues` as an
+      external prerequisite.
 
 ## Sub-Tasks
 
@@ -52,3 +54,5 @@ verification:
 - Reopened to add `luna-to-prd` to the core bundle and metadata.
 - Reopened again to add `luna-grill-with-docs` to the core bundle and
   metadata.
+- Reopened again to rename `to-epic-issues` to `luna-to-issues` in the core
+  bundle metadata.

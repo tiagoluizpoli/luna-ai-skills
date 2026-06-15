@@ -22,7 +22,7 @@ vendored.
 | Task ID | Task | Status | Blocked By | File |
 | --- | --- | --- | --- | --- |
 | T-04 | Create the `commit` skill from workflow guidance | done | — | `.plan/epics/02-skill-packaging/tasks/01-create-commit-skill.md` |
-| T-05 | Rewrite `to-epic-issues` for `.plan` output | done | — | `.plan/epics/02-skill-packaging/tasks/02-plan-based-to-epic-issues.md` |
+| T-05 | Rename the `.plan` issue wrapper to `luna-to-issues` | done | — | `.plan/epics/02-skill-packaging/tasks/02-plan-based-to-epic-issues.md` |
 | T-06 | Add skill bundles and dependency metadata | done | — | `.plan/epics/02-skill-packaging/tasks/03-skill-manifest-and-bundles.md` |
 | T-13 | Create the `luna-to-prd` wrapper skill | done | — | `.plan/epics/02-skill-packaging/tasks/04-create-luna-to-prd-skill.md` |
 | T-14 | Create the `luna-grill-with-docs` wrapper skill | done | — | `.plan/epics/02-skill-packaging/tasks/05-create-luna-grill-with-docs-skill.md` |

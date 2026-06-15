@@ -71,7 +71,7 @@ Build an installable Ralph Loop framework in this repository with:
 - Skill ownership is explicit in `skills-manifest.json`.
 - `commit` is a first-class framework-owned skill that depends on
   `conventional-commits`.
-- `to-epic-issues` remains a wrapper around `to-issues`, but now targets `.plan`.
+- `luna-to-issues` remains a wrapper around `to-issues`, but now targets `.plan`.
 - The current `ralph-loop` skill is intentionally excluded from the default
   install set because the runner scripts own the real loop.
 - The default bundle is `Ralph Loop Core`; architecture, testing, and diagnose

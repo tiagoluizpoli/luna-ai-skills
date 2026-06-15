@@ -38,7 +38,7 @@
 | T-02 | E-01 | Add runtime state and helper-script surfaces | done | — | `.plan/epics/01-framework-contract/tasks/02-runtime-state-and-helper-scripts.md` |
 | T-03 | E-01 | Align framework docs and runners | done | — | `.plan/epics/01-framework-contract/tasks/03-docs-and-runner-alignment.md` |
 | T-04 | E-02 | Create the `commit` skill from workflow guidance | done | — | `.plan/epics/02-skill-packaging/tasks/01-create-commit-skill.md` |
-| T-05 | E-02 | Rewrite `to-epic-issues` for `.plan` output | done | — | `.plan/epics/02-skill-packaging/tasks/02-plan-based-to-epic-issues.md` |
+| T-05 | E-02 | Rename the `.plan` issue wrapper to `luna-to-issues` | done | — | `.plan/epics/02-skill-packaging/tasks/02-plan-based-to-epic-issues.md` |
 | T-06 | E-02 | Add skill bundles and dependency metadata | done | — | `.plan/epics/02-skill-packaging/tasks/03-skill-manifest-and-bundles.md` |
 | T-13 | E-02 | Create the `luna-to-prd` wrapper skill | done | — | `.plan/epics/02-skill-packaging/tasks/04-create-luna-to-prd-skill.md` |
 | T-14 | E-02 | Create the `luna-grill-with-docs` wrapper skill | done | — | `.plan/epics/02-skill-packaging/tasks/05-create-luna-grill-with-docs-skill.md` |

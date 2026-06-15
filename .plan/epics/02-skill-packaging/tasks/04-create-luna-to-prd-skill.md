@@ -14,7 +14,7 @@ Create `luna-to-prd` as a framework-owned wrapper around Matt Pocock's
 
 ## Context
 
-The framework already owns `to-epic-issues` as a `.plan` adapter, but PRD
+The framework already owns `luna-to-issues` as a `.plan` adapter, but PRD
 generation still depended directly on the external `to-prd` skill. The user
 wanted a local wrapper that applies our thin-index PRD structure automatically.
 

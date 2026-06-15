@@ -9,7 +9,7 @@
       "skills": [
         "luna-grill-with-docs",
         "luna-to-prd",
-        "to-epic-issues",
+        "luna-to-issues",
         "commit",
         "code-review"
       ]
@@ -83,9 +83,9 @@
       ]
     },
     {
-      "id": "to-epic-issues",
-      "publicName": "to-epic-issues",
-      "sourcePath": ".agents/skills/to-epic-issues",
+      "id": "luna-to-issues",
+      "publicName": "luna-to-issues",
+      "sourcePath": ".agents/skills/luna-to-issues",
       "selectable": true,
       "defaultSelected": true,
       "supportedTargets": [
@@ -93,8 +93,8 @@
         "hermes-global"
       ],
       "installPathTemplates": {
-        "codex-local": ".agents/skills/luna-ai/to-epic-issues",
-        "hermes-global": "~/.hermes/skills/luna-ai/to-epic-issues"
+        "codex-local": ".agents/skills/luna-ai/luna-to-issues",
+        "hermes-global": "~/.hermes/skills/luna-ai/luna-to-issues"
       },
       "localDependencies": [],
       "externalPrerequisites": [

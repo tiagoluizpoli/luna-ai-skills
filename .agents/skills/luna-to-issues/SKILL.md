@@ -1,9 +1,9 @@
 ---
-name: to-epic-issues
-description: Break a plan or PRD into vertical slices and create them as `.plan` epics and task files. Use when the user says `to-epic-issues`, `epic issues`, or asks to turn a PRD into `.plan` execution files.
+name: luna-to-issues
+description: Break the current Ralph Loop PRD into vertical slices and create them as `.plan` epics and task files. Use when the user says `luna-to-issues`, `to issues`, or asks to turn the current `.plan` PRD into `.plan` execution files.
 ---
 
-# To Epic Issues
+# Luna To Issues
 
 Convert a plan or PRD into the project's `.plan` epic and task structure.
 
@@ -29,6 +29,9 @@ into the Ralph Loop execution tree instead of a generic issue tracker.
 
 ## Contract
 
+- Resolve the current PRD from `.plan/PRD.md` before decomposition.
+- Read the row marked `CURRENT`.
+- Load the full PRD body from the `Canonical Record` file in that row.
 - Use `to-issues` first for the vertical slice breakdown.
 - Only write `.plan` files after the user approves the slice structure.
 - Create one epic directory per approved epic.
@@ -69,6 +72,8 @@ files. Epic and task aggregate state is derived later by helper scripts.
 - Treat `.plan/PRD.md` as the thin index.
 - Treat `.plan/prds/*.md` as the full versioned PRD bodies.
 - Only one PRD row may be marked `CURRENT`.
+- Use the `CURRENT` row as the default PRD source.
+- Load the full PRD body from that row's `Canonical Record` path.
 - Do not inline the full PRD into `.plan/PRD.md`.
 
 ## Templates
