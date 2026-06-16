@@ -106,6 +106,48 @@ get_latest_model_label() {
   echo "$model_line" | sed -E 's/.*label="([^"]+)".*/\1/; s/.*model="([^"]*)".*/\1/'
 }
 
+resolve_model_override() {
+  local current_model="$1"
+  local tier="$2"
+
+  if [ -z "$current_model" ] || [ "$current_model" = "unknown" ]; then
+    echo ""
+    return
+  fi
+
+  if [ "$tier" = "medium" ]; then
+    echo "$current_model"
+    return
+  fi
+
+  # Swapping logic for Gemini models with (Low)/(Medium)/(High)
+  if [[ "$current_model" =~ (.*)\((Low|Medium|High)\) ]]; then
+    local prefix="${BASH_REMATCH[1]}"
+    if [ "$tier" = "high" ]; then
+      echo "${prefix}(High)"
+    elif [ "$tier" = "low" ]; then
+      echo "${prefix}(Low)"
+    else
+      echo "$current_model"
+    fi
+    return
+  fi
+
+  # Swapping logic for models like gpt-5.4 / gpt-5.4-mini
+  if [[ "$current_model" =~ gpt-5\.4 ]]; then
+    if [ "$tier" = "high" ]; then
+      echo "gpt-5.4"
+    elif [ "$tier" = "low" ]; then
+      echo "gpt-5.4-mini"
+    else
+      echo "$current_model"
+    fi
+    return
+  fi
+
+  echo "$current_model"
+}
+
 get_latest_ralph_commit() {
   git log -1 --format="%H|%s" 2>/dev/null
 }
@@ -159,6 +201,17 @@ for ((i=1; i<=MAX_ITERATIONS; i++)); do
     exit 0
   fi
 
+  model_args=()
+  if [ -n "${CURRENT_REQUIRED_MODEL:-}" ]; then
+    resolved_model=$(resolve_model_override "$current_model_label" "$CURRENT_REQUIRED_MODEL")
+    if [ -n "$resolved_model" ] && [ "$resolved_model" != "unknown" ]; then
+      model_args=("-m" "$resolved_model")
+      if [ "$resolved_model" != "$current_model_label" ]; then
+        echo -e "${YELLOW}⬆️ Escalating model from '$current_model_label' to '$resolved_model' (tier: $CURRENT_REQUIRED_MODEL)${NC}"
+      fi
+    fi
+  fi
+
   runtime_contract=$(cat <<EOF
 Runtime contract for this attempt:
 - Selected task: ${CURRENT_TASK_ID} / ${CURRENT_SUBTASK_ID}
@@ -166,10 +219,23 @@ Runtime contract for this attempt:
 - Required model tier from task metadata: ${CURRENT_REQUIRED_MODEL}
 - Attempt count for this sub-task: ${CURRENT_ATTEMPT_COUNT}
 - Retrieval round: ${CURRENT_RETRIEVAL_ROUND}/3
+- Escalation active: ${CURRENT_ESCALATED:-false}
 - Escalation triggers: ${CURRENT_ESCALATE_IF:-none}
 - Files to touch: ${CURRENT_FILES_TO_TOUCH:-none}
 EOF
 )
+
+  escalation_directive=""
+  if [ "${CURRENT_ESCALATED:-false}" = "true" ]; then
+    escalation_directive=$(cat <<EOF
+Escalation state is ACTIVE for this attempt.
+- Treat this as a high-scrutiny retry of the same sub-task.
+- Use the strongest reasoning depth and most careful verification available in this runner.
+- Prefer deeper diagnosis, tighter validation, and safer changes over speed.
+- Do not repeat the previous medium-grade approach.
+EOF
+)
+  fi
 
   retrieval_bundle=""
   if [ "${CURRENT_SHOULD_RETRIEVE:-false}" = "true" ]; then
@@ -187,11 +253,14 @@ EOF
 
   # CRITICAL: every iteration is a fresh session (no resume --last).
   # State lives in .plan/, agents.local.md, and git — not in the conversation.
-  codex exec --dangerously-bypass-approvals-and-sandbox "Start the Ralph Loop iteration $i. Read .plan/RULES.md FIRST (canonical engineering rules), then agents.local.md if it exists, then .plan/PRD.md, then .plan/index.md (single source of truth for epics and tasks), then the current epic and task files. Pick the next task, complete ONLY that task, then log your status to .plan/progress.txt. Recent commits: $recent_commits
+  codex exec --dangerously-bypass-approvals-and-sandbox "${model_args[@]}" "Start the Ralph Loop iteration $i. Read .plan/RULES.md FIRST (canonical engineering rules), then agents.local.md if it exists, then .plan/PRD.md, then .plan/index.md (single source of truth for epics and tasks), then the current epic and task files. Pick the next task, complete ONLY that task, then log your status to .plan/progress.txt. Recent commits: $recent_commits
 
 $runtime_contract
 
 If this attempt cannot complete, respect the runtime contract: preserve the selected sub-task, note whether the failure needs escalation, and log BLOCKED only with a concrete blocker reason.
+
+${escalation_directive:+$escalation_directive
+}
 
 ${retrieval_bundle:+Historical retrieval bundle for this attempt:
 $retrieval_bundle
