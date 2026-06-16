@@ -6,11 +6,11 @@
   "currentSubTaskId": null,
   "attemptCount": 0,
   "retrievalRound": 0,
-  "lastModel": "gpt-5.4",
+  "lastModel": "gemini-3.5-flash",
   "escalated": false,
   "lastFailureReason": null,
   "requiredModel": null,
-  "runnerName": "hermes",
+  "runnerName": "agy",
   "escalateIf": [],
   "filesToTouch": [],
   "lastCommitChanged": false

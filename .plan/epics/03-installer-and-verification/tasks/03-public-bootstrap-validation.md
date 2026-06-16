@@ -2,8 +2,8 @@
 type: task
 id: T-09
 epic: E-03
-status: blocked
-blocked-by: [remote-repo-not-public]
+status: ready
+blocked-by: []
 default-model: medium
 ---
 
@@ -28,10 +28,10 @@ remote bootstrap path that uses `curl` against the pushed repository contents.
 
 ### ST-01 - Run the public bootstrap against a clean repo
 
-status: blocked
+status: ready
 model: medium
 escalate-if: [failing-twice]
-blocked-by: [remote-repo-not-public]
+blocked-by: []
 
 what-to-do:
 - Execute the public installer path against a clean repo once the desired
@@ -54,3 +54,4 @@ verification:
   - `https://raw.githubusercontent.com/tiagoluizpoli/luna-ai-skills/master/frameworks/ralph-loop/installer/install.sh`
 - The remaining blocker is external to the framework source: the GitHub repository is not publicly fetchable over raw/codeload, so the actual public `curl | bash` bootstrap cannot be executed from a clean test repo in this iteration.
 - Revalidated on 2026-06-16 during iteration 2: `origin` still reports `master` as the remote HEAD, and the public raw/codeload endpoints for both `master` and `main` still return HTTP 404, so the task remains blocked by `remote-repo-not-public`.
+- Unblocked on 2026-06-16: The user confirmed the repository is now public and pushed to the remote.
