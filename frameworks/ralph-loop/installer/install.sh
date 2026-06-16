@@ -66,9 +66,9 @@ main() {
   local auth_header=()
   if [[ -n "${GITHUB_TOKEN:-}" ]]; then
     auth_header=(-H "Authorization: token ${GITHUB_TOKEN}")
-    tarball_url="https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/tarball/${ref_name}"
+    tarball_url="https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/tarball/${commit_sha}"
   else
-    tarball_url="https://codeload.github.com/${REPO_OWNER}/${REPO_NAME}/tar.gz/refs/heads/${ref_name}"
+    tarball_url="https://codeload.github.com/${REPO_OWNER}/${REPO_NAME}/tar.gz/${commit_sha}"
   fi
 
   curl -fsSL "${auth_header[@]}" "${tarball_url}" -o "${temp_dir}/framework.tar.gz"
