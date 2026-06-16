@@ -2,7 +2,7 @@
 type: epic
 id: E-03
 name: "Installer And Verification"
-status: in-progress
+status: done
 blocked-by: []
 ---
 
@@ -22,4 +22,4 @@ local verification before being declared finished.
 | --- | --- | --- | --- | --- |
 | T-07 | Build bootstrap and Node installer | done | — | `.plan/epics/03-installer-and-verification/tasks/01-build-installer.md` |
 | T-08 | Verify install, update, and adoption on clean local repos | done | — | `.plan/epics/03-installer-and-verification/tasks/02-local-verification.md` |
-| T-09 | Validate the public GitHub bootstrap path | ready | — | `.plan/epics/03-installer-and-verification/tasks/03-public-bootstrap-validation.md` |
+| T-09 | Validate the public GitHub bootstrap path | done | — | `.plan/epics/03-installer-and-verification/tasks/03-public-bootstrap-validation.md` |
