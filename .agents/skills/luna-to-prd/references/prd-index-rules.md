@@ -3,15 +3,17 @@
 `luna-to-prd` treats `.plan/PRD.md` as a thin index over versioned PRD bodies
 stored under `.plan/prds/`.
 
-It also treats `.plan/grilling/` as the default PRD input surface.
+It treats `.plan/grilling/` and `.plan/handoffs/` as the upstream planning
+input surfaces.
 
 ## Source Resolution
 
-- If the user names a specific grilling file, use it.
-- Otherwise use the latest relevant file under `.plan/grilling/`.
-- Prefer an `in-progress` grilling session when one exists.
-- Otherwise use the most recent completed grilling session.
-- The resolved grilling file is the source context passed into `to-prd`.
+- If the user names a specific grilling handoff or grilling file, use it.
+- Otherwise resolve `.plan/handoffs/.current-grill-handoff`.
+- If that pointer is empty, resolve `.plan/grilling/.current-session`.
+- Fail hard instead of guessing from directory listings.
+- The resolved grilling handoff and grilling file become the source context
+  passed into `to-prd`.
 
 ## Required Index Behavior
 

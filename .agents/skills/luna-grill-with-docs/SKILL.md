@@ -27,29 +27,36 @@ every answer.
 
 - Matt Pocock's `grill-with-docs` skill must already be available
 - `.plan/grilling/` must exist
+- `.plan/handoffs/` must exist
 
 ## Workflow
 
 1. Invoke and follow `grill-with-docs` for the actual questioning behavior.
 2. Create or resume a grilling session file under `.plan/grilling/`.
-3. Before the first question is asked, write:
+3. As soon as the active grilling file is known, set the canonical pointer with:
+   - `.plan/helper-scripts/set-current-grill.sh .plan/grilling/<file>.md`
+4. Before the first question is asked, write:
    - session metadata
    - the starting user prompt
    - the initial reasoning/context that led to the first question
    - the first `Current Question`
    - the initial `Future Questions` queue
-4. Ask only the `Current Question` shown in the file.
-5. After each user answer, synchronize the file immediately:
+5. Ask only the `Current Question` shown in the file.
+6. After each user answer, synchronize the file immediately:
    - move the answered current question into `Answered Questions`
    - update any decision or answer summary tied to that question
    - rebuild and reorder `Future Questions`
    - remove questions no longer needed
    - promote the next chosen question into `Current Question`
-6. If the answer creates new questions, persist them to `Future Questions`
+7. If the answer creates new questions, persist them to `Future Questions`
    during the same synchronization step.
-7. If the answer resolves a queued future question implicitly, remove it from
+8. If the answer resolves a queued future question implicitly, remove it from
    `Future Questions` during the same synchronization step.
-8. Repeat question by question until the grilling session is complete.
+9. When the grilling session is explicitly finished and stable enough for PRD
+   generation, write a handoff file under `.plan/handoffs/`.
+10. Set the canonical handoff pointer with:
+   - `.plan/helper-scripts/set-current-grill-handoff.sh .plan/handoffs/<file>.md`
+11. Repeat question by question until the grilling session is complete.
 
 ## Rules
 
@@ -60,6 +67,8 @@ every answer.
 - Every answered question must remain preserved in `Answered Questions`.
 - Keep the starting prompt and starting reasoning in the file so the session can
   be resumed from another agent or session.
+- Do not generate the official grill-to-PRD handoff until the grilling session
+  is explicitly considered finished.
 - If a queued question becomes unnecessary, remove it from `Future Questions`.
   If preserving the reason is useful, move it to `Pruned Questions`.
 
@@ -68,3 +77,4 @@ every answer.
 Use the persistent grilling format documented in:
 
 - [Grilling Session Format](references/grilling-session-format.md)
+- [Grill To PRD Handoff Format](references/grill-to-prd-handoff.md)

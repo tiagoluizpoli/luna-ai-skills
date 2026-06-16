@@ -30,8 +30,13 @@ into the Ralph Loop execution tree instead of a generic issue tracker.
 ## Contract
 
 - Resolve the current PRD from `.plan/PRD.md` before decomposition.
-- Read the row marked `CURRENT`.
-- Load the full PRD body from the `Canonical Record` file in that row.
+- Resolve the current PRD source in this order:
+  - explicit user-provided PRD handoff or PRD file
+  - `.plan/handoffs/.current-prd-handoff` via
+    `.plan/helper-scripts/get-current-prd-handoff.sh`
+  - `.plan/prds/.current-prd` via `.plan/helper-scripts/get-current-prd.sh`
+  - `CURRENT` row in `.plan/PRD.md` as the final fallback
+- Load the full PRD body from the resolved canonical PRD file.
 - Use `to-issues` first for the vertical slice breakdown.
 - Only write `.plan` files after the user approves the slice structure.
 - Create one epic directory per approved epic.
@@ -72,8 +77,9 @@ files. Epic and task aggregate state is derived later by helper scripts.
 - Treat `.plan/PRD.md` as the thin index.
 - Treat `.plan/prds/*.md` as the full versioned PRD bodies.
 - Only one PRD row may be marked `CURRENT`.
-- Use the `CURRENT` row as the default PRD source.
-- Load the full PRD body from that row's `Canonical Record` path.
+- Use the PRD handoff pointer and PRD pointer before falling back to the
+  `CURRENT` row.
+- Load the full PRD body from the resolved canonical source path.
 - Do not inline the full PRD into `.plan/PRD.md`.
 
 ## Templates
