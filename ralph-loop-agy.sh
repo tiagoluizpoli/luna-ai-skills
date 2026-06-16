@@ -121,6 +121,20 @@ print_failure_model() {
   echo -e "${YELLOW}Model in use: ${model_label}${NC}"
 }
 
+prepare_runtime_attempt() {
+  local runner_name="$1"
+  local runner_model="$2"
+  eval "$(bash .plan/helper-scripts/runtime-state.sh prepare-attempt --runner \"$runner_name\" --runner-model \"$runner_model\" --format shell)"
+}
+
+record_runtime_result() {
+  local result="$1"
+  local reason="$2"
+  local commit_changed="$3"
+  local runner_model="$4"
+  eval "$(bash .plan/helper-scripts/runtime-state.sh record-result --result \"$result\" --reason \"$reason\" --commit-changed \"$commit_changed\" --runner-model \"$runner_model\" --format shell)"
+}
+
 # Step 5: Execution Loop
 # Each iteration = one attempt at the current task.
 # Loop continues until: max iterations reached, hard error, or explicit "no more tasks".
@@ -135,6 +149,32 @@ for ((i=1; i<=MAX_ITERATIONS; i++)); do
 
   # Gather recent commits for context
   recent_commits=$(git log -n 10 --format="%H%n%ad%n%B---" --date=short 2>/dev/null || echo "No recent commits found")
+  current_model_label=$(get_latest_model_label)
+  prepare_runtime_attempt "agy" "$current_model_label"
+
+  if [ "${RUNNER_STATE_RESULT:-}" = "no-tasks" ]; then
+    timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+    echo "[$timestamp] NO MORE TASKS" >> .plan/progress.txt
+    echo -e "\n${BOLD}${GREEN}🎉 LOOP COMPLETE: runtime state found no executable subtasks.${NC}"
+    exit 0
+  fi
+
+  runtime_contract=$(cat <<EOF
+Runtime contract for this attempt:
+- Selected task: ${CURRENT_TASK_ID} / ${CURRENT_SUBTASK_ID}
+- Task file: ${CURRENT_TASK_PATH}
+- Required model tier from task metadata: ${CURRENT_REQUIRED_MODEL}
+- Attempt count for this sub-task: ${CURRENT_ATTEMPT_COUNT}
+- Retrieval round: ${CURRENT_RETRIEVAL_ROUND}/3
+- Escalation triggers: ${CURRENT_ESCALATE_IF:-none}
+- Files to touch: ${CURRENT_FILES_TO_TOUCH:-none}
+EOF
+)
+
+  retrieval_bundle=""
+  if [ "${CURRENT_SHOULD_RETRIEVE:-false}" = "true" ]; then
+    retrieval_bundle=$(bash .plan/helper-scripts/retrieve-history.sh --task-id "$CURRENT_TASK_ID" --epic-id "$CURRENT_EPIC_ID" --prd-id "${CURRENT_PRD_ID:-}" --query "${CURRENT_TASK_TITLE} ${CURRENT_SUBTASK_TITLE}" --limit 5)
+  fi
 
   tmpfile=$(mktemp)
   trap "rm -f $tmpfile" EXIT
@@ -147,11 +187,24 @@ for ((i=1; i<=MAX_ITERATIONS; i++)); do
 
   # CRITICAL: every iteration is a fresh session (no --continue).
   # State lives in .plan/, agents.local.md, and git — not in the conversation.
-  agy --dangerously-skip-permissions --print-timeout 15m --print "Start the Ralph Loop iteration $i. Read .plan/RULES.md FIRST (canonical engineering rules), then agents.local.md if it exists, then .plan/PRD.md, then .plan/index.md (single source of truth for epics and tasks), then the current epic and task files. Pick the next task, complete ONLY that task, then log your status to .plan/progress.txt. Recent commits: $recent_commits" | tee "$tmpfile"
+  agy --dangerously-skip-permissions --print-timeout 15m --print "Start the Ralph Loop iteration $i. Read .plan/RULES.md FIRST (canonical engineering rules), then agents.local.md if it exists, then .plan/PRD.md, then .plan/index.md (single source of truth for epics and tasks), then the current epic and task files. Pick the next task, complete ONLY that task, then log your status to .plan/progress.txt. Recent commits: $recent_commits
+
+$runtime_contract
+
+If this attempt cannot complete, respect the runtime contract: preserve the selected sub-task, note whether the failure needs escalation, and log BLOCKED only with a concrete blocker reason.
+
+${retrieval_bundle:+Historical retrieval bundle for this attempt:
+$retrieval_bundle
+}" | tee "$tmpfile"
   
   cmd_status=$?
   end_time=$(date +%s)
   duration=$((end_time - start_time))
+  end_commit=$(git rev-parse HEAD 2>/dev/null || echo "")
+  commit_changed=false
+  if [ -n "$end_commit" ] && [ "$start_commit" != "$end_commit" ]; then
+    commit_changed=true
+  fi
   
   if [ $cmd_status -ne 0 ]; then
     echo -e "\n${RED}❌ Error: agy CLI exited with status $cmd_status after ${duration}s.${NC}"
@@ -190,7 +243,7 @@ for ((i=1; i<=MAX_ITERATIONS; i++)); do
   fi
 
   if [ -n "$new_progress_lines" ] && echo "$new_progress_lines" | grep -q -i -E "NO MORE TASKS|NO TASKS|Loop Terminated"; then
-    end_commit=$(git rev-parse HEAD 2>/dev/null || echo "")
+    record_runtime_result "no-tasks" "" "$commit_changed" "$(get_latest_model_label)"
     if [ -n "$end_commit" ] && [ "$start_commit" != "$end_commit" ]; then
       latest_commit=$(get_latest_ralph_commit)
       latest_commit_hash=${latest_commit%%|*}
@@ -206,8 +259,16 @@ for ((i=1; i<=MAX_ITERATIONS; i++)); do
     exit 0
   fi
 
+  if [ -n "$new_progress_lines" ] && echo "$new_progress_lines" | grep -q -E "BLOCKED|CLARIFICATION_NEEDED|HISTORY_INSUFFICIENT"; then
+    block_reason=$(echo "$new_progress_lines" | grep -E "BLOCKED|CLARIFICATION_NEEDED|HISTORY_INSUFFICIENT" | tail -n 1 | tr '[:upper:]' '[:lower:]' | tr -cs 'a-z0-9' '-')
+    record_runtime_result "blocked" "${block_reason:-blocked-by-agent}" "$commit_changed" "$(get_latest_model_label)"
+    echo -e "${YELLOW}⛔ Task moved to blocked state: ${RECORDED_REASON}${NC}"
+    rm -f "$tmpfile"
+    continue
+  fi
+
   if [ -n "$new_progress_lines" ] && echo "$new_progress_lines" | grep -q -i -E "100% Complete"; then
-    end_commit=$(git rev-parse HEAD 2>/dev/null || echo "")
+    record_runtime_result "success" "" "$commit_changed" "$(get_latest_model_label)"
     if [ -n "$end_commit" ] && [ "$start_commit" != "$end_commit" ]; then
       latest_commit=$(get_latest_ralph_commit)
       latest_commit_hash=${latest_commit%%|*}
@@ -225,6 +286,15 @@ for ((i=1; i<=MAX_ITERATIONS; i++)); do
     continue
   fi
 
+  record_runtime_result "retry" "no-completion-signal" "$commit_changed" "$(get_latest_model_label)"
+  if [ "${RECORDED_RESULT:-retry}" = "blocked" ]; then
+    echo -e "${YELLOW}⛔ Retrieval rounds exhausted without a code change. Task marked blocked: ${RECORDED_REASON}${NC}"
+    rm -f "$tmpfile"
+    continue
+  fi
+  if [ "${RECORDED_ESCALATED:-false}" = "true" ]; then
+    echo -e "${YELLOW}⬆️ Escalation persisted for ${CURRENT_TASK_ID}/${CURRENT_SUBTASK_ID} after repeated failures.${NC}"
+  fi
   echo -e "${YELLOW}🔁 No completion signal detected. Will retry on next attempt.${NC}"
   rm -f "$tmpfile"
 done

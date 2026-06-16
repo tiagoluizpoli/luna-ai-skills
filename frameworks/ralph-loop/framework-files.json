@@ -11,6 +11,7 @@
     ".plan/helper-scripts/get-current-prd-handoff.sh",
     ".plan/helper-scripts/get-current-prd.sh",
     ".plan/helper-scripts/retrieve-history.sh",
+    ".plan/helper-scripts/runtime-state.sh",
     ".plan/helper-scripts/set-current-grill-handoff.sh",
     ".plan/helper-scripts/set-current-grill.sh",
     ".plan/helper-scripts/set-current-prd-handoff.sh",

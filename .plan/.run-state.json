@@ -1,12 +1,17 @@
 {
   "currentRunId": null,
-  "currentPrdId": "PRD-v1-installable-ralph-loop-framework-core",
+  "currentPrdId": "PRD-v2-installable-ralph-loop-framework-core",
   "currentEpicId": null,
   "currentTaskId": null,
   "currentSubTaskId": null,
   "attemptCount": 0,
   "retrievalRound": 0,
-  "lastModel": null,
+  "lastModel": "gpt-5.4",
   "escalated": false,
-  "lastFailureReason": null
+  "lastFailureReason": null,
+  "requiredModel": null,
+  "runnerName": "hermes",
+  "escalateIf": [],
+  "filesToTouch": [],
+  "lastCommitChanged": false
 }

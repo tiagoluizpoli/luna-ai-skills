@@ -2,7 +2,7 @@
 type: task
 id: T-12
 epic: E-04
-status: ready
+status: done
 blocked-by: []
 default-model: high
 ---
@@ -20,15 +20,15 @@ do not yet enforce the full retry/escalation/retrieval logic end to end.
 
 ## Acceptance Criteria
 
-- [ ] Runner automation reads sub-task model metadata.
-- [ ] Retry counts and escalation decisions are persisted and respected.
-- [ ] Retrieval rounds and blocked-state transitions are enforced.
+- [x] Runner automation reads sub-task model metadata.
+- [x] Retry counts and escalation decisions are persisted and respected.
+- [x] Retrieval rounds and blocked-state transitions are enforced.
 
 ## Sub-Tasks
 
 ### ST-01 - Teach the runners to consume the full runtime contract
 
-status: ready
+status: done
 model: high
 escalate-if: [failing-twice, cross-file-refactor, architecture-choice]
 blocked-by: []
@@ -48,4 +48,6 @@ verification:
 
 #### Execution Notes
 
-- Not started yet.
+- Added `.plan/helper-scripts/runtime-state.sh` and the framework starter copy to parse task/sub-task runtime metadata, persist attempt/retrieval/escalation state in `.run-state.json`, and synchronize blocked/done transitions through `sync-state.sh`.
+- Wired `ralph-loop-hermes.sh`, `ralph-loop-codex.sh`, and `ralph-loop-agy.sh` to load the selected sub-task contract before each attempt, inject bounded retrieval bundles into the agent prompt, and persist success/retry/blocked outcomes after each run.
+- Verified on temporary `.plan` fixtures that repeated retries escalate after the second failure, auto-block after the third bounded retrieval with no code change, and mark the task done on success while updating epic/index aggregates.

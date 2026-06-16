@@ -2,7 +2,7 @@
 type: task
 id: T-11
 epic: E-04
-status: ready
+status: done
 blocked-by: []
 default-model: medium
 ---
@@ -19,15 +19,15 @@ closer to scaffolds than to full production automation.
 
 ## Acceptance Criteria
 
-- [ ] `sync-state.sh` updates task and epic aggregates directly.
-- [ ] `retrieve-history.sh` ranks and compacts results more intelligently.
-- [ ] `archive-run.sh` handles run-family archival more completely.
+- [x] `sync-state.sh` updates task and epic aggregates directly.
+- [x] `retrieve-history.sh` ranks and compacts results more intelligently.
+- [x] `archive-run.sh` handles run-family archival more completely.
 
 ## Sub-Tasks
 
 ### ST-01 - Harden the sync and retrieval scripts
 
-status: ready
+status: done
 model: high
 escalate-if: [failing-twice, architecture-choice]
 blocked-by: []
@@ -46,4 +46,7 @@ verification:
 
 #### Execution Notes
 
-- Not started yet.
+- Replaced the scaffold-only `sync-state.sh` with in-place task/epic/index aggregation updates.
+- Reworked `retrieve-history.sh` into a ranked local bundle over current history, archived histories, summaries, and manifests.
+- Expanded `archive-run.sh` to snapshot the active execution tree, canonical pointer targets, and a per-family summary copy.
+- Verified the helper scripts with `bash -n` and a temporary fixture workspace that exercised sync, retrieval, and archival end-to-end.

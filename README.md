@@ -16,13 +16,13 @@ npx skills@latest add mattpocock/skills
 Then run the framework bootstrap from the target repository root:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/tiagoluizpoli/luna-ai-skills/main/frameworks/ralph-loop/installer/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/tiagoluizpoli/luna-ai-skills/master/frameworks/ralph-loop/installer/install.sh | bash
 ```
 
 Safer manual variant:
 
 ```bash
-curl -O https://raw.githubusercontent.com/tiagoluizpoli/luna-ai-skills/main/frameworks/ralph-loop/installer/install.sh
+curl -O https://raw.githubusercontent.com/tiagoluizpoli/luna-ai-skills/master/frameworks/ralph-loop/installer/install.sh
 less install.sh
 bash install.sh
 ```

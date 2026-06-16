@@ -8,5 +8,10 @@
   "retrievalRound": 0,
   "lastModel": null,
   "escalated": false,
-  "lastFailureReason": null
+  "lastFailureReason": null,
+  "requiredModel": null,
+  "runnerName": null,
+  "escalateIf": [],
+  "filesToTouch": [],
+  "lastCommitChanged": false
 }

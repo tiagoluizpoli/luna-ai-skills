@@ -32,8 +32,8 @@
 | --- | --- | --- | --- | --- |
 | E-01 | Framework Contract And Starter | done | — | `.plan/epics/01-framework-contract/epic.md` |
 | E-02 | Skill Packaging And Ownership | done | — | `.plan/epics/02-skill-packaging/epic.md` |
-| E-03 | Installer And Verification | in-progress | — | `.plan/epics/03-installer-and-verification/epic.md` |
-| E-04 | Rollout And Runtime Hardening | in-progress | — | `.plan/epics/04-rollout-and-hardening/epic.md` |
+| E-03 | Installer And Verification | blocked | remote-repo-not-public | `.plan/epics/03-installer-and-verification/epic.md` |
+| E-04 | Rollout And Runtime Hardening | done | — | `.plan/epics/04-rollout-and-hardening/epic.md` |
 
 ## Tasks
 
@@ -49,8 +49,8 @@
 | T-14 | E-02 | Create the `luna-grill-with-docs` wrapper skill | done | — | `.plan/epics/02-skill-packaging/tasks/05-create-luna-grill-with-docs-skill.md` |
 | T-07 | E-03 | Build bootstrap and Node installer | done | — | `.plan/epics/03-installer-and-verification/tasks/01-build-installer.md` |
 | T-08 | E-03 | Verify install, update, and adoption on clean local repos | done | — | `.plan/epics/03-installer-and-verification/tasks/02-local-verification.md` |
-| T-09 | E-03 | Validate the public GitHub bootstrap path | ready | — | `.plan/epics/03-installer-and-verification/tasks/03-public-bootstrap-validation.md` |
-| T-10 | E-04 | Apply the framework to a real consumer repository | ready | — | `.plan/epics/04-rollout-and-hardening/tasks/01-consumer-repo-rollout.md` |
-| T-11 | E-04 | Harden helper scripts into richer automation | ready | — | `.plan/epics/04-rollout-and-hardening/tasks/02-helper-script-hardening.md` |
-| T-12 | E-04 | Wire the full runner state machine to the new contract | ready | — | `.plan/epics/04-rollout-and-hardening/tasks/03-runner-state-machine.md` |
+| T-09 | E-03 | Validate the public GitHub bootstrap path | blocked | remote-repo-not-public | `.plan/epics/03-installer-and-verification/tasks/03-public-bootstrap-validation.md` |
+| T-10 | E-04 | Apply the framework to a real consumer repository | done | — | `.plan/epics/04-rollout-and-hardening/tasks/01-consumer-repo-rollout.md` |
+| T-11 | E-04 | Harden helper scripts into richer automation | done | — | `.plan/epics/04-rollout-and-hardening/tasks/02-helper-script-hardening.md` |
+| T-12 | E-04 | Wire the full runner state machine to the new contract | done | — | `.plan/epics/04-rollout-and-hardening/tasks/03-runner-state-machine.md` |
 | T-15 | E-04 | Add deterministic phase handoffs and planning pointers | done | — | `.plan/epics/04-rollout-and-hardening/tasks/04-deterministic-phase-handoffs.md` |
