@@ -27,14 +27,23 @@ resolve_repo_root() {
 }
 
 resolve_default_branch() {
-  curl -fsSL "https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}" \
+  local auth_header=()
+  if [[ -n "${GITHUB_TOKEN:-}" ]]; then
+    auth_header=(-H "Authorization: token ${GITHUB_TOKEN}")
+  fi
+
+  curl -fsSL "${auth_header[@]}" "https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}" \
     | node -e 'let data="";process.stdin.on("data",d=>data+=d);process.stdin.on("end",()=>{const json=JSON.parse(data);process.stdout.write(json.default_branch || "main");});'
 }
 
 resolve_commit_sha() {
   local ref_name="$1"
+  local auth_header=()
+  if [[ -n "${GITHUB_TOKEN:-}" ]]; then
+    auth_header=(-H "Authorization: token ${GITHUB_TOKEN}")
+  fi
 
-  curl -fsSL "https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/commits/${ref_name}" \
+  curl -fsSL "${auth_header[@]}" "https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/commits/${ref_name}" \
     | node -e 'let data="";process.stdin.on("data",d=>data+=d);process.stdin.on("end",()=>{const json=JSON.parse(data);process.stdout.write(json.sha || "");});'
 }
 
@@ -53,12 +62,19 @@ main() {
 
   ref_name="$(resolve_default_branch)"
   commit_sha="$(resolve_commit_sha "${ref_name}")"
-  tarball_url="https://codeload.github.com/${REPO_OWNER}/${REPO_NAME}/tar.gz/refs/heads/${ref_name}"
 
-  curl -fsSL "${tarball_url}" -o "${temp_dir}/framework.tar.gz"
+  local auth_header=()
+  if [[ -n "${GITHUB_TOKEN:-}" ]]; then
+    auth_header=(-H "Authorization: token ${GITHUB_TOKEN}")
+    tarball_url="https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/tarball/${ref_name}"
+  else
+    tarball_url="https://codeload.github.com/${REPO_OWNER}/${REPO_NAME}/tar.gz/refs/heads/${ref_name}"
+  fi
+
+  curl -fsSL "${auth_header[@]}" "${tarball_url}" -o "${temp_dir}/framework.tar.gz"
   tar -xzf "${temp_dir}/framework.tar.gz" -C "${temp_dir}"
 
-  extracted_root="$(find "${temp_dir}" -maxdepth 1 -type d -name "${REPO_NAME}-*" | head -n 1)"
+  extracted_root="$(find "${temp_dir}" -mindepth 1 -maxdepth 1 -type d | head -n 1)"
   installer_dir="${extracted_root}/frameworks/ralph-loop/installer"
 
   npm install --prefix "${installer_dir}" >/dev/null
