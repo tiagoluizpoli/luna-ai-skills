@@ -58,7 +58,7 @@ main() {
 
   repo_root="$(resolve_repo_root)"
   temp_dir="$(mktemp -d /tmp/ralph-loop-installer.XXXXXX)"
-  trap 'rm -rf "${temp_dir}"' EXIT
+  trap "rm -rf '${temp_dir}'" EXIT
 
   ref_name="$(resolve_default_branch)"
   commit_sha="$(resolve_commit_sha "${ref_name}")"
