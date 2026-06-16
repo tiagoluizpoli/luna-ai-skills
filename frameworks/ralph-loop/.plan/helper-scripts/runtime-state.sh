@@ -144,6 +144,13 @@ def normalize_model(raw_model: str) -> str:
     return aliases.get(model, model or "medium")
 
 
+def max_model(left: str, right: str) -> str:
+    order = {"low": 0, "medium": 1, "high": 2}
+    left_normalized = normalize_model(left)
+    right_normalized = normalize_model(right)
+    return left_normalized if order.get(left_normalized, 1) >= order.get(right_normalized, 1) else right_normalized
+
+
 def parse_subtasks(text: str, default_model: str) -> list[SubTask]:
     lines = text.splitlines()
     subtasks: list[SubTask] = []
@@ -304,16 +311,32 @@ def save_run_state(plan_dir: Path, state: dict[str, Any]) -> None:
     write_text(plan_dir / ".run-state.json", json.dumps(state, indent=2) + "\n")
 
 
+def history_sources(plan_dir: Path) -> list[Path]:
+    candidates = [
+        plan_dir / ".run-history.jsonl",
+        plan_dir / ".run-summary.md",
+    ]
+    candidates.extend(sorted((plan_dir / "summaries").glob("*.md")))
+    candidates.extend(sorted((plan_dir / "archive").glob("*/run-history.jsonl")))
+    candidates.extend(sorted((plan_dir / "archive").glob("*/run-summary.md")))
+    candidates.extend(sorted((plan_dir / "archive").glob("*/manifest.json")))
+    return [path for path in candidates if path.is_file()]
+
+
 def task_touches_previously_worked_area(plan_dir: Path, task: TaskRecord, subtask: SubTask) -> bool:
-    repo_root = plan_dir.parent
-    for relative_path in subtask.files_to_touch:
-        if (repo_root / relative_path).exists():
-            return True
-    history_file = plan_dir / ".run-history.jsonl"
-    if not history_file.is_file():
+    sources = history_sources(plan_dir)
+    if not sources:
         return False
-    history_text = read_text(history_file)
-    return task.id in history_text or task.epic_id in history_text
+
+    search_terms = [task.id, task.epic_id]
+    search_terms.extend(subtask.files_to_touch)
+
+    for source in sources:
+        text = read_text(source)
+        if any(term and term in text for term in search_terms):
+            return True
+
+    return False
 
 
 def make_run_id(task: TaskRecord, subtask: SubTask) -> str:
@@ -404,6 +427,7 @@ def prepare_attempt(plan_dir: Path, runner: str, runner_model: str, output_forma
     )
     attempt_count = int(state.get("attemptCount") or 0) + 1 if same_subtask else 1
     retrieval_round = int(state.get("retrievalRound") or 0) if same_subtask else 0
+    current_prd = current_prd_id(plan_dir)
     should_retrieve = (
         task_touches_previously_worked_area(plan_dir, task, subtask)
         and retrieval_round < 3
@@ -411,19 +435,24 @@ def prepare_attempt(plan_dir: Path, runner: str, runner_model: str, output_forma
     if should_retrieve:
         retrieval_round += 1
 
+    escalated = bool(state.get("escalated")) if same_subtask else False
+    effective_model = subtask.model
+    if escalated:
+        effective_model = max_model(subtask.model, "high")
+
     state.update(
         {
             "currentRunId": make_run_id(task, subtask),
-            "currentPrdId": current_prd_id(plan_dir),
+            "currentPrdId": current_prd,
             "currentEpicId": task.epic_id,
             "currentTaskId": task.id,
             "currentSubTaskId": subtask.id,
             "attemptCount": attempt_count,
             "retrievalRound": retrieval_round,
             "lastModel": runner_model,
-            "requiredModel": subtask.model,
+            "requiredModel": effective_model,
             "runnerName": runner,
-            "escalated": bool(state.get("escalated")) if same_subtask else False,
+            "escalated": escalated,
             "lastFailureReason": state.get("lastFailureReason") if same_subtask else None,
             "escalateIf": subtask.escalate_if,
             "filesToTouch": subtask.files_to_touch,
@@ -444,7 +473,7 @@ def prepare_attempt(plan_dir: Path, runner: str, runner_model: str, output_forma
             "current_subtask_id": subtask.id,
             "current_subtask_title": subtask.title,
             "current_subtask_status": subtask.status,
-            "current_required_model": subtask.model,
+            "current_required_model": effective_model,
             "current_escalate_if": subtask.escalate_if,
             "current_files_to_touch": subtask.files_to_touch,
             "current_attempt_count": attempt_count,

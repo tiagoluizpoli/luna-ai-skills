@@ -87,6 +87,17 @@ def blocked_display(values: list[str]) -> str:
     return "—" if not values else ", ".join(values)
 
 
+def unique_preserving_order(values: list[str]) -> list[str]:
+    seen: set[str] = set()
+    result: list[str] = []
+    for value in values:
+        if value in seen:
+            continue
+        seen.add(value)
+        result.append(value)
+    return result
+
+
 def derive_status(statuses: list[str]) -> str:
     if not statuses:
         return "ready"
@@ -222,7 +233,23 @@ def main(plan_dir: Path) -> None:
             if record["epic_id"] == epic_id
         }
         derived_status = derive_status([record["status"] for record in child_tasks.values()])
+        derived_blocked_by: list[str] = []
+        if derived_status == "blocked":
+            derived_blocked_by = unique_preserving_order(
+                [
+                    blocker
+                    for record in child_tasks.values()
+                    if record["status"] == "blocked"
+                    for blocker in record["blocked_by"]
+                ]
+            )
+
         updated_text = set_frontmatter_value(text, "status", derived_status)
+        updated_text = set_frontmatter_value(
+            updated_text,
+            "blocked-by",
+            "[]" if not derived_blocked_by else "[" + ", ".join(derived_blocked_by) + "]",
+        )
         updated_text = update_markdown_table(
             updated_text,
             {
@@ -235,7 +262,7 @@ def main(plan_dir: Path) -> None:
 
         epic_records[epic_id] = {
             "status": derived_status,
-            "blocked_by": blocked_by,
+            "blocked_by": derived_blocked_by,
             "path": epic_file,
         }
 
