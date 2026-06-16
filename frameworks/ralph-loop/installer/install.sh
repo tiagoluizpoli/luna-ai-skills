@@ -84,7 +84,8 @@ main() {
     --target-root "${repo_root}" \
     --repo-url "${REPO_URL}" \
     --ref "${ref_name}" \
-    --sha "${commit_sha}"
+    --sha "${commit_sha}" \
+    "$@"
 }
 
 main "$@"
