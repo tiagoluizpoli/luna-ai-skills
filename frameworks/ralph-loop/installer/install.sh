@@ -79,13 +79,23 @@ main() {
 
   npm install --prefix "${installer_dir}" >/dev/null
 
-  node "${installer_dir}/src/index.mjs" \
-    --source-root "${extracted_root}" \
-    --target-root "${repo_root}" \
-    --repo-url "${REPO_URL}" \
-    --ref "${ref_name}" \
-    --sha "${commit_sha}" \
-    "$@"
+  if [ -t 2 ] && [ -c /dev/tty ]; then
+    node "${installer_dir}/src/index.mjs" \
+      --source-root "${extracted_root}" \
+      --target-root "${repo_root}" \
+      --repo-url "${REPO_URL}" \
+      --ref "${ref_name}" \
+      --sha "${commit_sha}" \
+      "$@" </dev/tty
+  else
+    node "${installer_dir}/src/index.mjs" \
+      --source-root "${extracted_root}" \
+      --target-root "${repo_root}" \
+      --repo-url "${REPO_URL}" \
+      --ref "${ref_name}" \
+      --sha "${commit_sha}" \
+      "$@"
+  fi
 }
 
 main "$@"
