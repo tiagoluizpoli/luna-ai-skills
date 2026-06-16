@@ -11,6 +11,8 @@ repository when it is working on its own Ralph Loop framework.
 - Keep framework-managed source under `frameworks/ralph-loop/`.
 - Keep the live planning and documentation surface for this repo under `.plan/`.
 - `agents.local.md` is optional repo-local context. Read it only if present.
+- Treat current pointer files and current handoff pointers under `.plan/` as
+  canonical selectors for cross-session planning phases.
 - Respect blocked state. Do not select blocked work unless an explicit unblock
   transition has been recorded.
 - Work at the sub-task level. A task or epic status is derived, not invented.

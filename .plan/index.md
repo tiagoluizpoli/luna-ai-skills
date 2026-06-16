@@ -7,7 +7,11 @@
 
 ## Current Run Family
 
-- Current PRD: `.plan/prds/PRD-v1-installable-ralph-loop-framework-core.md`
+- Current PRD: `.plan/prds/PRD-v2-installable-ralph-loop-framework-core.md`
+- Current PRD pointer: `.plan/prds/.current-prd`
+- Current grilling pointer: `.plan/grilling/.current-session`
+- Current grill handoff pointer: `.plan/handoffs/.current-grill-handoff`
+- Current PRD handoff pointer: `.plan/handoffs/.current-prd-handoff`
 - Active summary: `.plan/.run-summary.md`
 - Last archived family: `none`
 
@@ -19,7 +23,8 @@
 
 | Status | Version | Title | File | Canonical Record | Date |
 | --- | --- | --- | --- | --- | --- |
-| CURRENT | v1 | Installable Ralph Loop Framework Core | `.plan/prds/PRD-v1-installable-ralph-loop-framework-core.md` | `.plan/prds/PRD-v1-installable-ralph-loop-framework-core.md` | 2026-06-13 |
+| SUPERSEDED | v1 | Installable Ralph Loop Framework Core | `.plan/prds/PRD-v1-installable-ralph-loop-framework-core.md` | `.plan/prds/PRD-v1-installable-ralph-loop-framework-core.md` | 2026-06-13 |
+| CURRENT | v2 | Installable Ralph Loop Framework Core | `.plan/prds/PRD-v2-installable-ralph-loop-framework-core.md` | `.plan/prds/PRD-v2-installable-ralph-loop-framework-core.md` | 2026-06-15 |
 
 ## Epics
 
@@ -28,7 +33,7 @@
 | E-01 | Framework Contract And Starter | done | — | `.plan/epics/01-framework-contract/epic.md` |
 | E-02 | Skill Packaging And Ownership | done | — | `.plan/epics/02-skill-packaging/epic.md` |
 | E-03 | Installer And Verification | in-progress | — | `.plan/epics/03-installer-and-verification/epic.md` |
-| E-04 | Rollout And Runtime Hardening | ready | — | `.plan/epics/04-rollout-and-hardening/epic.md` |
+| E-04 | Rollout And Runtime Hardening | in-progress | — | `.plan/epics/04-rollout-and-hardening/epic.md` |
 
 ## Tasks
 
@@ -48,3 +53,4 @@
 | T-10 | E-04 | Apply the framework to a real consumer repository | ready | — | `.plan/epics/04-rollout-and-hardening/tasks/01-consumer-repo-rollout.md` |
 | T-11 | E-04 | Harden helper scripts into richer automation | ready | — | `.plan/epics/04-rollout-and-hardening/tasks/02-helper-script-hardening.md` |
 | T-12 | E-04 | Wire the full runner state machine to the new contract | ready | — | `.plan/epics/04-rollout-and-hardening/tasks/03-runner-state-machine.md` |
+| T-15 | E-04 | Add deterministic phase handoffs and planning pointers | done | — | `.plan/epics/04-rollout-and-hardening/tasks/04-deterministic-phase-handoffs.md` |

@@ -8,6 +8,10 @@
 ## Current Run Family
 
 - Current PRD: `.plan/prds/PRD-v1-replace-me.md`
+- Current PRD pointer: `.plan/prds/.current-prd`
+- Current grilling pointer: `.plan/grilling/.current-session`
+- Current grill handoff pointer: `.plan/handoffs/.current-grill-handoff`
+- Current PRD handoff pointer: `.plan/handoffs/.current-prd-handoff`
 - Active summary: `.plan/.run-summary.md`
 - Last archived family: `none`
 

@@ -15,6 +15,7 @@ without tying operational memory to SpecKit.
 - `.plan/.run-history.jsonl`
 - `.plan/.run-summary.md`
 - `.plan/prds/`
+- `.plan/handoffs/`
 - `.plan/epics/`
 - `.plan/sessions/`
 - `.plan/grilling/`
@@ -53,6 +54,7 @@ Workflow-owned files:
 - `.plan/.run-summary.md`
 - `.plan/epics/*`
 - `.plan/prds/*`
+- `.plan/handoffs/*`
 - `.plan/sessions/*`
 - `.plan/grilling/*`
 - `.plan/summaries/*`
@@ -72,6 +74,19 @@ npx skills@latest add mattpocock/skills
 Repo:
 
 `https://github.com/mattpocock/skills`
+
+## Phase pointers
+
+The planning wrappers use durable repo-local pointers instead of guessing from
+directory listings:
+
+- `.plan/grilling/.current-session`
+- `.plan/prds/.current-prd`
+- `.plan/handoffs/.current-grill-handoff`
+- `.plan/handoffs/.current-prd-handoff`
+
+Use the helper scripts under `.plan/helper-scripts/` to set and resolve those
+pointers deterministically across sessions.
 
 ## Migration note
 

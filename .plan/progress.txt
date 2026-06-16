@@ -6,3 +6,5 @@
 [2026-06-13 09:25:00] Added `luna-to-prd` as a framework-owned wrapper skill for the `.plan` PRD thin-index flow and updated the core skill bundle metadata.
 [2026-06-15 10:15:00] Added `luna-grill-with-docs` as a framework-owned wrapper skill for persistent `.plan/grilling/` session state and updated the core skill bundle metadata.
 [2026-06-15 11:05:00] Renamed the `.plan` issue wrapper to `luna-to-issues` and clarified that it resolves the `CURRENT` PRD from `.plan/PRD.md`.
+[2026-06-15 11:50:00] Added deterministic phase pointers and durable handoff surfaces for grilling -> PRD -> issues transitions, plus helper scripts and wrapper-skill contracts for cross-session continuity.
+[2026-06-15 12:20:00] Backfilled the missing grill-to-PRD handoff for the framework grilling session so `luna-to-prd` can be exercised from a fresh session without depending on implicit historical context.

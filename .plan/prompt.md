@@ -12,8 +12,10 @@ Read in this order:
 2. `agents.local.md` if it exists
 3. `.plan/PRD.md`
 4. `.plan/index.md`
-5. the current epic and task files for the selected work
-6. `.plan/.run-summary.md`
+5. current pointer files under `.plan/grilling/`, `.plan/prds/`, and
+   `.plan/handoffs/` when the selected phase depends on them
+6. the current epic and task files for the selected work
+7. `.plan/.run-summary.md`
 
 ## Work Selection
 
