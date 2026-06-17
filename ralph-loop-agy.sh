@@ -3,7 +3,7 @@
 # ⚡ RALPH LOOP RUNNER (AGY) ⚡
 # Runs the agy CLI in an autonomous loop to resolve issues iteratively without permission interrupts.
 # Managed as an agent-specific asset by the Ralph Loop installer.
-# Validated for shared vs agent-specific asset routing (iteration 6).
+# Validated for shared vs agent-specific asset routing (iteration 7).
 #
 # Loop semantics: each iteration is ONE attempt at the current task.
 # - Task success → log it, move to the next task (loop continues)

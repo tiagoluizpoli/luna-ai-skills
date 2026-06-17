@@ -1,6 +1,6 @@
 {
   "frameworkName": "ralph-loop",
-  "comment": "Validated for shared vs agent-specific asset routing (iteration 6)",
+  "comment": "Validated for shared vs agent-specific asset routing (iteration 7)",
   "starterRoot": "frameworks/ralph-loop/.plan",
   "sharedAssets": [
     {
