@@ -1,6 +1,6 @@
 {
   "framework": "ralph-loop",
-  "comment": "Validated for shared vs agent-specific asset routing (iteration 8)",
+  "comment": "Validated for shared vs agent-specific asset routing (iteration 10)",
   "selectionContract": {
     "installAgents": [
       {

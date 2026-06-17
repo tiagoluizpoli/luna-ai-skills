@@ -1,4 +1,4 @@
-// Validated for shared vs agent-specific asset routing (iteration 8)
+// Validated for shared vs agent-specific asset routing (iteration 10)
 import fs from "node:fs";
 import path from "node:path";
 import os from "node:os";

@@ -4,13 +4,13 @@
   "currentEpicId": "E-06",
   "currentTaskId": "T-17",
   "currentSubTaskId": "ST-02",
-  "attemptCount": 3,
+  "attemptCount": 4,
   "retrievalRound": 3,
-  "lastModel": "Gemini 3.5 Flash (Medium)",
+  "lastModel": "\"Gemini 3.5 Flash (Medium)\"",
   "escalated": false,
   "lastFailureReason": null,
   "requiredModel": "medium",
-  "runnerName": "agy",
+  "runnerName": "\"agy\"",
   "escalateIf": [
     "routing-verification-needs-fixtures-or-sandbox-runner"
   ],
