@@ -1,0 +1,529 @@
+{
+  "framework": "ralph-loop",
+  "mode": "adopt",
+  "adopted": true,
+  "source": {
+    "repoUrl": "https://github.com/tiagoluizpoli/luna-ai-skills",
+    "ref": "master",
+    "sha": "3b073d9bed41e861451cdd85643dd41f805755e3"
+  },
+  "selection": {
+    "agents": [
+      "hermes",
+      "codex",
+      "agy"
+    ],
+    "availabilityMode": "local",
+    "targets": [
+      "hermes-local",
+      "codex-local",
+      "agy-local"
+    ]
+  },
+  "installedAt": "2026-06-17T05:23:07.018Z",
+  "managedFiles": [
+    ".plan/prompt.md",
+    ".plan/RULES.md",
+    ".plan/helper-scripts/common.sh",
+    ".plan/helper-scripts/archive-run.sh",
+    ".plan/helper-scripts/get-current-grill-handoff.sh",
+    ".plan/helper-scripts/get-current-grill.sh",
+    ".plan/helper-scripts/get-current-prd-handoff.sh",
+    ".plan/helper-scripts/get-current-prd.sh",
+    ".plan/helper-scripts/retrieve-history.sh",
+    ".plan/helper-scripts/runtime-state.sh",
+    ".plan/helper-scripts/set-current-grill-handoff.sh",
+    ".plan/helper-scripts/set-current-grill.sh",
+    ".plan/helper-scripts/set-current-prd-handoff.sh",
+    ".plan/helper-scripts/set-current-prd.sh",
+    ".plan/helper-scripts/sync-state.sh",
+    ".plan/helper-scripts/validate-prereqs.sh",
+    ".plan/shared/epic-template.md",
+    ".plan/shared/task-template.md",
+    ".plan/.framework"
+  ],
+  "workflowOwnedFiles": [
+    ".plan/PRD.md",
+    ".plan/index.md",
+    ".plan/backlog.md",
+    ".plan/progress.txt",
+    ".plan/.run-state.json",
+    ".plan/.run-history.jsonl",
+    ".plan/.run-summary.md",
+    ".plan/epics/.gitkeep",
+    ".plan/grilling/.current-session",
+    ".plan/grilling/.gitkeep",
+    ".plan/handoffs/.current-grill-handoff",
+    ".plan/handoffs/.current-prd-handoff",
+    ".plan/handoffs/.gitkeep",
+    ".plan/prds/.current-prd",
+    ".plan/prds/.gitkeep",
+    ".plan/sessions/.gitkeep",
+    ".plan/archive/.gitkeep",
+    ".plan/summaries/.gitkeep"
+  ],
+  "installedAssets": [
+    {
+      "id": "plan-starter",
+      "class": "shared",
+      "category": "starter-workspace",
+      "installRoot": "repo",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/.plan",
+      "managedFiles": [
+        ".plan/prompt.md",
+        ".plan/RULES.md",
+        ".plan/helper-scripts/common.sh",
+        ".plan/helper-scripts/archive-run.sh",
+        ".plan/helper-scripts/get-current-grill-handoff.sh",
+        ".plan/helper-scripts/get-current-grill.sh",
+        ".plan/helper-scripts/get-current-prd-handoff.sh",
+        ".plan/helper-scripts/get-current-prd.sh",
+        ".plan/helper-scripts/retrieve-history.sh",
+        ".plan/helper-scripts/runtime-state.sh",
+        ".plan/helper-scripts/set-current-grill-handoff.sh",
+        ".plan/helper-scripts/set-current-grill.sh",
+        ".plan/helper-scripts/set-current-prd-handoff.sh",
+        ".plan/helper-scripts/set-current-prd.sh",
+        ".plan/helper-scripts/sync-state.sh",
+        ".plan/helper-scripts/validate-prereqs.sh",
+        ".plan/shared/epic-template.md",
+        ".plan/shared/task-template.md",
+        ".plan/.framework"
+      ],
+      "workflowOwnedFiles": [
+        ".plan/PRD.md",
+        ".plan/index.md",
+        ".plan/backlog.md",
+        ".plan/progress.txt",
+        ".plan/.run-state.json",
+        ".plan/.run-history.jsonl",
+        ".plan/.run-summary.md",
+        ".plan/epics/.gitkeep",
+        ".plan/grilling/.current-session",
+        ".plan/grilling/.gitkeep",
+        ".plan/handoffs/.current-grill-handoff",
+        ".plan/handoffs/.current-prd-handoff",
+        ".plan/handoffs/.gitkeep",
+        ".plan/prds/.current-prd",
+        ".plan/prds/.gitkeep",
+        ".plan/sessions/.gitkeep",
+        ".plan/archive/.gitkeep",
+        ".plan/summaries/.gitkeep"
+      ],
+      "installedAt": "2026-06-17T05:23:06.940Z"
+    },
+    {
+      "id": "runner-hermes",
+      "class": "agent-specific",
+      "category": "runner-script",
+      "agent": "hermes",
+      "installRoot": "repo",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/ralph-loop-hermes.sh",
+      "sourcePath": "ralph-loop-hermes.sh",
+      "availabilityBehavior": "repo-root-for-all-modes",
+      "installedAt": "2026-06-17T05:23:06.941Z"
+    },
+    {
+      "id": "runner-codex",
+      "class": "agent-specific",
+      "category": "runner-script",
+      "agent": "codex",
+      "installRoot": "repo",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/ralph-loop-codex.sh",
+      "sourcePath": "ralph-loop-codex.sh",
+      "availabilityBehavior": "repo-root-for-all-modes",
+      "installedAt": "2026-06-17T05:23:06.941Z"
+    },
+    {
+      "id": "runner-agy",
+      "class": "agent-specific",
+      "category": "runner-script",
+      "agent": "agy",
+      "installRoot": "repo",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/ralph-loop-agy.sh",
+      "sourcePath": "ralph-loop-agy.sh",
+      "availabilityBehavior": "repo-root-for-all-modes",
+      "installedAt": "2026-06-17T05:23:06.941Z"
+    }
+  ],
+  "installedSkills": [
+    {
+      "publicName": "luna-grill-with-docs",
+      "sourcePath": ".agents/skills/luna-grill-with-docs",
+      "target": "hermes-local",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/.hermes/skills/luna-ai/luna-grill-with-docs",
+      "installedAt": "2026-06-17T05:23:06.943Z"
+    },
+    {
+      "publicName": "luna-to-prd",
+      "sourcePath": ".agents/skills/luna-to-prd",
+      "target": "hermes-local",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/.hermes/skills/luna-ai/luna-to-prd",
+      "installedAt": "2026-06-17T05:23:06.943Z"
+    },
+    {
+      "publicName": "luna-to-issues",
+      "sourcePath": ".agents/skills/luna-to-issues",
+      "target": "hermes-local",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/.hermes/skills/luna-ai/luna-to-issues",
+      "installedAt": "2026-06-17T05:23:06.944Z"
+    },
+    {
+      "publicName": "commit",
+      "sourcePath": ".agents/skills/commit",
+      "target": "hermes-local",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/.hermes/skills/luna-ai/commit",
+      "installedAt": "2026-06-17T05:23:06.944Z"
+    },
+    {
+      "publicName": "code-review",
+      "sourcePath": ".agents/skills/code-review",
+      "target": "hermes-local",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/.hermes/skills/luna-ai/code-review",
+      "installedAt": "2026-06-17T05:23:06.946Z"
+    },
+    {
+      "publicName": "backend-specialist",
+      "sourcePath": ".agents/skills/backend-specialist",
+      "target": "hermes-local",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/.hermes/skills/luna-ai/backend-specialist",
+      "installedAt": "2026-06-17T05:23:06.948Z"
+    },
+    {
+      "publicName": "frontend-specialist",
+      "sourcePath": ".agents/skills/frontend-specialist",
+      "target": "hermes-local",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/.hermes/skills/luna-ai/frontend-specialist",
+      "installedAt": "2026-06-17T05:23:06.950Z"
+    },
+    {
+      "publicName": "react-architect",
+      "sourcePath": ".agents/skills/react-architect",
+      "target": "hermes-local",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/.hermes/skills/luna-ai/react-architect",
+      "installedAt": "2026-06-17T05:23:06.953Z"
+    },
+    {
+      "publicName": "tailwind-architect",
+      "sourcePath": ".agents/skills/tailwind-architect",
+      "target": "hermes-local",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/.hermes/skills/luna-ai/tailwind-architect",
+      "installedAt": "2026-06-17T05:23:06.955Z"
+    },
+    {
+      "publicName": "shadcn-specialist",
+      "sourcePath": ".agents/skills/shadcn-specialist",
+      "target": "hermes-local",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/.hermes/skills/luna-ai/shadcn-specialist",
+      "installedAt": "2026-06-17T05:23:06.956Z"
+    },
+    {
+      "publicName": "test-master",
+      "sourcePath": ".agents/skills/test-master",
+      "target": "hermes-local",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/.hermes/skills/luna-ai/test-master",
+      "installedAt": "2026-06-17T05:23:06.957Z"
+    },
+    {
+      "publicName": "diagnose",
+      "sourcePath": ".agents/skills/diagnose",
+      "target": "hermes-local",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/.hermes/skills/luna-ai/diagnose",
+      "installedAt": "2026-06-17T05:23:06.958Z"
+    },
+    {
+      "publicName": "conventional-commits",
+      "sourcePath": ".agents/skills/conventional-commits",
+      "target": "hermes-local",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/.hermes/skills/luna-ai/conventional-commits",
+      "installedAt": "2026-06-17T05:23:06.958Z"
+    },
+    {
+      "publicName": "test-cases",
+      "sourcePath": ".agents/skills/test-cases",
+      "target": "hermes-local",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/.hermes/skills/luna-ai/test-cases",
+      "installedAt": "2026-06-17T05:23:06.959Z"
+    },
+    {
+      "publicName": "test-backend",
+      "sourcePath": ".agents/skills/test-backend",
+      "target": "hermes-local",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/.hermes/skills/luna-ai/test-backend",
+      "installedAt": "2026-06-17T05:23:06.959Z"
+    },
+    {
+      "publicName": "test-frontend",
+      "sourcePath": ".agents/skills/test-frontend",
+      "target": "hermes-local",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/.hermes/skills/luna-ai/test-frontend",
+      "installedAt": "2026-06-17T05:23:06.960Z"
+    },
+    {
+      "publicName": "test-e2e",
+      "sourcePath": ".agents/skills/test-e2e",
+      "target": "hermes-local",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/.hermes/skills/luna-ai/test-e2e",
+      "installedAt": "2026-06-17T05:23:06.960Z"
+    },
+    {
+      "publicName": "test-coverage",
+      "sourcePath": ".agents/skills/test-coverage",
+      "target": "hermes-local",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/.hermes/skills/luna-ai/test-coverage",
+      "installedAt": "2026-06-17T05:23:06.960Z"
+    },
+    {
+      "publicName": "luna-grill-with-docs",
+      "sourcePath": ".agents/skills/luna-grill-with-docs",
+      "target": "codex-local",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agents/skills/luna-ai/luna-grill-with-docs",
+      "installedAt": "2026-06-17T05:23:06.962Z"
+    },
+    {
+      "publicName": "luna-to-prd",
+      "sourcePath": ".agents/skills/luna-to-prd",
+      "target": "codex-local",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agents/skills/luna-ai/luna-to-prd",
+      "installedAt": "2026-06-17T05:23:06.962Z"
+    },
+    {
+      "publicName": "luna-to-issues",
+      "sourcePath": ".agents/skills/luna-to-issues",
+      "target": "codex-local",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agents/skills/luna-ai/luna-to-issues",
+      "installedAt": "2026-06-17T05:23:06.963Z"
+    },
+    {
+      "publicName": "commit",
+      "sourcePath": ".agents/skills/commit",
+      "target": "codex-local",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agents/skills/luna-ai/commit",
+      "installedAt": "2026-06-17T05:23:06.963Z"
+    },
+    {
+      "publicName": "code-review",
+      "sourcePath": ".agents/skills/code-review",
+      "target": "codex-local",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agents/skills/luna-ai/code-review",
+      "installedAt": "2026-06-17T05:23:06.967Z"
+    },
+    {
+      "publicName": "backend-specialist",
+      "sourcePath": ".agents/skills/backend-specialist",
+      "target": "codex-local",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agents/skills/luna-ai/backend-specialist",
+      "installedAt": "2026-06-17T05:23:06.968Z"
+    },
+    {
+      "publicName": "frontend-specialist",
+      "sourcePath": ".agents/skills/frontend-specialist",
+      "target": "codex-local",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agents/skills/luna-ai/frontend-specialist",
+      "installedAt": "2026-06-17T05:23:06.971Z"
+    },
+    {
+      "publicName": "react-architect",
+      "sourcePath": ".agents/skills/react-architect",
+      "target": "codex-local",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agents/skills/luna-ai/react-architect",
+      "installedAt": "2026-06-17T05:23:06.974Z"
+    },
+    {
+      "publicName": "tailwind-architect",
+      "sourcePath": ".agents/skills/tailwind-architect",
+      "target": "codex-local",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agents/skills/luna-ai/tailwind-architect",
+      "installedAt": "2026-06-17T05:23:06.976Z"
+    },
+    {
+      "publicName": "shadcn-specialist",
+      "sourcePath": ".agents/skills/shadcn-specialist",
+      "target": "codex-local",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agents/skills/luna-ai/shadcn-specialist",
+      "installedAt": "2026-06-17T05:23:06.977Z"
+    },
+    {
+      "publicName": "test-master",
+      "sourcePath": ".agents/skills/test-master",
+      "target": "codex-local",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agents/skills/luna-ai/test-master",
+      "installedAt": "2026-06-17T05:23:06.979Z"
+    },
+    {
+      "publicName": "diagnose",
+      "sourcePath": ".agents/skills/diagnose",
+      "target": "codex-local",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agents/skills/luna-ai/diagnose",
+      "installedAt": "2026-06-17T05:23:06.979Z"
+    },
+    {
+      "publicName": "conventional-commits",
+      "sourcePath": ".agents/skills/conventional-commits",
+      "target": "codex-local",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agents/skills/luna-ai/conventional-commits",
+      "installedAt": "2026-06-17T05:23:06.980Z"
+    },
+    {
+      "publicName": "test-cases",
+      "sourcePath": ".agents/skills/test-cases",
+      "target": "codex-local",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agents/skills/luna-ai/test-cases",
+      "installedAt": "2026-06-17T05:23:06.981Z"
+    },
+    {
+      "publicName": "test-backend",
+      "sourcePath": ".agents/skills/test-backend",
+      "target": "codex-local",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agents/skills/luna-ai/test-backend",
+      "installedAt": "2026-06-17T05:23:06.982Z"
+    },
+    {
+      "publicName": "test-frontend",
+      "sourcePath": ".agents/skills/test-frontend",
+      "target": "codex-local",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agents/skills/luna-ai/test-frontend",
+      "installedAt": "2026-06-17T05:23:06.982Z"
+    },
+    {
+      "publicName": "test-e2e",
+      "sourcePath": ".agents/skills/test-e2e",
+      "target": "codex-local",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agents/skills/luna-ai/test-e2e",
+      "installedAt": "2026-06-17T05:23:06.982Z"
+    },
+    {
+      "publicName": "test-coverage",
+      "sourcePath": ".agents/skills/test-coverage",
+      "target": "codex-local",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agents/skills/luna-ai/test-coverage",
+      "installedAt": "2026-06-17T05:23:06.983Z"
+    },
+    {
+      "publicName": "luna-grill-with-docs",
+      "sourcePath": ".agents/skills/luna-grill-with-docs",
+      "target": "agy-local",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agents/skills/luna-ai/luna-grill-with-docs",
+      "installedAt": "2026-06-17T05:23:06.984Z"
+    },
+    {
+      "publicName": "luna-to-prd",
+      "sourcePath": ".agents/skills/luna-to-prd",
+      "target": "agy-local",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agents/skills/luna-ai/luna-to-prd",
+      "installedAt": "2026-06-17T05:23:06.985Z"
+    },
+    {
+      "publicName": "luna-to-issues",
+      "sourcePath": ".agents/skills/luna-to-issues",
+      "target": "agy-local",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agents/skills/luna-ai/luna-to-issues",
+      "installedAt": "2026-06-17T05:23:06.986Z"
+    },
+    {
+      "publicName": "commit",
+      "sourcePath": ".agents/skills/commit",
+      "target": "agy-local",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agents/skills/luna-ai/commit",
+      "installedAt": "2026-06-17T05:23:06.987Z"
+    },
+    {
+      "publicName": "code-review",
+      "sourcePath": ".agents/skills/code-review",
+      "target": "agy-local",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agents/skills/luna-ai/code-review",
+      "installedAt": "2026-06-17T05:23:06.991Z"
+    },
+    {
+      "publicName": "backend-specialist",
+      "sourcePath": ".agents/skills/backend-specialist",
+      "target": "agy-local",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agents/skills/luna-ai/backend-specialist",
+      "installedAt": "2026-06-17T05:23:06.994Z"
+    },
+    {
+      "publicName": "frontend-specialist",
+      "sourcePath": ".agents/skills/frontend-specialist",
+      "target": "agy-local",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agents/skills/luna-ai/frontend-specialist",
+      "installedAt": "2026-06-17T05:23:06.998Z"
+    },
+    {
+      "publicName": "react-architect",
+      "sourcePath": ".agents/skills/react-architect",
+      "target": "agy-local",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agents/skills/luna-ai/react-architect",
+      "installedAt": "2026-06-17T05:23:07.004Z"
+    },
+    {
+      "publicName": "tailwind-architect",
+      "sourcePath": ".agents/skills/tailwind-architect",
+      "target": "agy-local",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agents/skills/luna-ai/tailwind-architect",
+      "installedAt": "2026-06-17T05:23:07.007Z"
+    },
+    {
+      "publicName": "shadcn-specialist",
+      "sourcePath": ".agents/skills/shadcn-specialist",
+      "target": "agy-local",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agents/skills/luna-ai/shadcn-specialist",
+      "installedAt": "2026-06-17T05:23:07.008Z"
+    },
+    {
+      "publicName": "test-master",
+      "sourcePath": ".agents/skills/test-master",
+      "target": "agy-local",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agents/skills/luna-ai/test-master",
+      "installedAt": "2026-06-17T05:23:07.010Z"
+    },
+    {
+      "publicName": "diagnose",
+      "sourcePath": ".agents/skills/diagnose",
+      "target": "agy-local",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agents/skills/luna-ai/diagnose",
+      "installedAt": "2026-06-17T05:23:07.011Z"
+    },
+    {
+      "publicName": "conventional-commits",
+      "sourcePath": ".agents/skills/conventional-commits",
+      "target": "agy-local",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agents/skills/luna-ai/conventional-commits",
+      "installedAt": "2026-06-17T05:23:07.012Z"
+    },
+    {
+      "publicName": "test-cases",
+      "sourcePath": ".agents/skills/test-cases",
+      "target": "agy-local",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agents/skills/luna-ai/test-cases",
+      "installedAt": "2026-06-17T05:23:07.014Z"
+    },
+    {
+      "publicName": "test-backend",
+      "sourcePath": ".agents/skills/test-backend",
+      "target": "agy-local",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agents/skills/luna-ai/test-backend",
+      "installedAt": "2026-06-17T05:23:07.015Z"
+    },
+    {
+      "publicName": "test-frontend",
+      "sourcePath": ".agents/skills/test-frontend",
+      "target": "agy-local",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agents/skills/luna-ai/test-frontend",
+      "installedAt": "2026-06-17T05:23:07.015Z"
+    },
+    {
+      "publicName": "test-e2e",
+      "sourcePath": ".agents/skills/test-e2e",
+      "target": "agy-local",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agents/skills/luna-ai/test-e2e",
+      "installedAt": "2026-06-17T05:23:07.015Z"
+    },
+    {
+      "publicName": "test-coverage",
+      "sourcePath": ".agents/skills/test-coverage",
+      "target": "agy-local",
+      "installPath": "/home/tiago/01-dev-env/personal-repos/luna-ai-skills/.agents/skills/luna-ai/test-coverage",
+      "installedAt": "2026-06-17T05:23:07.016Z"
+    }
+  ]
+}

@@ -23,8 +23,6 @@ Read in this order:
 - Never pick blocked work.
 - Use task-file sub-task metadata as the atomic source of truth.
 - Use `.plan/helper-scripts/sync-state.sh` after state mutations.
-- Prefer tasks that advance the installable Ralph Loop framework itself before
-  optional follow-up ideas.
 
 If no executable work remains, emit `<promise>NO MORE TASKS</promise>`.
 
