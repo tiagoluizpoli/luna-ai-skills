@@ -3,7 +3,7 @@ type: task
 id: T-17
 epic: E-06
 status: in-progress
-blocked-by: [T-16]
+blocked-by: []
 default-model: medium
 ---
 

@@ -1,17 +1,26 @@
 {
-  "currentRunId": null,
-  "currentPrdId": "PRD-v2-installable-ralph-loop-framework-core",
-  "currentEpicId": null,
-  "currentTaskId": null,
-  "currentSubTaskId": null,
-  "attemptCount": 0,
-  "retrievalRound": 0,
+  "currentRunId": "e-06-t-17-st-01",
+  "currentPrdId": "PRD-v3-installer-target-model-hardening",
+  "currentEpicId": "E-06",
+  "currentTaskId": "T-17",
+  "currentSubTaskId": "ST-01",
+  "attemptCount": 8,
+  "retrievalRound": 3,
   "lastModel": "gemini-3.5-flash",
   "escalated": false,
   "lastFailureReason": null,
-  "requiredModel": null,
+  "requiredModel": "medium",
   "runnerName": "agy",
-  "escalateIf": [],
-  "filesToTouch": [],
+  "escalateIf": [
+    "asset-classification-forces-large-installer-refactor"
+  ],
+  "filesToTouch": [
+    "frameworks/ralph-loop/installer/src/index.mjs",
+    "frameworks/ralph-loop/framework-files.json",
+    "frameworks/ralph-loop/skills-manifest.json",
+    "ralph-loop-hermes.sh",
+    "ralph-loop-codex.sh",
+    "ralph-loop-agy.sh"
+  ],
   "lastCommitChanged": false
 }
