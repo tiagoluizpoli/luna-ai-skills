@@ -38,7 +38,7 @@
 | E-05 | Installer Selection Contract | done | — | `.plan/epics/05-installer-selection-contract/epic.md` |
 | E-06 | Asset And Ownership Contract | done | — | `.plan/epics/06-asset-and-ownership-contract/epic.md` |
 | E-07 | Update State Contract | done | — | `.plan/epics/07-update-state-contract/epic.md` |
-| E-08 | Verification And Reconciliation | ready | — | `.plan/epics/08-verification-and-reconciliation/epic.md` |
+| E-08 | Verification And Reconciliation | done | — | `.plan/epics/08-verification-and-reconciliation/epic.md` |
 
 ## Tasks
 
@@ -63,4 +63,4 @@
 | T-17 | E-06 | Asset routing contract: shared vs agent-specific assets | done | — | `.plan/epics/06-asset-and-ownership-contract/tasks/01-asset-routing-contract.md` |
 | T-18 | E-06 | Install ownership and starter manifest alignment | done | — | `.plan/epics/06-asset-and-ownership-contract/tasks/02-install-ownership-and-starter-manifest-alignment.md` |
 | T-19 | E-07 | Update-state hardening: rich metadata, visible reuse, explicit override | done | — | `.plan/epics/07-update-state-contract/tasks/01-update-state-hardening.md` |
-| T-20 | E-08 | Verification and documentation reconciliation against the hardened installer | ready | T-18, T-19 | `.plan/epics/08-verification-and-reconciliation/tasks/01-verification-and-documentation-reconciliation.md` |
+| T-20 | E-08 | Verification and documentation reconciliation against the hardened installer | done | — | `.plan/epics/08-verification-and-reconciliation/tasks/01-verification-and-documentation-reconciliation.md` |

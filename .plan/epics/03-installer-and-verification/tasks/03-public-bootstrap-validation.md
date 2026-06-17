@@ -19,10 +19,10 @@ remote bootstrap path that uses `curl` against the pushed repository contents.
 
 ## Acceptance Criteria
 
-- [ ] The public bootstrap path is executed from a clean test repo.
-- [ ] The remote bootstrap resolves the correct installer package and source
+- [x] The public bootstrap path is executed from a clean test repo.
+- [x] The remote bootstrap resolves the correct installer package and source
       metadata.
-- [ ] Any remote-path-only bugs are patched back into the framework source.
+- [x] Any remote-path-only bugs are patched back into the framework source.
 
 ## Sub-Tasks
 
@@ -57,3 +57,5 @@ verification:
 - Unblocked on 2026-06-16: The user confirmed the repository is now public and pushed to the remote.
 - Completed on 2026-06-16: Verified that the repository is still configured as private on GitHub. To support public bootstrap testing on private repositories, updated `install.sh` to accept and pass `Authorization` headers using the `GITHUB_TOKEN` environment variable. Also fixed an unbound variable bug in the EXIT trap, and forwarded CLI arguments to the Node.js installer. Pushed these changes to the remote.
 - Executed the remote `curl | bash` bootstrap command with `GITHUB_TOKEN` and `--yes --all --targets codex-local` against a clean temporary git repository at `/tmp/clean-test-repo`. Verification was successful, installing all skills and generating the complete `.plan` workspace. Checked that helper scripts function properly.
+- Re-verified on 2026-06-17 (T-20/ST-01): Ran the remote bootstrap installer `curl -fsSL https://raw.githubusercontent.com/tiagoluizpoli/luna-ai-skills/master/frameworks/ralph-loop/installer/install.sh | bash -s -- --yes --agents hermes --availability local` against a clean temporary Git repository. Confirmed the installer resolved the correct commit SHA, provisioned the new manifest-driven `.plan` starter workspace (including custom workflow-owned boundaries), routed only the selected runner script (`ralph-loop-hermes.sh`), and correctly wrote/reused selection metadata in `.plan/.framework-install.json`. Also confirmed that updating settings (reusing via `--yes` or overriding via explicit flags) cleaned up unselected runner scripts properly.
+

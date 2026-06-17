@@ -1,23 +1,24 @@
 {
-  "currentRunId": "e-06-t-17-st-02",
+  "currentRunId": null,
   "currentPrdId": "PRD-v3-installer-target-model-hardening",
-  "currentEpicId": "E-06",
-  "currentTaskId": "T-17",
+  "currentEpicId": "E-08",
+  "currentTaskId": "T-20",
   "currentSubTaskId": "ST-02",
-  "attemptCount": 4,
-  "retrievalRound": 3,
-  "lastModel": "\"Gemini 3.5 Flash (Medium)\"",
+  "attemptCount": 1,
+  "retrievalRound": 0,
+  "lastModel": "Claude Sonnet 4.6 (Thinking)",
   "escalated": false,
   "lastFailureReason": null,
   "requiredModel": "medium",
-  "runnerName": "\"agy\"",
-  "escalateIf": [
-    "routing-verification-needs-fixtures-or-sandbox-runner"
-  ],
+  "runnerName": "agy",
+  "escalateIf": [],
   "filesToTouch": [
-    "frameworks/ralph-loop/installer/tests/*",
-    "frameworks/ralph-loop/installer/package.json",
-    "frameworks/ralph-loop/installer/src/index.mjs"
+    "README.md",
+    "frameworks/ralph-loop/README.md",
+    "docs/ralph-loop-framework.md",
+    ".plan/summaries/2026-06-16-installer-bug-audit.md",
+    ".plan/index.md",
+    ".plan/.run-summary.md"
   ],
   "lastCommitChanged": false
 }

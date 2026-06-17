@@ -2,7 +2,7 @@
 type: epic
 id: E-08
 name: "Verification And Reconciliation"
-status: ready
+status: done
 blocked-by: []
 ---
 
@@ -23,7 +23,7 @@ old implementation.
 
 | Task ID | Task | Status | Blocked By | File |
 | --- | --- | --- | --- | --- |
-| T-20 | Verification and documentation reconciliation against the hardened installer | ready | T-18, T-19 | `.plan/epics/08-verification-and-reconciliation/tasks/01-verification-and-documentation-reconciliation.md` |
+| T-20 | Verification and documentation reconciliation against the hardened installer | done | — | `.plan/epics/08-verification-and-reconciliation/tasks/01-verification-and-documentation-reconciliation.md` |
 
 ---
 
