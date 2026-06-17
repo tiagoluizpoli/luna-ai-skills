@@ -29,12 +29,13 @@ bash install.sh
 
 The installer:
 
-- validates the Matt Pocock prerequisite skill set
-- provisions `.plan/`
-- provisions framework-owned helper scripts
-- installs selected framework-owned skills
-- records framework ownership via `.plan/.framework` (framework-managed marker) and
-  `.plan/.framework-install.json` (installer-generated metadata artifact)
+- prompts for targeted agents (Hermes, Codex, AGY) first, followed by a single run-level availability mode (local or global)
+- validates dynamically required external prerequisite skills from `mattpocock/skills` needed by the mandatory skills
+- provisions `.plan/` via manifest-driven starter provisioning
+- provisions framework-owned shared assets (helper scripts, templates)
+- provisions agent-specific runner scripts (`ralph-loop-hermes.sh`, `ralph-loop-codex.sh`, `ralph-loop-agy.sh`) only for the selected agents, removing unselected ones
+- installs the mandatory framework-owned skill set (`luna-grill-with-docs`, `luna-to-prd`, `luna-to-issues`, `commit`, and `code-review`)
+- records installation metadata, selected agents, timestamps, and target locations in `.plan/.framework-install.json` (an installer-generated metadata artifact, not listed in framework-files.json managed assets) to support settings reuse/override during updates.
 
 ## Legacy Symlink Flow
 

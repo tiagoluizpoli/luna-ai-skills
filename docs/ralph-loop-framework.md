@@ -79,8 +79,15 @@ Only the path is wrong. The workflow itself is not SpecKit.
 - `SKILLS_OVERVIEW.md`
 - `.agents/skills/karpathy-guidelines`
 - `.agents/skills/prompt-enhancer`
+
+### Framework-owned skills (Ralph Loop Core Bundle)
+
+- `.agents/skills/luna-grill-with-docs`
+- `.agents/skills/luna-to-prd`
+- `.agents/skills/luna-to-issues`
+- `.agents/skills/commit`
 - `.agents/skills/code-review`
-- `.agents/skills/conventional-commits`
+- `.agents/skills/conventional-commits` (installed as a dependency of `commit`)
 
 ## Proposed New Workspace
 
@@ -208,11 +215,11 @@ The current implementation lives under `frameworks/ralph-loop/` and now includes
 
 - [x] Import `ralph-loop-hermes.sh` into this repository.
 - [x] Rename the Antigravity runner to `ralph-loop-agy.sh`.
-- [ ] Audit the Ralph Loop workflow files used in `neighborhood-showcase`.
+- [x] Audit the Ralph Loop workflow files used in `neighborhood-showcase` (Completed via `2026-06-16-installer-bug-audit.md`).
 - [x] Create a sharable starter layout for `.plan/`.
 - [x] Update consumer prompt/rules conventions to use `.plan/` instead of `.specify/memory` and root files.
-- [ ] Migrate `neighborhood-showcase` as the first consumer.
-- [ ] Leave SpecKit intact and documented as a separate optional framework.
+- [x] Migrate `neighborhood-showcase` as the first consumer.
+- [x] Leave SpecKit intact and documented as a separate optional framework (isolated/separated via `docs/speckit-split-plan.md`).
 
 ## Risks
 

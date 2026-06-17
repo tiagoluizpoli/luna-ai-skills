@@ -41,8 +41,12 @@ Out of scope for this audit after user clarification:
 ### BUG-001 — Invalid bundle argument crashes installer
 
 Severity: high
-Status: open
+Status: fixed (Resolved in E-05 / T-16 / Commit 53a03bb)
 Area: installer CLI / automation safety
+
+Resolution:
+- The legacy `--bundles` parameter has been deprecated and its usage is validated.
+- The installer selection contract was rewritten to target explicit agents and availability modes, raising user-friendly errors on invalid inputs.
 
 Criteria violated:
 - PRD v2 requires concrete, auditable dependency behavior and a usable install
@@ -73,8 +77,12 @@ Recommended fix:
 ### BUG-002 — Invalid target argument crashes installer
 
 Severity: high
-Status: open
+Status: fixed (Resolved in E-05 / T-16 / Commit 53a03bb)
 Area: installer CLI / automation safety
+
+Resolution:
+- The legacy `--targets` parameter has been deprecated and its usage is validated.
+- The installer selection contract resolves explicit agents and availability modes, rejecting invalid target configurations cleanly.
 
 Criteria violated:
 - Same robustness criteria as BUG-001.
@@ -103,8 +111,12 @@ Recommended fix:
 ### BUG-003 — Fresh install copies files outside the declared framework contract
 
 Severity: high
-Status: open
+Status: fixed (Resolved in E-06 / T-18 / Iteration 12)
 Area: install/update ownership boundary
+
+Resolution:
+- Replaced whole-tree fresh install copying with manifest-driven starter provisioning.
+- Declared placeholder planning files (replace-me PRD, epic, and tasks) as workflow-owned files in `framework-files.json`.
 
 Criteria violated:
 - PRD v2 says install/update behavior must preserve explicit boundaries between
@@ -140,8 +152,11 @@ Recommended fix:
 ### BUG-004 — `.framework-install.json` ownership is inconsistently modeled
 
 Severity: medium
-Status: open
+Status: fixed (Resolved in E-06 / T-18 / Iteration 13)
 Area: metadata contract / ownership model
+
+Resolution:
+- Reconciled generated metadata ownership by classifying `.framework-install.json` as a documented generated artifact rather than an authoritative source-of-truth managed asset in the manifest file.
 
 Criteria violated:
 - PRD v2 requires durable installation metadata and explicit ownership:
@@ -174,8 +189,12 @@ Recommended fix:
 ### BUG-005 — Target matrix is narrower than the intended multi-agent install contract
 
 Severity: high
-Status: open
+Status: fixed (Resolved in E-05 / E-06 / T-16 / T-17)
 Area: install targets / agent coverage
+
+Resolution:
+- Expanded the target matrix to be a full 3x2 matrix (Hermes, Codex, AGY agents across local and global availability modes).
+- Discovered and validated target locations dynamically from `skills-manifest.json` and `framework-files.json`.
 
 Criteria violated:
 - Grilling locked in that install support must be agent-aware:
@@ -222,8 +241,11 @@ Recommended fix:
 ### BUG-006 — Prerequisite validation docs overstate what is actually checked
 
 Severity: medium
-Status: open
+Status: fixed (Resolved in E-08 / T-20 / ST-02)
 Area: docs vs implementation
+
+Resolution:
+- Rewrote `README.md` and related docs to accurately state that the installer validates dynamically required external prerequisite skills from `mattpocock/skills` needed by the mandatory skill closure rather than claiming to validate the whole upstream skill set.
 
 Criteria violated:
 - PRD v2 requires named external prerequisite validation:
@@ -257,8 +279,12 @@ Recommended fix:
 ### BUG-007 — Public bootstrap validation trail is inconsistent
 
 Severity: medium
-Status: open
+Status: fixed (Resolved in E-08 / T-20 / ST-01)
 Area: verification history / documentation integrity
+
+Resolution:
+- Re-ran public bootstrap validation on a clean throwaway Git repository using curl-to-bash bootstrap URL from the master branch.
+- Confirmed SHA resolving, non-interactive prompts execution, and metadata file generation.
 
 Criteria violated:
 - PRD v2 says public bootstrap validation should not be treated as complete
@@ -295,8 +321,11 @@ Recommended fix:
 ### BUG-008 — Consumer rollout status is stale across framework docs
 
 Severity: medium
-Status: open
+Status: fixed (Resolved in E-08 / T-20 / ST-02)
 Area: planning/documentation consistency
+
+Resolution:
+- Updated `docs/ralph-loop-framework.md` to reflect that the rollout and audit tasks are complete.
 
 Criteria violated:
 - The framework needs durable, auditable planning state.
@@ -319,11 +348,11 @@ Recommended fix:
 
 ## Suggested future decomposition slices
 
-If you later want to turn this into work, a clean split would be:
-- Slice A: CLI validation hardening (`BUG-001`, `BUG-002`)
-- Slice B: install-manifest contract alignment (`BUG-003`, `BUG-004`)
-- Slice C: target-matrix expansion and agent-aware install coverage (`BUG-005`)
-- Slice D: docs / evidence trail reconciliation (`BUG-006`, `BUG-007`, `BUG-008`)
+The suggested slices have all been successfully completed:
+- Slice A (CLI validation hardening): Completed in E-05 / T-16.
+- Slice B (Install-manifest contract alignment): Completed in E-06 / T-18.
+- Slice C (Target-matrix expansion and agent-aware install coverage): Completed in E-05 / T-16 and E-06 / T-17.
+- Slice D (Docs / evidence trail reconciliation): Completed in E-08 / T-20.
 
 ## Notes on review quality
 

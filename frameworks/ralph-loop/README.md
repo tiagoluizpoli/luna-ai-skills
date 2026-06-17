@@ -61,22 +61,24 @@ Workflow-owned files:
 
 Generated artifacts (written by the installer):
 
-- `.plan/.framework-install.json`
+- `.plan/.framework-install.json` (verified)
 
-## Installer contract
+## Installer selection & update contract
 
-The install/update flow for this starter is implemented under
-`frameworks/ralph-loop/installer/`.
+The install/update flow is implemented under `frameworks/ralph-loop/installer/` and follows a strict contract:
 
-It expects Matt Pocock's skills to already be installed with:
-
-```bash
-npx skills@latest add mattpocock/skills
-```
-
-Repo:
-
-`https://github.com/mattpocock/skills`
+1. **Prerequisites**: Before running the installer, you must install the dynamic prerequisites:
+   ```bash
+   npx skills@latest add mattpocock/skills
+   ```
+2. **Interactive selection**: The interactive flow prompts for target agents (Hermes, Codex, AGY) first, followed by a single run-level availability mode (local or global). Skill-level subset selection is removed in favor of a mandatory skill bundle.
+3. **Asset routing**:
+   - Shared assets (helper scripts, templates) are installed to `.plan/`.
+   - Agent-specific runner scripts (`ralph-loop-hermes.sh`, `ralph-loop-codex.sh`, `ralph-loop-agy.sh`) are copied to the repo root only for selected agents. Any unselected agent runner scripts are cleaned up.
+4. **Skills routing**: The mandatory `Ralph Loop Core` skill set is installed under `.agents/skills/luna-ai/` (for local availability) or `~/.hermes/skills/luna-ai/` (for global availability).
+5. **Metadata & State Updates**: 
+   - Installation state is tracked in `.plan/.framework-install.json`, recording concrete installed assets, selected agents, target paths, and install/update timestamps. This file is not listed under `framework-files.json` managed files as it is a generated artifact.
+   - During updates, the installer presents previously recorded settings for verification. The user can either confirm and reuse the previous state, or choose to explicitly override it to target different agents or availability.
 
 ## Phase pointers
 
