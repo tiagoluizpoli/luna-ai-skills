@@ -1,26 +1,23 @@
 {
-  "currentRunId": "e-06-t-17-st-01",
+  "currentRunId": "e-06-t-17-st-02",
   "currentPrdId": "PRD-v3-installer-target-model-hardening",
   "currentEpicId": "E-06",
   "currentTaskId": "T-17",
-  "currentSubTaskId": "ST-01",
-  "attemptCount": 8,
-  "retrievalRound": 3,
+  "currentSubTaskId": "ST-02",
+  "attemptCount": 2,
+  "retrievalRound": 2,
   "lastModel": "gemini-3.5-flash",
   "escalated": false,
   "lastFailureReason": null,
   "requiredModel": "medium",
   "runnerName": "agy",
   "escalateIf": [
-    "asset-classification-forces-large-installer-refactor"
+    "routing-verification-needs-fixtures-or-sandbox-runner"
   ],
   "filesToTouch": [
-    "frameworks/ralph-loop/installer/src/index.mjs",
-    "frameworks/ralph-loop/framework-files.json",
-    "frameworks/ralph-loop/skills-manifest.json",
-    "ralph-loop-hermes.sh",
-    "ralph-loop-codex.sh",
-    "ralph-loop-agy.sh"
+    "frameworks/ralph-loop/installer/tests/*",
+    "frameworks/ralph-loop/installer/package.json",
+    "frameworks/ralph-loop/installer/src/index.mjs"
   ],
   "lastCommitChanged": false
 }

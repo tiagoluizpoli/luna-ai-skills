@@ -473,6 +473,7 @@ function resolveSharedAsset(frameworkFiles) {
   return sharedAsset;
 }
 
+// Maps selection contract agents to their corresponding agent-specific assets
 function resolveAgentSpecificAssets(selectionContract, frameworkFiles, selectedAgents) {
   const agentAssetMap = new Map((frameworkFiles.agentSpecificAssets ?? []).map((asset) => [asset.id, asset]));
   const installAgents = selectionContract.installAgents ?? [];
