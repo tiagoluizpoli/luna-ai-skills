@@ -20,6 +20,15 @@ A file owned by the live planning and execution flow of a specific target reposi
 **Plan Workspace**:
 The `.plan/` directory installed into a target repository. It contains the active planning surface, runtime files, helper scripts, templates, and archives used by the Ralph Loop framework.
 
+**Install Agent**:
+The agent product the framework is being installed for, such as Hermes, Codex, or AGY.
+
+**Install Scope**:
+The installation scope for framework assets within an install agent. Scope is either local (repository-scoped) or global (agent-wide).
+
+**Install Target**:
+A concrete installer destination derived from the combination of an Install Agent and an Install Scope. It should be modeled as a composition of those two concepts, not as a single opaque label.
+
 **Active Run Family**:
 The currently active PRD-scoped execution tree in a target repository. It includes the current PRD, active epics/tasks/sub-tasks, active run summary, and active runtime/history files that should be loaded by default. Older run families are archived but remain searchable.
 

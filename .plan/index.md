@@ -7,7 +7,7 @@
 
 ## Current Run Family
 
-- Current PRD: `.plan/prds/PRD-v2-installable-ralph-loop-framework-core.md`
+- Current PRD: `.plan/prds/PRD-v3-installer-target-model-hardening.md`
 - Current PRD pointer: `.plan/prds/.current-prd`
 - Current grilling pointer: `.plan/grilling/.current-session`
 - Current grill handoff pointer: `.plan/handoffs/.current-grill-handoff`
@@ -24,7 +24,8 @@
 | Status | Version | Title | File | Canonical Record | Date |
 | --- | --- | --- | --- | --- | --- |
 | SUPERSEDED | v1 | Installable Ralph Loop Framework Core | `.plan/prds/PRD-v1-installable-ralph-loop-framework-core.md` | `.plan/prds/PRD-v1-installable-ralph-loop-framework-core.md` | 2026-06-13 |
-| CURRENT | v2 | Installable Ralph Loop Framework Core | `.plan/prds/PRD-v2-installable-ralph-loop-framework-core.md` | `.plan/prds/PRD-v2-installable-ralph-loop-framework-core.md` | 2026-06-15 |
+| SUPERSEDED | v2 | Installable Ralph Loop Framework Core | `.plan/prds/PRD-v2-installable-ralph-loop-framework-core.md` | `.plan/prds/PRD-v2-installable-ralph-loop-framework-core.md` | 2026-06-15 |
+| CURRENT | v3 | Installer Target Model Hardening | `.plan/prds/PRD-v3-installer-target-model-hardening.md` | `.plan/prds/PRD-v3-installer-target-model-hardening.md` | 2026-06-17 |
 
 ## Epics
 
@@ -34,6 +35,10 @@
 | E-02 | Skill Packaging And Ownership | done | — | `.plan/epics/02-skill-packaging/epic.md` |
 | E-03 | Installer And Verification | done | — | `.plan/epics/03-installer-and-verification/epic.md` |
 | E-04 | Rollout And Runtime Hardening | done | — | `.plan/epics/04-rollout-and-hardening/epic.md` |
+| E-05 | Installer Selection Contract | ready | — | `.plan/epics/05-installer-selection-contract/epic.md` |
+| E-06 | Asset And Ownership Contract | ready | — | `.plan/epics/06-asset-and-ownership-contract/epic.md` |
+| E-07 | Update State Contract | ready | — | `.plan/epics/07-update-state-contract/epic.md` |
+| E-08 | Verification And Reconciliation | ready | — | `.plan/epics/08-verification-and-reconciliation/epic.md` |
 
 ## Tasks
 
@@ -54,3 +59,8 @@
 | T-11 | E-04 | Harden helper scripts into richer automation | done | — | `.plan/epics/04-rollout-and-hardening/tasks/02-helper-script-hardening.md` |
 | T-12 | E-04 | Wire the full runner state machine to the new contract | done | — | `.plan/epics/04-rollout-and-hardening/tasks/03-runner-state-machine.md` |
 | T-15 | E-04 | Add deterministic phase handoffs and planning pointers | done | — | `.plan/epics/04-rollout-and-hardening/tasks/04-deterministic-phase-handoffs.md` |
+| T-16 | E-05 | Installer selection contract: agents first, one availability mode, no manual skill-selection path | ready | — | `.plan/epics/05-installer-selection-contract/tasks/01-installer-selection-contract.md` |
+| T-17 | E-06 | Asset routing contract: shared vs agent-specific assets | ready | T-16 | `.plan/epics/06-asset-and-ownership-contract/tasks/01-asset-routing-contract.md` |
+| T-18 | E-06 | Install ownership and starter manifest alignment | ready | T-17 | `.plan/epics/06-asset-and-ownership-contract/tasks/02-install-ownership-and-starter-manifest-alignment.md` |
+| T-19 | E-07 | Update-state hardening: rich metadata, visible reuse, explicit override | ready | T-17 | `.plan/epics/07-update-state-contract/tasks/01-update-state-hardening.md` |
+| T-20 | E-08 | Verification and documentation reconciliation against the hardened installer | ready | T-18, T-19 | `.plan/epics/08-verification-and-reconciliation/tasks/01-verification-and-documentation-reconciliation.md` |

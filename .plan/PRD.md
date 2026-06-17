@@ -7,7 +7,8 @@ Use this file as the thin index of versioned PRDs stored under `.plan/prds/`.
 | Status | Version | Title | File | Canonical Record | Date |
 | --- | --- | --- | --- | --- | --- |
 | SUPERSEDED | v1 | Installable Ralph Loop Framework Core | `.plan/prds/PRD-v1-installable-ralph-loop-framework-core.md` | `.plan/prds/PRD-v1-installable-ralph-loop-framework-core.md` | 2026-06-13 |
-| CURRENT | v2 | Installable Ralph Loop Framework Core | `.plan/prds/PRD-v2-installable-ralph-loop-framework-core.md` | `.plan/prds/PRD-v2-installable-ralph-loop-framework-core.md` | 2026-06-15 |
+| SUPERSEDED | v2 | Installable Ralph Loop Framework Core | `.plan/prds/PRD-v2-installable-ralph-loop-framework-core.md` | `.plan/prds/PRD-v2-installable-ralph-loop-framework-core.md` | 2026-06-15 |
+| CURRENT | v3 | Installer Target Model Hardening | `.plan/prds/PRD-v3-installer-target-model-hardening.md` | `.plan/prds/PRD-v3-installer-target-model-hardening.md` | 2026-06-17 |
 
 ## Rules
 

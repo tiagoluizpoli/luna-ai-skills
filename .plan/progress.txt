@@ -18,3 +18,6 @@
 [2026-06-16 02:20:05] Iteration 1: NO TASKS — Reread canonical planning documents and found no dependency-safe executable tasks remaining. T-09 / ST-01 remains blocked by remote-repo-not-public.
 [2026-06-16 02:27:15] Iteration 1: Completed T-09 / ST-01. Added GITHUB_TOKEN header support and resolved EXIT trap variable scoping in install.sh. Verified clean public bootstrap installation in /tmp/clean-test-repo. Status: 100% Complete.
 [2026-06-16 02:27:35] Iteration 2: NO TASKS — Reread canonical planning documents and found no dependency-safe executable tasks remaining. All tasks in Epic E-01, E-02, E-03, and E-04 are successfully completed. Loop Terminated.
+[2026-06-16 10:45:00] Audit only: wrote .plan/summaries/2026-06-16-installer-bug-audit.md with severity-tagged installer findings, criteria citations, and decomposition-ready bug slices for later task generation.
+[2026-06-16 10:52:00] Audit amended after user clarification: removed legacy migration as an installer bug, added target-matrix mismatch across Hermes/Codex/AGY local/global as BUG-005, and kept the bug list decomposition-ready under .plan/summaries/2026-06-16-installer-bug-audit.md.
+[2026-06-16 11:00:00] Started luna-grill-with-docs session for installer target-model re-grill; synchronized Q1/Q2 and set current grill pointer to .plan/grilling/2026-06-16-installer-target-model-regrill.md.
