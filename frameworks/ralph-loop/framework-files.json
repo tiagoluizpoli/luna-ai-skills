@@ -1,5 +1,6 @@
 {
   "frameworkName": "ralph-loop",
+  "comment": "Validated for shared vs agent-specific asset routing",
   "starterRoot": "frameworks/ralph-loop/.plan",
   "sharedAssets": [
     {
