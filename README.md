@@ -33,8 +33,8 @@ The installer:
 - provisions `.plan/`
 - provisions framework-owned helper scripts
 - installs selected framework-owned skills
-- records framework ownership in `.plan/.framework` and
-  `.plan/.framework-install.json`
+- records framework ownership via `.plan/.framework` (framework-managed marker) and
+  `.plan/.framework-install.json` (installer-generated metadata artifact)
 
 ## Legacy Symlink Flow
 

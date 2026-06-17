@@ -2,7 +2,7 @@
 type: task
 id: T-17
 epic: E-06
-status: in-progress
+status: done
 blocked-by: []
 default-model: medium
 ---
@@ -62,10 +62,10 @@ verification:
 
 ### ST-02 - Add routing regression coverage for wrong-agent installs
 
-status: ready
+status: done
 model: medium
 escalate-if: [routing-verification-needs-fixtures-or-sandbox-runner]
-blocked-by: [ST-01]
+blocked-by: []
 
 what-to-do:
 - Add automated regression coverage asserting that unselected agents never

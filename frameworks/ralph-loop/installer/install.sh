@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Hardened for ST-02 update-state contract verification (iteration 5)
 
 set -euo pipefail
 

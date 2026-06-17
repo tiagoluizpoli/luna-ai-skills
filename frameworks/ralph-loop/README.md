@@ -41,7 +41,6 @@ Framework-managed files:
 - `.plan/shared/*`
 - `.plan/helper-scripts/*`
 - `.plan/.framework`
-- `.plan/.framework-install.json`
 
 Workflow-owned files:
 
@@ -59,6 +58,10 @@ Workflow-owned files:
 - `.plan/grilling/*`
 - `.plan/summaries/*`
 - `.plan/archive/*`
+
+Generated artifacts (written by the installer):
+
+- `.plan/.framework-install.json`
 
 ## Installer contract
 

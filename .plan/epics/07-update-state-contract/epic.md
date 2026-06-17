@@ -2,7 +2,7 @@
 type: epic
 id: E-07
 name: "Update State Contract"
-status: ready
+status: done
 blocked-by: []
 ---
 
@@ -21,7 +21,7 @@ is trustworthy. The current metadata is too flat to support that safely.
 
 | Task ID | Task | Status | Blocked By | File |
 | --- | --- | --- | --- | --- |
-| T-19 | Update-state hardening: rich metadata, visible reuse, explicit override | ready | T-17 | `.plan/epics/07-update-state-contract/tasks/01-update-state-hardening.md` |
+| T-19 | Update-state hardening: rich metadata, visible reuse, explicit override | done | — | `.plan/epics/07-update-state-contract/tasks/01-update-state-hardening.md` |
 
 ---
 

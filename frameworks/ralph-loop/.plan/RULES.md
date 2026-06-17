@@ -1,4 +1,4 @@
-# Engineering Rules
+# Engineering Rules (starter aligned with manifest contract)
 
 > Read this file first on every Ralph Loop iteration.
 

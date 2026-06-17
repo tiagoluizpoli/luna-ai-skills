@@ -2,8 +2,8 @@
 type: task
 id: T-19
 epic: E-07
-status: ready
-blocked-by: [T-17]
+status: done
+blocked-by: []
 default-model: medium
 ---
 
@@ -35,7 +35,7 @@ flow.
 
 ### ST-01 - Expand metadata to support trustworthy update behavior
 
-status: ready
+status: done
 model: medium
 escalate-if: [metadata-shape-breaks-existing-update-flow]
 blocked-by: []
@@ -63,10 +63,10 @@ verification:
 
 ### ST-02 - Add visible reuse and explicit override in update flow
 
-status: ready
+status: done
 model: medium
 escalate-if: [update-ux-needs-separate-planning-pass]
-blocked-by: [ST-01]
+blocked-by: []
 
 what-to-do:
 - Change update so it shows the recorded state it plans to reuse before
@@ -85,7 +85,8 @@ verification:
 
 #### Execution Notes
 
-- No execution notes yet.
+- Verified via node test runner (25/25 passing).
+- Verified manually using a throwaway repository: fresh installation successfully wrote metadata, subsequent update reused settings non-interactively, and explicit override (--agents agy --availability global) replaced prior configurations appropriately.
 
 ---
 

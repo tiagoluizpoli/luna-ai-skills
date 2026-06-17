@@ -2,8 +2,8 @@
 type: task
 id: T-18
 epic: E-06
-status: ready
-blocked-by: [T-17]
+status: done
+blocked-by: []
 default-model: medium
 ---
 
@@ -35,7 +35,7 @@ manifest, and runtime behavior.
 
 ### ST-01 - Align fresh install behavior with the manifest contract
 
-status: ready
+status: done
 model: medium
 escalate-if: [starter-layout-conflicts-with-existing-framework-bootstrap]
 blocked-by: []
@@ -58,14 +58,17 @@ verification:
 
 #### Execution Notes
 
-- No execution notes yet.
+- Replaced copyDirectory with manifest-driven copying for fresh install.
+- Declared placeholder PRD, epic, and task files in framework-files.json as workflowOwnedFiles.
+- Added test verifying target files match manifest contract.
+
 
 ### ST-02 - Reconcile generated metadata ownership and regression coverage
 
-status: ready
+status: done
 model: medium
 escalate-if: [metadata-contract-needs-separate-schema-layer]
-blocked-by: [ST-01]
+blocked-by: []
 
 what-to-do:
 - Classify `.framework-install.json` consistently as framework-managed or as a
@@ -87,7 +90,9 @@ verification:
 
 #### Execution Notes
 
-- No execution notes yet.
+- Classified `.framework-install.json` as a documented generated artifact, not a framework-managed template file.
+- Updated comments/manifest/docs across the codebase to consistently align with this classification.
+- Added regression test checking install/update manifest behavior, structure, and omission from managed/workflow lists.
 
 ---
 

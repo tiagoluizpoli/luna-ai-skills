@@ -1,4 +1,4 @@
-// Validated for shared vs agent-specific asset routing (iteration 10)
+// Hardened update-state contract with confirm/override prompts and rejection logic (iteration 5 / ST-02)
 import fs from "node:fs";
 import path from "node:path";
 import os from "node:os";
@@ -396,7 +396,36 @@ function chooseAvailabilityFromArgs(selectionContract, args) {
   return values[0];
 }
 
-async function resolveSelection(skillManifest, args, yesMode, prompts = p) {
+function getTrustworthyRecordedState(manifestFile, selectionContract) {
+  if (!manifestFile || !fs.existsSync(manifestFile)) {
+    return null;
+  }
+  try {
+    const data = JSON.parse(fs.readFileSync(manifestFile, "utf8"));
+    if (
+      data &&
+      data.selection &&
+      Array.isArray(data.selection.agents) &&
+      data.selection.agents.length > 0 &&
+      typeof data.selection.availabilityMode === "string"
+    ) {
+      const validAgents = new Set(selectionContract.installAgents.map((a) => a.id));
+      const validModes = new Set(selectionContract.availabilityModes.map((m) => m.id));
+
+      const hasInvalidAgent = data.selection.agents.some((agent) => !validAgents.has(agent));
+      const isInvalidMode = !validModes.has(data.selection.availabilityMode);
+
+      if (!hasInvalidAgent && !isInvalidMode) {
+        return data.selection;
+      }
+    }
+  } catch (e) {
+    // Ignore parse errors
+  }
+  return null;
+}
+
+async function resolveSelection(skillManifest, args, yesMode, prompts = p, manifestFile = null) {
   validateLegacySelectionArgs(args);
 
   const selectionContract = skillManifest.selectionContract;
@@ -406,15 +435,71 @@ async function resolveSelection(skillManifest, args, yesMode, prompts = p) {
     process.exit(1);
   }
 
-  let selectedAgents = chooseAgentsFromArgs(selectionContract, args);
+  const hasRecordedStateFile = manifestFile && fs.existsSync(manifestFile);
+  const trustworthyState = getTrustworthyRecordedState(manifestFile, selectionContract);
 
-  if (!selectedAgents && yesMode) {
-    p.cancel(`Non-interactive runs must pass --agents. Valid agents: ${formatAllowedValues(selectionContract.installAgents.map((agent) => agent.id))}`);
-    process.exit(1);
+  if (hasRecordedStateFile && !trustworthyState) {
+    p.note(
+      "Recorded installer state is stale or invalid. The recorded settings were rejected.",
+      "Warning"
+    );
+  }
+
+  let selectedAgents = chooseAgentsFromArgs(selectionContract, args);
+  let availabilityMode = chooseAvailabilityFromArgs(selectionContract, args);
+
+  if (selectedAgents && availabilityMode) {
+    return {
+      selectedAgents,
+      availabilityMode,
+      targets: selectedAgents.map((agent) => concreteTargetId(agent, availabilityMode))
+    };
+  }
+
+  let reuseState = false;
+  if (!yesMode && trustworthyState && !selectedAgents && !availabilityMode) {
+    const summaryText = [
+      "Recorded settings found:",
+      `  Agents: ${trustworthyState.agents.join(", ")}`,
+      `  Availability mode: ${trustworthyState.availabilityMode}`
+    ].join("\n");
+    p.note(summaryText, "Reuse Recorded Settings");
+
+    const reuseAnswer = await prompts.confirm({
+      message: "Reuse these recorded settings?",
+      initialValue: true
+    });
+
+    if (prompts.isCancel(reuseAnswer)) {
+      p.cancel("Installation cancelled.");
+      process.exit(1);
+    }
+
+    reuseState = reuseAnswer;
   }
 
   if (!selectedAgents) {
-    selectedAgents = await chooseInstallAgents(selectionContract, prompts);
+    if (yesMode) {
+      if (trustworthyState) {
+        selectedAgents = trustworthyState.agents;
+      } else {
+        p.cancel(`Non-interactive runs must pass --agents. Valid agents: ${formatAllowedValues(selectionContract.installAgents.map((agent) => agent.id))}`);
+        process.exit(1);
+      }
+    } else if (reuseState && trustworthyState) {
+      selectedAgents = trustworthyState.agents;
+    } else {
+      const initialValues = trustworthyState ? trustworthyState.agents : selectionContract.installAgents.map((agent) => agent.id);
+      selectedAgents = await prompts.multiselect({
+        message: "Which install agents should receive the Ralph Loop framework?",
+        options: selectionContract.installAgents.map((agent) => ({
+          value: agent.id,
+          label: agent.label,
+          hint: agent.description ?? ""
+        })),
+        initialValues
+      });
+    }
   }
 
   if (prompts.isCancel(selectedAgents) || selectedAgents.length === 0) {
@@ -422,15 +507,28 @@ async function resolveSelection(skillManifest, args, yesMode, prompts = p) {
     process.exit(1);
   }
 
-  let availabilityMode = chooseAvailabilityFromArgs(selectionContract, args);
-
-  if (!availabilityMode && yesMode) {
-    p.cancel(`Non-interactive runs must pass --availability. Valid availability modes: ${formatAllowedValues(selectionContract.availabilityModes.map((mode) => mode.id))}`);
-    process.exit(1);
-  }
-
   if (!availabilityMode) {
-    availabilityMode = await chooseAvailabilityMode(selectionContract, prompts);
+    if (yesMode) {
+      if (trustworthyState) {
+        availabilityMode = trustworthyState.availabilityMode;
+      } else {
+        p.cancel(`Non-interactive runs must pass --availability. Valid availability modes: ${formatAllowedValues(selectionContract.availabilityModes.map((mode) => mode.id))}`);
+        process.exit(1);
+      }
+    } else if (reuseState && trustworthyState) {
+      availabilityMode = trustworthyState.availabilityMode;
+    } else {
+      const initialValue = trustworthyState ? trustworthyState.availabilityMode : undefined;
+      availabilityMode = await prompts.select({
+        message: "Which availability mode should this run use?",
+        options: selectionContract.availabilityModes.map((mode) => ({
+          value: mode.id,
+          label: mode.label,
+          hint: mode.description ?? ""
+        })),
+        initialValue
+      });
+    }
   }
 
   if (prompts.isCancel(availabilityMode)) {
@@ -630,7 +728,29 @@ async function installSharedAsset({ sourceRoot, repoRoot, sharedAsset, installMo
   ensureDirectory(targetPlanDir);
 
   if (installMode === "install") {
-    copyDirectory(sourcePlanDir, targetPlanDir);
+    for (const relativeManagedFile of sharedAsset.managedFiles) {
+      const relativePath = relativeManagedFile.replace(/^[.]plan\//, "");
+      const sourcePath = path.join(sourcePlanDir, relativePath);
+      const targetPath = path.join(targetPlanDir, relativePath);
+
+      if (fs.existsSync(sourcePath)) {
+        ensureDirectory(path.dirname(targetPath));
+        fs.copyFileSync(sourcePath, targetPath);
+        fs.chmodSync(targetPath, fs.statSync(sourcePath).mode);
+      }
+    }
+
+    for (const relativeWorkflowFile of sharedAsset.workflowOwnedFiles) {
+      const relativePath = relativeWorkflowFile.replace(/^[.]plan\//, "");
+      const sourcePath = path.join(sourcePlanDir, relativePath);
+      const targetPath = path.join(targetPlanDir, relativePath);
+
+      if (fs.existsSync(sourcePath)) {
+        ensureDirectory(path.dirname(targetPath));
+        fs.copyFileSync(sourcePath, targetPath);
+        fs.chmodSync(targetPath, fs.statSync(sourcePath).mode);
+      }
+    }
   } else {
     for (const relativeManagedFile of sharedAsset.managedFiles) {
       const relativePath = relativeManagedFile.replace(/^[.]plan\//, "");
@@ -781,6 +901,97 @@ function writeFrameworkMetadata({
   const markerPath = path.join(repoRoot, ".plan", ".framework");
   const manifestPath = path.join(repoRoot, ".plan", ".framework-install.json");
 
+  const now = new Date().toISOString();
+  let firstInstalledAt = now;
+  let existingAssets = [];
+  let existingSkills = [];
+
+  if (fs.existsSync(manifestPath)) {
+    try {
+      const existing = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
+      if (existing.firstInstalledAt) {
+        firstInstalledAt = existing.firstInstalledAt;
+      } else if (existing.installedAt) {
+        firstInstalledAt = existing.installedAt;
+      }
+      if (Array.isArray(existing.installedAssets)) {
+        existingAssets = existing.installedAssets;
+      }
+      if (Array.isArray(existing.installedSkills)) {
+        existingSkills = existing.installedSkills;
+      }
+    } catch (e) {
+      // Ignore read errors
+    }
+  }
+
+  // Update timestamps and availability details for installedAssets
+  const updatedAssets = installedAssets.map((asset) => {
+    const existingAsset = existingAssets.find((ea) => ea.id === asset.id);
+    const assetFirstInstalledAt = existingAsset?.firstInstalledAt ?? existingAsset?.installedAt ?? now;
+    const assetLastUpdatedAt = now;
+
+    let availability = null;
+    if (asset.class === "shared") {
+      availability = {
+        behavior: "repo-local-only",
+        resolvedMode: "local"
+      };
+    } else if (asset.class === "agent-specific") {
+      availability = {
+        behavior: asset.availabilityBehavior || "repo-root-for-all-modes",
+        resolvedMode: availabilityMode
+      };
+    }
+
+    const result = {
+      id: asset.id,
+      class: asset.class,
+      category: asset.category,
+      installRoot: asset.installRoot,
+      installPath: asset.installPath,
+      firstInstalledAt: assetFirstInstalledAt,
+      lastUpdatedAt: assetLastUpdatedAt
+    };
+
+    if (asset.class === "shared") {
+      result.managedFiles = asset.managedFiles;
+      result.workflowOwnedFiles = asset.workflowOwnedFiles;
+    } else {
+      result.agent = asset.agent;
+      result.sourcePath = asset.sourcePath;
+      result.availabilityBehavior = asset.availabilityBehavior;
+    }
+
+    if (availability) {
+      result.availability = availability;
+    }
+
+    return result;
+  });
+
+  // Update timestamps and availability details for installedSkills
+  const updatedSkills = installedSkills.map((skill) => {
+    const existingSkill = existingSkills.find(
+      (es) => es.publicName === skill.publicName && es.target === skill.target
+    );
+    const skillFirstInstalledAt = existingSkill?.firstInstalledAt ?? existingSkill?.installedAt ?? now;
+    const skillLastUpdatedAt = now;
+
+    return {
+      publicName: skill.publicName,
+      sourcePath: skill.sourcePath,
+      target: skill.target,
+      installPath: skill.installPath,
+      availability: {
+        behavior: "mode-dependent-templates",
+        resolvedMode: availabilityMode
+      },
+      firstInstalledAt: skillFirstInstalledAt,
+      lastUpdatedAt: skillLastUpdatedAt
+    };
+  });
+
   fs.writeFileSync(markerPath, "ralph-loop\n");
 
   const manifest = {
@@ -797,11 +1008,12 @@ function writeFrameworkMetadata({
       availabilityMode,
       targets
     },
-    installedAt: new Date().toISOString(),
+    firstInstalledAt,
+    lastUpdatedAt: now,
     managedFiles: sharedAsset.managedFiles,
     workflowOwnedFiles: sharedAsset.workflowOwnedFiles,
-    installedAssets,
-    installedSkills
+    installedAssets: updatedAssets,
+    installedSkills: updatedSkills
   };
 
   fs.writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
@@ -829,7 +1041,13 @@ async function main() {
   const installState = detectInstallState(confirmedRepoRoot);
   const installMode = await chooseAdoptionMode(installState, yesMode);
   const selectionContract = skillManifest.selectionContract;
-  const { selectedAgents, availabilityMode, targets } = await resolveSelection(skillManifest, args, yesMode);
+  const { selectedAgents, availabilityMode, targets } = await resolveSelection(
+    skillManifest,
+    args,
+    yesMode,
+    p,
+    installState.manifestFile
+  );
   const resolvedSkills = resolveSkillClosure(skillManifest, resolveMandatorySkillIds(skillManifest));
   const sharedAsset = resolveSharedAsset(frameworkFiles);
   const { selectedAssets, unselectedAssets } = resolveAgentSpecificAssets(selectionContract, frameworkFiles, selectedAgents);
@@ -921,6 +1139,7 @@ export {
   chooseAvailabilityFromArgs,
   chooseAgentsFromArgs,
   concreteTargetId,
+  getTrustworthyRecordedState,
   parseArgs,
   readJson,
   resolveMandatorySkillIds,

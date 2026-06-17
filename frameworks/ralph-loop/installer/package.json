@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "test": "node --test tests/*.test.mjs",
-    "test:selection-contract": "node --test tests/selection-contract.test.mjs"
+    "test:selection-contract": "node --test tests/selection-contract.test.mjs",
+    "test:routing-contract": "node --test tests/selection-contract.test.mjs"
   },
   "dependencies": {
     "@clack/prompts": "^0.10.1"

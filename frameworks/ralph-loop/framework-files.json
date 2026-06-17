@@ -1,6 +1,6 @@
 {
   "frameworkName": "ralph-loop",
-  "comment": "Validated for shared vs agent-specific asset routing (iteration 10)",
+  "comment": "Upgraded installer metadata to support trustworthy update behavior with timestamps and availability details (iteration 4 / ST-01)",
   "starterRoot": "frameworks/ralph-loop/.plan",
   "sharedAssets": [
     {
@@ -46,6 +46,9 @@
         ".plan/handoffs/.gitkeep",
         ".plan/prds/.current-prd",
         ".plan/prds/.gitkeep",
+        ".plan/prds/PRD-v1-replace-me.md",
+        ".plan/epics/01-replace-me/epic.md",
+        ".plan/epics/01-replace-me/tasks/01-replace-me.md",
         ".plan/sessions/.gitkeep",
         ".plan/archive/.gitkeep",
         ".plan/summaries/.gitkeep"
@@ -121,6 +124,9 @@
     ".plan/handoffs/.gitkeep",
     ".plan/prds/.current-prd",
     ".plan/prds/.gitkeep",
+    ".plan/prds/PRD-v1-replace-me.md",
+    ".plan/epics/01-replace-me/epic.md",
+    ".plan/epics/01-replace-me/tasks/01-replace-me.md",
     ".plan/sessions/.gitkeep",
     ".plan/archive/.gitkeep",
     ".plan/summaries/.gitkeep"
