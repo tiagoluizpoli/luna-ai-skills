@@ -6,6 +6,21 @@ readonly REPO_OWNER="tiagoluizpoli"
 readonly REPO_NAME="luna-ai-skills"
 readonly REPO_URL="https://github.com/${REPO_OWNER}/${REPO_NAME}"
 
+show_help() {
+  cat <<'EOF'
+Usage: install.sh [--yes --agents hermes,codex,agy --availability local|global] [--force]
+
+Interactive mode asks only two questions in this order:
+1. Which install agents should receive the Ralph Loop framework?
+2. Which availability mode should this run use?
+
+Notes:
+- All framework skills are mandatory in v1.
+- Legacy flags --targets, --bundles, --skills, and --all are no longer supported.
+- Non-interactive runs must pass both --agents and --availability.
+EOF
+}
+
 require_command() {
   local command_name="$1"
   local help_text="$2"
@@ -49,6 +64,11 @@ resolve_commit_sha() {
 
 main() {
   local repo_root temp_dir ref_name commit_sha tarball_url extracted_root installer_dir
+
+  if [[ "${1:-}" == "--help" || "${1:-}" == "-h" ]]; then
+    show_help
+    exit 0
+  fi
 
   require_command git "Install Git and rerun the installer."
   require_command curl "Install curl or fetch the installer manually from ${REPO_URL}."

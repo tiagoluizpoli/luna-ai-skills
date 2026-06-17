@@ -2,7 +2,10 @@ import fs from "node:fs";
 import path from "node:path";
 import os from "node:os";
 import { execFileSync } from "node:child_process";
+import { fileURLToPath } from "node:url";
 import * as p from "@clack/prompts";
+
+const LEGACY_SELECTION_FLAGS = ["all", "bundles", "skills", "targets"];
 
 function parseArgs(argv) {
   const args = {};
@@ -29,6 +32,33 @@ function parseArgs(argv) {
 
 function readJson(filePath) {
   return JSON.parse(fs.readFileSync(filePath, "utf8"));
+}
+
+function parseCommaSeparatedValues(rawValue) {
+  return String(rawValue)
+    .split(",")
+    .map((value) => value.trim())
+    .filter(Boolean);
+}
+
+function uniqueValues(values) {
+  return [...new Set(values)];
+}
+
+function formatAllowedValues(values) {
+  return values.join(", ");
+}
+
+function expandHomeDir(filePath) {
+  return filePath.replace(/^~(?=\/)/, os.homedir());
+}
+
+function concreteTargetId(agent, availabilityMode) {
+  return `${agent}-${availabilityMode}`;
+}
+
+function isRepoLocalTarget(target) {
+  return target.endsWith("-local");
 }
 
 function runCommand(command, args, options = {}) {
@@ -109,6 +139,33 @@ function findExternalSkill(skillName) {
   return candidatePaths.find((candidatePath) => fs.existsSync(candidatePath)) ?? null;
 }
 
+function validateSelectionValues(kind, values, allowedValues) {
+  const allowed = new Set(allowedValues);
+  const invalidValues = values.filter((value) => !allowed.has(value));
+
+  if (invalidValues.length === 0) {
+    return;
+  }
+
+  p.cancel(
+    `Unsupported ${kind}: ${invalidValues.join(", ")}. Valid ${kind} values: ${formatAllowedValues(allowedValues)}`
+  );
+  process.exit(1);
+}
+
+function validateLegacySelectionArgs(args) {
+  const usedLegacyFlags = LEGACY_SELECTION_FLAGS.filter((flag) => flag in args);
+
+  if (usedLegacyFlags.length === 0) {
+    return;
+  }
+
+  p.cancel(
+    `Legacy installer flags are no longer supported: ${usedLegacyFlags.map((flag) => `--${flag}`).join(", ")}. Use --agents <hermes,codex,agy> and --availability <local|global> instead.`
+  );
+  process.exit(1);
+}
+
 function resolveSkillClosure(skillManifest, selectedSkillIds) {
   const skillMap = new Map(skillManifest.skills.map((skill) => [skill.id, skill]));
   const resolved = new Set(selectedSkillIds);
@@ -117,6 +174,11 @@ function resolveSkillClosure(skillManifest, selectedSkillIds) {
   while (queue.length > 0) {
     const currentSkillId = queue.shift();
     const skill = skillMap.get(currentSkillId);
+
+    if (!skill) {
+      p.cancel(`Unknown framework skill id in manifest: ${currentSkillId}`);
+      process.exit(1);
+    }
 
     for (const dependencyId of skill.localDependencies ?? []) {
       if (!resolved.has(dependencyId)) {
@@ -130,13 +192,20 @@ function resolveSkillClosure(skillManifest, selectedSkillIds) {
 }
 
 function targetPathForSkill(skill, target, repoRoot) {
-  const template = skill.installPathTemplates[target];
+  const template = skill.installPathTemplates?.[target];
 
-  if (target === "codex-local") {
-    return path.join(repoRoot, template);
+  if (!template) {
+    p.cancel(`Framework skill ${skill.publicName} does not declare an install path for target ${target}.`);
+    process.exit(1);
   }
 
-  return template.replace(/^~(?=\/)/, os.homedir());
+  const expandedTemplate = expandHomeDir(template);
+
+  if (isRepoLocalTarget(target)) {
+    return path.join(repoRoot, expandedTemplate);
+  }
+
+  return expandedTemplate;
 }
 
 function filesAreDifferent(fileA, fileB) {
@@ -250,147 +319,195 @@ async function chooseAdoptionMode(state, yesMode) {
   return "adopt";
 }
 
-async function chooseSkillSelection(skillManifest, args) {
-  const bundleOptions = skillManifest.bundles.map((bundle) => ({
-    value: bundle.id,
-    label: bundle.label,
-    hint: bundle.defaultSelected ? "default" : ""
-  }));
+function resolveMandatorySkillIds(skillManifest) {
+  const mandatorySkillIds = skillManifest.mandatorySkillIds;
 
-  let bundleMode = args.all ? "all" : null;
-
-  if (!bundleMode && args.bundles) {
-    bundleMode = "manual";
+  if (!Array.isArray(mandatorySkillIds) || mandatorySkillIds.length === 0) {
+    p.cancel("skills-manifest.json must declare a non-empty mandatorySkillIds array.");
+    process.exit(1);
   }
 
-  if (!bundleMode) {
-    bundleMode = await p.select({
-      message: "Choose the framework skill install mode",
-      options: [
-        { value: "all", label: "Install all framework skills" },
-        { value: "manual", label: "Choose skills manually" }
-      ]
-    });
+  return uniqueValues(mandatorySkillIds);
+}
+
+async function chooseInstallAgents(selectionContract, prompts = p) {
+  return await prompts.multiselect({
+    message: "Which install agents should receive the Ralph Loop framework?",
+    options: selectionContract.installAgents.map((agent) => ({
+      value: agent.id,
+      label: agent.label,
+      hint: agent.description ?? ""
+    })),
+    initialValues: selectionContract.installAgents.map((agent) => agent.id)
+  });
+}
+
+function chooseAgentsFromArgs(selectionContract, args) {
+  if (!args.agents) {
+    return null;
   }
 
-  if (p.isCancel(bundleMode)) {
+  const selectedAgents = uniqueValues(parseCommaSeparatedValues(args.agents));
+
+  if (selectedAgents.length === 0) {
+    p.cancel(`--agents requires at least one value. Valid agents: ${formatAllowedValues(selectionContract.installAgents.map((agent) => agent.id))}`);
+    process.exit(1);
+  }
+
+  validateSelectionValues(
+    "agent",
+    selectedAgents,
+    selectionContract.installAgents.map((agent) => agent.id)
+  );
+
+  return selectedAgents;
+}
+
+async function chooseAvailabilityMode(selectionContract, prompts = p) {
+  return await prompts.select({
+    message: "Which availability mode should this run use?",
+    options: selectionContract.availabilityModes.map((mode) => ({
+      value: mode.id,
+      label: mode.label,
+      hint: mode.description ?? ""
+    }))
+  });
+}
+
+function chooseAvailabilityFromArgs(selectionContract, args) {
+  if (!args.availability) {
+    return null;
+  }
+
+  const values = uniqueValues(parseCommaSeparatedValues(args.availability));
+
+  if (values.length !== 1) {
+    p.cancel(`--availability accepts exactly one value. Valid availability modes: ${formatAllowedValues(selectionContract.availabilityModes.map((mode) => mode.id))}`);
+    process.exit(1);
+  }
+
+  validateSelectionValues(
+    "availability mode",
+    values,
+    selectionContract.availabilityModes.map((mode) => mode.id)
+  );
+
+  return values[0];
+}
+
+async function resolveSelection(skillManifest, args, yesMode, prompts = p) {
+  validateLegacySelectionArgs(args);
+
+  const selectionContract = skillManifest.selectionContract;
+
+  if (!selectionContract || !Array.isArray(selectionContract.installAgents) || !Array.isArray(selectionContract.availabilityModes)) {
+    p.cancel("skills-manifest.json is missing selectionContract.installAgents or selectionContract.availabilityModes.");
+    process.exit(1);
+  }
+
+  let selectedAgents = chooseAgentsFromArgs(selectionContract, args);
+
+  if (!selectedAgents && yesMode) {
+    p.cancel(`Non-interactive runs must pass --agents. Valid agents: ${formatAllowedValues(selectionContract.installAgents.map((agent) => agent.id))}`);
+    process.exit(1);
+  }
+
+  if (!selectedAgents) {
+    selectedAgents = await chooseInstallAgents(selectionContract, prompts);
+  }
+
+  if (prompts.isCancel(selectedAgents) || selectedAgents.length === 0) {
+    p.cancel("No install agents selected.");
+    process.exit(1);
+  }
+
+  let availabilityMode = chooseAvailabilityFromArgs(selectionContract, args);
+
+  if (!availabilityMode && yesMode) {
+    p.cancel(`Non-interactive runs must pass --availability. Valid availability modes: ${formatAllowedValues(selectionContract.availabilityModes.map((mode) => mode.id))}`);
+    process.exit(1);
+  }
+
+  if (!availabilityMode) {
+    availabilityMode = await chooseAvailabilityMode(selectionContract, prompts);
+  }
+
+  if (prompts.isCancel(availabilityMode)) {
     p.cancel("Installation cancelled.");
     process.exit(1);
   }
 
-  let selectedBundles;
-  let selectedSkillIds = new Set();
+  return {
+    selectedAgents,
+    availabilityMode,
+    targets: selectedAgents.map((agent) => concreteTargetId(agent, availabilityMode))
+  };
+}
 
-  if (bundleMode === "all") {
-    selectedBundles = skillManifest.bundles.map((bundle) => bundle.id);
-
-    for (const bundle of skillManifest.bundles) {
-      for (const skillId of bundle.skills) {
-        selectedSkillIds.add(skillId);
+function assertTargetCoverage(resolvedSkills, targets) {
+  for (const skill of resolvedSkills) {
+    for (const target of targets) {
+      if (!skill.installPathTemplates?.[target]) {
+        p.cancel(`Framework skill ${skill.publicName} does not support required target ${target}.`);
+        process.exit(1);
       }
-    }
-  } else {
-    if (args.bundles) {
-      selectedBundles = String(args.bundles)
-        .split(",")
-        .map((value) => value.trim())
-        .filter(Boolean);
-    } else {
-      selectedBundles = await p.multiselect({
-        message: "Select skill bundles",
-        options: bundleOptions,
-        initialValues: skillManifest.bundles.filter((bundle) => bundle.defaultSelected).map((bundle) => bundle.id)
-      });
-    }
-
-    if (p.isCancel(selectedBundles) || selectedBundles.length === 0) {
-      p.cancel("No bundles selected.");
-      process.exit(1);
     }
   }
+}
 
-  const skillMap = new Map(skillManifest.skills.map((skill) => [skill.id, skill]));
+function resolveSharedAsset(frameworkFiles) {
+  const sharedAssets = frameworkFiles.sharedAssets ?? [];
 
-  if (bundleMode !== "all") {
-    for (const bundleId of selectedBundles) {
-      const bundle = skillManifest.bundles.find((item) => item.id === bundleId);
-      let selectedSkillValues;
+  if (sharedAssets.length !== 1) {
+    p.cancel("framework-files.json must declare exactly one shared asset group for the starter workspace.");
+    process.exit(1);
+  }
 
-      if (args.skills) {
-        const explicitSkills = new Set(
-          String(args.skills)
-            .split(",")
-            .map((value) => value.trim())
-            .filter(Boolean)
-        );
-        selectedSkillValues = bundle.skills.filter((skillId) => explicitSkills.has(skillId));
-      } else if (args.yes) {
-        selectedSkillValues = [...bundle.skills];
-      } else {
-        selectedSkillValues = await p.multiselect({
-          message: `Select skills for bundle: ${bundle.label}`,
-          options: bundle.skills.map((skillId) => ({
-            value: skillId,
-            label: skillMap.get(skillId).publicName
-          })),
-          initialValues: [...bundle.skills]
-        });
-      }
+  const [sharedAsset] = sharedAssets;
 
-      if (p.isCancel(selectedSkillValues) || selectedSkillValues.length === 0) {
-        p.cancel(`No skills selected for bundle ${bundle.label}.`);
+  if (!Array.isArray(sharedAsset.managedFiles) || !Array.isArray(sharedAsset.workflowOwnedFiles)) {
+    p.cancel(`Shared asset ${sharedAsset.id ?? "unknown"} must declare managedFiles and workflowOwnedFiles arrays.`);
+    process.exit(1);
+  }
+
+  return sharedAsset;
+}
+
+function resolveAgentSpecificAssets(selectionContract, frameworkFiles, selectedAgents) {
+  const agentAssetMap = new Map((frameworkFiles.agentSpecificAssets ?? []).map((asset) => [asset.id, asset]));
+  const installAgents = selectionContract.installAgents ?? [];
+  const selectedAgentSet = new Set(selectedAgents);
+  const selectedAssets = [];
+  const unselectedAssets = [];
+
+  for (const agent of installAgents) {
+    const assetIds = agent.assetIds ?? [];
+
+    for (const assetId of assetIds) {
+      const asset = agentAssetMap.get(assetId);
+
+      if (!asset) {
+        p.cancel(`Install agent ${agent.id} references unknown asset id ${assetId} in skills-manifest.json.`);
         process.exit(1);
       }
 
-      for (const skillId of selectedSkillValues) {
-        selectedSkillIds.add(skillId);
+      if (asset.agent !== agent.id) {
+        p.cancel(`Agent-specific asset ${asset.id} must declare agent ${agent.id}, found ${asset.agent ?? "none"}.`);
+        process.exit(1);
+      }
+
+      if (selectedAgentSet.has(agent.id)) {
+        selectedAssets.push(asset);
+      } else {
+        unselectedAssets.push(asset);
       }
     }
   }
 
   return {
-    selectedBundles,
-    selectedSkillIds: [...selectedSkillIds]
+    selectedAssets,
+    unselectedAssets
   };
-}
-
-async function chooseTargets() {
-  return await p.multiselect({
-    message: "Select install targets",
-    options: [
-      { value: "codex-local", label: "Codex repo-local (.agents/skills/luna-ai/*)" },
-      { value: "hermes-global", label: "Hermes global (~/.hermes/skills/luna-ai/*)" }
-    ],
-    initialValues: ["codex-local"]
-  });
-}
-
-function chooseTargetsFromArgs(args) {
-  if (!args.targets) {
-    return null;
-  }
-
-  return String(args.targets)
-    .split(",")
-    .map((value) => value.trim())
-    .filter(Boolean);
-}
-
-async function resolveTargets(args) {
-  const explicitTargets = chooseTargetsFromArgs(args);
-
-  if (explicitTargets) {
-    return explicitTargets;
-  }
-
-  const targets = await chooseTargets();
-
-  if (p.isCancel(targets) || targets.length === 0) {
-    p.cancel("No install target selected.");
-    process.exit(1);
-  }
-
-  return targets;
 }
 
 function collectExternalPrerequisites(resolvedSkills) {
@@ -412,8 +529,18 @@ function validateExternalPrerequisites(externalPrerequisites) {
   }));
 }
 
-function summarizeResolvedPlan({ bundleIds, resolvedSkills, targets, prerequisiteChecks, repoUrl, ref, sha }) {
-  const selectedBundleLabels = bundleIds;
+function summarizeResolvedPlan({
+  selectedAgents,
+  availabilityMode,
+  resolvedSkills,
+  targets,
+  prerequisiteChecks,
+  repoUrl,
+  ref,
+  sha,
+  sharedAsset,
+  agentSpecificAssets
+}) {
   const topLevelSkills = resolvedSkills.filter((skill) => skill.selectable);
   const dependencySkills = resolvedSkills.filter((skill) => !skill.selectable);
 
@@ -423,21 +550,32 @@ function summarizeResolvedPlan({ bundleIds, resolvedSkills, targets, prerequisit
     `  ref: ${ref}`,
     `  sha: ${sha}`,
     "",
-    "Selected bundles:",
-    ...selectedBundleLabels.map((bundleId) => `  - ${bundleId}`),
+    "Selected agents:",
+    ...selectedAgents.map((agent) => `  - ${agent}`),
     "",
-    "Framework-owned installs:",
+    "Availability mode:",
+    `  - ${availabilityMode}`,
+    "",
+    "Framework-owned installs (mandatory in v1):",
     ...topLevelSkills.map((skill) => `  - ${skill.publicName}`),
     "",
     "Local dependency installs:",
     ...(dependencySkills.length > 0 ? dependencySkills.map((skill) => `  - ${skill.publicName}`) : ["  - none"]),
+    "",
+    "Shared framework assets:",
+    `  - ${sharedAsset.id} (${sharedAsset.category})`,
+    "",
+    "Agent-specific framework assets:",
+    ...(agentSpecificAssets.length > 0
+      ? agentSpecificAssets.map((asset) => `  - ${asset.id} -> ${asset.installPath}`)
+      : ["  - none"]),
     "",
     "External prerequisites validated:",
     ...(prerequisiteChecks.length > 0
       ? prerequisiteChecks.map((item) => `  - ${item.skillName}: ${item.foundAt ? `ok (${item.foundAt})` : "missing"}`)
       : ["  - none"]),
     "",
-    "Targets:",
+    "Concrete install targets:",
     ...targets.map((target) => `  - ${target}`)
   ].join("\n");
 }
@@ -482,17 +620,17 @@ async function resolveManagedFileAction(targetPath, sourcePath, force, yesMode) 
   return action;
 }
 
-async function installStarterFiles({ sourceRoot, repoRoot, frameworkFiles, installMode, force, yesMode }) {
-  const sourcePlanDir = path.join(sourceRoot, "frameworks", "ralph-loop", ".plan");
+async function installSharedAsset({ sourceRoot, repoRoot, sharedAsset, installMode, force, yesMode }) {
+  const sourcePlanDir = path.join(sourceRoot, sharedAsset.sourceRoot);
   const targetPlanDir = path.join(repoRoot, ".plan");
-  const copiedManagedFiles = [];
+  const installedAssets = [];
 
   ensureDirectory(targetPlanDir);
 
   if (installMode === "install") {
     copyDirectory(sourcePlanDir, targetPlanDir);
   } else {
-    for (const relativeManagedFile of frameworkFiles.managedFiles) {
+    for (const relativeManagedFile of sharedAsset.managedFiles) {
       const relativePath = relativeManagedFile.replace(/^[.]plan\//, "");
       const sourcePath = path.join(sourcePlanDir, relativePath);
       const targetPath = path.join(targetPlanDir, relativePath);
@@ -507,11 +645,10 @@ async function installStarterFiles({ sourceRoot, repoRoot, frameworkFiles, insta
         ensureDirectory(path.dirname(targetPath));
         fs.copyFileSync(sourcePath, targetPath);
         fs.chmodSync(targetPath, fs.statSync(sourcePath).mode);
-        copiedManagedFiles.push(relativeManagedFile);
       }
     }
 
-    for (const relativeWorkflowFile of frameworkFiles.workflowOwnedFiles) {
+    for (const relativeWorkflowFile of sharedAsset.workflowOwnedFiles) {
       const relativePath = relativeWorkflowFile.replace(/^[.]plan\//, "");
       const sourcePath = path.join(sourcePlanDir, relativePath);
       const targetPath = path.join(targetPlanDir, relativePath);
@@ -524,7 +661,59 @@ async function installStarterFiles({ sourceRoot, repoRoot, frameworkFiles, insta
     }
   }
 
-  return copiedManagedFiles;
+  installedAssets.push({
+    id: sharedAsset.id,
+    class: sharedAsset.class,
+    category: sharedAsset.category,
+    installRoot: sharedAsset.installRoot,
+    installPath: targetPlanDir,
+    managedFiles: sharedAsset.managedFiles,
+    workflowOwnedFiles: sharedAsset.workflowOwnedFiles,
+    installedAt: new Date().toISOString()
+  });
+
+  return installedAssets;
+}
+
+function agentAssetTargetPath(asset, repoRoot) {
+  if (asset.installRoot !== "repo") {
+    p.cancel(`Unsupported installRoot for asset ${asset.id}: ${asset.installRoot}`);
+    process.exit(1);
+  }
+
+  return path.join(repoRoot, asset.installPath);
+}
+
+async function installAgentSpecificAssets({ sourceRoot, repoRoot, selectedAssets, unselectedAssets }) {
+  const installedAssets = [];
+
+  for (const asset of unselectedAssets) {
+    const targetPath = agentAssetTargetPath(asset, repoRoot);
+    fs.rmSync(targetPath, { force: true });
+  }
+
+  for (const asset of selectedAssets) {
+    const sourcePath = path.join(sourceRoot, asset.sourcePath);
+    const targetPath = agentAssetTargetPath(asset, repoRoot);
+
+    ensureDirectory(path.dirname(targetPath));
+    fs.copyFileSync(sourcePath, targetPath);
+    fs.chmodSync(targetPath, fs.statSync(sourcePath).mode);
+
+    installedAssets.push({
+      id: asset.id,
+      class: asset.class,
+      category: asset.category,
+      agent: asset.agent,
+      installRoot: asset.installRoot,
+      installPath: targetPath,
+      sourcePath: asset.sourcePath,
+      availabilityBehavior: asset.availabilityBehavior,
+      installedAt: new Date().toISOString()
+    });
+  }
+
+  return installedAssets;
 }
 
 async function installSkills({ sourceRoot, repoRoot, resolvedSkills, targets, force, yesMode }) {
@@ -573,7 +762,20 @@ async function installSkills({ sourceRoot, repoRoot, resolvedSkills, targets, fo
   return installedSkills;
 }
 
-function writeFrameworkMetadata({ repoRoot, installMode, adopted, repoUrl, ref, sha, frameworkFiles, installedSkills }) {
+function writeFrameworkMetadata({
+  repoRoot,
+  installMode,
+  adopted,
+  repoUrl,
+  ref,
+  sha,
+  sharedAsset,
+  selectedAgents,
+  availabilityMode,
+  targets,
+  installedSkills,
+  installedAssets
+}) {
   const markerPath = path.join(repoRoot, ".plan", ".framework");
   const manifestPath = path.join(repoRoot, ".plan", ".framework-install.json");
 
@@ -588,8 +790,15 @@ function writeFrameworkMetadata({ repoRoot, installMode, adopted, repoUrl, ref, 
       ref,
       sha
     },
+    selection: {
+      agents: selectedAgents,
+      availabilityMode,
+      targets
+    },
     installedAt: new Date().toISOString(),
-    managedFiles: frameworkFiles.managedFiles,
+    managedFiles: sharedAsset.managedFiles,
+    workflowOwnedFiles: sharedAsset.workflowOwnedFiles,
+    installedAssets,
     installedSkills
   };
 
@@ -617,9 +826,12 @@ async function main() {
 
   const installState = detectInstallState(confirmedRepoRoot);
   const installMode = await chooseAdoptionMode(installState, yesMode);
-  const { selectedBundles, selectedSkillIds } = await chooseSkillSelection(skillManifest, args);
-  const targets = await resolveTargets(args);
-  const resolvedSkills = resolveSkillClosure(skillManifest, selectedSkillIds);
+  const selectionContract = skillManifest.selectionContract;
+  const { selectedAgents, availabilityMode, targets } = await resolveSelection(skillManifest, args, yesMode);
+  const resolvedSkills = resolveSkillClosure(skillManifest, resolveMandatorySkillIds(skillManifest));
+  const sharedAsset = resolveSharedAsset(frameworkFiles);
+  const { selectedAssets, unselectedAssets } = resolveAgentSpecificAssets(selectionContract, frameworkFiles, selectedAgents);
+  assertTargetCoverage(resolvedSkills, targets);
   const externalPrerequisites = collectExternalPrerequisites(resolvedSkills);
   const prerequisiteChecks = validateExternalPrerequisites(externalPrerequisites);
 
@@ -631,13 +843,16 @@ async function main() {
   }
 
   const resolvedSummary = summarizeResolvedPlan({
-    bundleIds: selectedBundles,
+    selectedAgents,
+    availabilityMode,
     resolvedSkills,
     targets,
     prerequisiteChecks,
     repoUrl,
     ref,
-    sha
+    sha,
+    sharedAsset,
+    agentSpecificAssets: selectedAssets
   });
 
   if (!yesMode) {
@@ -646,13 +861,20 @@ async function main() {
     p.note(resolvedSummary, "Resolved install plan");
   }
 
-  await installStarterFiles({
+  const installedSharedAssets = await installSharedAsset({
     sourceRoot,
     repoRoot: confirmedRepoRoot,
-    frameworkFiles,
+    sharedAsset,
     installMode,
     force,
     yesMode
+  });
+
+  const installedAgentAssets = await installAgentSpecificAssets({
+    sourceRoot,
+    repoRoot: confirmedRepoRoot,
+    selectedAssets,
+    unselectedAssets
   });
 
   const installedSkills = await installSkills({
@@ -671,14 +893,38 @@ async function main() {
     repoUrl,
     ref,
     sha,
-    frameworkFiles,
-    installedSkills
+    sharedAsset,
+    selectedAgents,
+    availabilityMode,
+    targets,
+    installedSkills,
+    installedAssets: [...installedSharedAssets, ...installedAgentAssets]
   });
 
   p.outro("Ralph Loop framework installation complete.");
 }
 
-main().catch((error) => {
-  p.cancel(error instanceof Error ? error.message : String(error));
-  process.exit(1);
-});
+const entrypointPath = process.argv[1] ? path.resolve(process.argv[1]) : null;
+const modulePath = fileURLToPath(import.meta.url);
+
+if (entrypointPath === modulePath) {
+  main().catch((error) => {
+    p.cancel(error instanceof Error ? error.message : String(error));
+    process.exit(1);
+  });
+}
+
+export {
+  assertTargetCoverage,
+  chooseAvailabilityFromArgs,
+  chooseAgentsFromArgs,
+  concreteTargetId,
+  parseArgs,
+  readJson,
+  resolveMandatorySkillIds,
+  resolveSelection,
+  resolveSkillClosure,
+  summarizeResolvedPlan,
+  validateLegacySelectionArgs,
+  validateSelectionValues
+};

@@ -2,7 +2,7 @@
 type: epic
 id: E-05
 name: "Installer Selection Contract"
-status: ready
+status: done
 blocked-by: []
 ---
 
@@ -22,7 +22,7 @@ three-agent by two-availability contract instead.
 
 | Task ID | Task | Status | Blocked By | File |
 | --- | --- | --- | --- | --- |
-| T-16 | Installer selection contract: agents first, one availability mode, no manual skill-selection path | ready | — | `.plan/epics/05-installer-selection-contract/tasks/01-installer-selection-contract.md` |
+| T-16 | Installer selection contract: agents first, one availability mode, no manual skill-selection path | done | — | `.plan/epics/05-installer-selection-contract/tasks/01-installer-selection-contract.md` |
 
 ---
 

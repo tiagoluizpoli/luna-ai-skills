@@ -2,7 +2,7 @@
 type: epic
 id: E-06
 name: "Asset And Ownership Contract"
-status: ready
+status: in-progress
 blocked-by: []
 ---
 
@@ -23,7 +23,7 @@ boundaries.
 
 | Task ID | Task | Status | Blocked By | File |
 | --- | --- | --- | --- | --- |
-| T-17 | Asset routing contract: shared vs agent-specific assets | ready | T-16 | `.plan/epics/06-asset-and-ownership-contract/tasks/01-asset-routing-contract.md` |
+| T-17 | Asset routing contract: shared vs agent-specific assets | in-progress | T-16 | `.plan/epics/06-asset-and-ownership-contract/tasks/01-asset-routing-contract.md` |
 | T-18 | Install ownership and starter manifest alignment | ready | T-17 | `.plan/epics/06-asset-and-ownership-contract/tasks/02-install-ownership-and-starter-manifest-alignment.md` |
 
 ---

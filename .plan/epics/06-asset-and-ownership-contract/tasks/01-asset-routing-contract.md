@@ -2,7 +2,7 @@
 type: task
 id: T-17
 epic: E-06
-status: ready
+status: in-progress
 blocked-by: [T-16]
 default-model: medium
 ---
@@ -32,7 +32,7 @@ not enough for runner scripts and other agent-specific framework assets.
 
 ### ST-01 - Implement explicit shared versus agent-specific asset routing
 
-status: ready
+status: done
 model: medium
 escalate-if: [asset-classification-forces-large-installer-refactor]
 blocked-by: []

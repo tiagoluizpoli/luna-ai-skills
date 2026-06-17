@@ -1,6 +1,88 @@
 {
   "frameworkName": "ralph-loop",
   "starterRoot": "frameworks/ralph-loop/.plan",
+  "sharedAssets": [
+    {
+      "id": "plan-starter",
+      "class": "shared",
+      "category": "starter-workspace",
+      "installRoot": "repo",
+      "sourceRoot": "frameworks/ralph-loop/.plan",
+      "managedFiles": [
+        ".plan/prompt.md",
+        ".plan/RULES.md",
+        ".plan/helper-scripts/common.sh",
+        ".plan/helper-scripts/archive-run.sh",
+        ".plan/helper-scripts/get-current-grill-handoff.sh",
+        ".plan/helper-scripts/get-current-grill.sh",
+        ".plan/helper-scripts/get-current-prd-handoff.sh",
+        ".plan/helper-scripts/get-current-prd.sh",
+        ".plan/helper-scripts/retrieve-history.sh",
+        ".plan/helper-scripts/runtime-state.sh",
+        ".plan/helper-scripts/set-current-grill-handoff.sh",
+        ".plan/helper-scripts/set-current-grill.sh",
+        ".plan/helper-scripts/set-current-prd-handoff.sh",
+        ".plan/helper-scripts/set-current-prd.sh",
+        ".plan/helper-scripts/sync-state.sh",
+        ".plan/helper-scripts/validate-prereqs.sh",
+        ".plan/shared/epic-template.md",
+        ".plan/shared/task-template.md",
+        ".plan/.framework"
+      ],
+      "workflowOwnedFiles": [
+        ".plan/PRD.md",
+        ".plan/index.md",
+        ".plan/backlog.md",
+        ".plan/progress.txt",
+        ".plan/.run-state.json",
+        ".plan/.run-history.jsonl",
+        ".plan/.run-summary.md",
+        ".plan/epics/.gitkeep",
+        ".plan/grilling/.current-session",
+        ".plan/grilling/.gitkeep",
+        ".plan/handoffs/.current-grill-handoff",
+        ".plan/handoffs/.current-prd-handoff",
+        ".plan/handoffs/.gitkeep",
+        ".plan/prds/.current-prd",
+        ".plan/prds/.gitkeep",
+        ".plan/sessions/.gitkeep",
+        ".plan/archive/.gitkeep",
+        ".plan/summaries/.gitkeep"
+      ]
+    }
+  ],
+  "agentSpecificAssets": [
+    {
+      "id": "runner-hermes",
+      "class": "agent-specific",
+      "category": "runner-script",
+      "agent": "hermes",
+      "sourcePath": "ralph-loop-hermes.sh",
+      "installRoot": "repo",
+      "installPath": "ralph-loop-hermes.sh",
+      "availabilityBehavior": "repo-root-for-all-modes"
+    },
+    {
+      "id": "runner-codex",
+      "class": "agent-specific",
+      "category": "runner-script",
+      "agent": "codex",
+      "sourcePath": "ralph-loop-codex.sh",
+      "installRoot": "repo",
+      "installPath": "ralph-loop-codex.sh",
+      "availabilityBehavior": "repo-root-for-all-modes"
+    },
+    {
+      "id": "runner-agy",
+      "class": "agent-specific",
+      "category": "runner-script",
+      "agent": "agy",
+      "sourcePath": "ralph-loop-agy.sh",
+      "installRoot": "repo",
+      "installPath": "ralph-loop-agy.sh",
+      "availabilityBehavior": "repo-root-for-all-modes"
+    }
+  ],
   "managedFiles": [
     ".plan/prompt.md",
     ".plan/RULES.md",

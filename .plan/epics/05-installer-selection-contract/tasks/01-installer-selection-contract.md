@@ -2,7 +2,7 @@
 type: task
 id: T-16
 epic: E-05
-status: ready
+status: done
 blocked-by: []
 default-model: medium
 ---
@@ -23,19 +23,19 @@ locks three install agents (Hermes, Codex, AGY), two availability modes
 
 ## Acceptance Criteria
 
-- [ ] Interactive install asks for install agents before availability mode.
-- [ ] Interactive install uses a single run-level availability choice and does
+- [x] Interactive install asks for install agents before availability mode.
+- [x] Interactive install uses a single run-level availability choice and does
       not show manual framework-skill selection in the normal v1 path.
-- [ ] Automation inputs for agent and availability selection fail with clear,
+- [x] Automation inputs for agent and availability selection fail with clear,
       user-facing validation errors instead of raw exceptions.
-- [ ] Tests cover the full 3×2 selection matrix and assert the agents-first
+- [x] Tests cover the full 3×2 selection matrix and assert the agents-first
       interaction contract.
 
 ## Sub-Tasks
 
 ### ST-01 - Replace the fused target and skill-selection flow
 
-status: ready
+status: done
 model: medium
 escalate-if: [selection-model-keeps-leaking-into-installer-architecture]
 blocked-by: []
@@ -57,11 +57,22 @@ verification:
 
 #### Execution Notes
 
-- No execution notes yet.
+- Replaced legacy `--all` / `--bundles` / `--skills` / `--targets` selection
+  paths with explicit `--agents` plus `--availability` handling and user-facing
+  validation errors.
+- Moved the manifest to a `selectionContract` plus `mandatorySkillIds` model so
+  the standard v1 path always installs the full framework-owned skill set.
+- Verified a non-interactive 3-agent local install against a clean throwaway Git
+  repository with a fake HOME that provided only the external prerequisite skill
+  stubs required by the installer.
+- Verified the interactive prompt order reaches agent selection first and
+  availability selection second before later asset-routing prompts. The later
+  Codex/AGY destination collision remains for the asset-routing task, not this
+  selection-contract sub-task.
 
 ### ST-02 - Add matrix and validation coverage for the selection contract
 
-status: ready
+status: done
 model: medium
 escalate-if: [matrix-coverage-needs-new-test-harness]
 blocked-by: [ST-01]
@@ -83,7 +94,11 @@ verification:
 
 #### Execution Notes
 
-- No execution notes yet.
+- Added a dedicated Node test suite under `frameworks/ralph-loop/installer/tests/selection-contract.test.mjs` and a package script so the installer contract can be verified with `node --test`.
+- Covered all six concrete agent/availability pairs by asserting `resolveSelection()` plus `assertTargetCoverage()` over the 3×2 matrix.
+- Added regression coverage for legacy flags, invalid agent values, invalid availability values, and missing non-interactive agent selection so failures stay user-facing.
+- Added an interactive-contract test that proves the prompt order is agents first and availability second without any manual framework-skill selection prompt.
+- Verified a throwaway-repository install writes the new selection metadata and installs the mandatory framework skill closure for the selected agents.
 
 ---
 
