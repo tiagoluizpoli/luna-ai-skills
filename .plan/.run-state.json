@@ -1,17 +1,17 @@
 {
-  "currentRunId": "e-09-t-23-done",
+  "currentRunId": null,
   "currentPrdId": "PRD-v4-claude-provider-and-skills-installer-refactor",
-  "currentEpicId": "E-09",
-  "currentTaskId": "T-23",
-  "currentSubTaskId": "ST-02",
-  "attemptCount": 1,
+  "currentEpicId": null,
+  "currentTaskId": null,
+  "currentSubTaskId": null,
+  "attemptCount": 0,
   "retrievalRound": 0,
   "lastModel": "sonnet",
   "escalated": false,
   "lastFailureReason": null,
-  "requiredModel": "medium",
+  "requiredModel": null,
   "runnerName": "claude",
   "escalateIf": [],
   "filesToTouch": [],
-  "lastCommitChanged": true
+  "lastCommitChanged": false
 }
