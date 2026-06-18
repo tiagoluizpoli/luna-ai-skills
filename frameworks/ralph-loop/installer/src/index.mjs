@@ -130,6 +130,7 @@ function isDirtyWorktree(targetRoot) {
   return output.length > 0;
 }
 
+// Search for external skills registered by agent runners (Hermes, Codex, Agy, Claude)
 function findExternalSkill(skillName) {
   const candidatePaths = [
     path.join(os.homedir(), ".agents", "skills", skillName, "SKILL.md"),
