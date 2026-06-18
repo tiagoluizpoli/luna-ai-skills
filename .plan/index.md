@@ -7,7 +7,7 @@
 
 ## Current Run Family
 
-- Current PRD: `.plan/prds/PRD-v4-claude-provider-and-skills-installer-refactor.md`
+- Current PRD: `.plan/prds/PRD-v5-prompt-extensibility.md`
 - Current PRD pointer: `.plan/prds/.current-prd`
 - Current grilling pointer: `.plan/grilling/.current-session`
 - Current grill handoff pointer: `.plan/handoffs/.current-grill-handoff`
@@ -19,6 +19,7 @@
 
 - [2026-06-12 Framework Grill](.plan/grilling/2026-06-12-installable-framework-core.md)
 - [2026-06-17 Claude Provider Grill](.plan/grilling/2026-06-17-claude-provider-and-skills-installer-refactor.md)
+- [2026-06-18 Prompt Extensibility Grill](.plan/grilling/2026-06-18-prompt-extensibility.md)
 
 ## PRD History
 
@@ -27,7 +28,8 @@
 | SUPERSEDED | v1 | Installable Ralph Loop Framework Core | `.plan/prds/PRD-v1-installable-ralph-loop-framework-core.md` | `.plan/prds/PRD-v1-installable-ralph-loop-framework-core.md` | 2026-06-13 |
 | SUPERSEDED | v2 | Installable Ralph Loop Framework Core | `.plan/prds/PRD-v2-installable-ralph-loop-framework-core.md` | `.plan/prds/PRD-v2-installable-ralph-loop-framework-core.md` | 2026-06-15 |
 | SUPERSEDED | v3 | Installer Target Model Hardening | `.plan/prds/PRD-v3-installer-target-model-hardening.md` | `.plan/prds/PRD-v3-installer-target-model-hardening.md` | 2026-06-17 |
-| CURRENT | v4 | Claude Provider Integration & Skills Installer Refactor | `.plan/prds/PRD-v4-claude-provider-and-skills-installer-refactor.md` | `.plan/prds/PRD-v4-claude-provider-and-skills-installer-refactor.md` | 2026-06-17 |
+| SUPERSEDED | v4 | Claude Provider Integration & Skills Installer Refactor | `.plan/prds/PRD-v4-claude-provider-and-skills-installer-refactor.md` | `.plan/prds/PRD-v4-claude-provider-and-skills-installer-refactor.md` | 2026-06-17 |
+| CURRENT | v5 | Prompt Extensibility | `.plan/prds/PRD-v5-prompt-extensibility.md` | `.plan/prds/PRD-v5-prompt-extensibility.md` | 2026-06-18 |
 
 ## Epics
 
@@ -42,6 +44,7 @@
 | E-07 | Update State Contract | done | — | `.plan/epics/07-update-state-contract/epic.md` |
 | E-08 | Verification And Reconciliation | done | — | `.plan/epics/08-verification-and-reconciliation/epic.md` |
 | E-09 | Claude Provider Integration & Skills Installer Refactor | done | — | `.plan/epics/09-claude-provider-and-installer-refactor/epic.md` |
+| E-10 | Prompt Extensibility | ready | — | `.plan/epics/10-prompt-extensibility/epic.md` |
 
 ## Tasks
 
@@ -70,3 +73,7 @@
 | T-21 | E-09 | Register Claude Agent and Runner Script Assets | done | — | `.plan/epics/09-claude-provider-and-installer-refactor/tasks/01-register-claude-assets-and-targets.md` |
 | T-22 | E-09 | Refactor Installer to Prompt in Bulk with Multi-select List | done | — | `.plan/epics/09-claude-provider-and-installer-refactor/tasks/02-bulk-overwrite-multiselect-prompt.md` |
 | T-23 | E-09 | Retain Metadata and Verification Testing | done | — | `.plan/epics/09-claude-provider-and-installer-refactor/tasks/03-metadata-retention-and-testing.md` |
+| T-24 | E-10 | Update `prompt.md` reading order | ready | — | `.plan/epics/10-prompt-extensibility/tasks/24-update-prompt-reading-order.md` |
+| T-25 | E-10 | Reclassify file ownership in `framework-files.json` | ready | — | `.plan/epics/10-prompt-extensibility/tasks/25-reclassify-file-ownership.md` |
+| T-26 | E-10 | Installer scaffold logic for consumer-owned starter files | ready | T-25 | `.plan/epics/10-prompt-extensibility/tasks/26-installer-scaffold-logic.md` |
+| T-27 | E-10 | Installer tests: scaffold and update preservation | ready | T-25, T-26 | `.plan/epics/10-prompt-extensibility/tasks/27-installer-scaffold-tests.md` |
