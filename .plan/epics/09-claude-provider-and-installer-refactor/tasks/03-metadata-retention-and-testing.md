@@ -2,7 +2,7 @@
 type: task
 id: T-23
 epic: E-09
-status: ready
+status: done
 blocked-by: []
 default-model: medium
 ---
@@ -17,16 +17,16 @@ When skills are skipped, their installer record in `.framework-install.json` mus
 
 ## Acceptance Criteria
 
-- [ ] Unselected skills retain their pre-existing installation details and `installedAt` timestamps in `.framework-install.json`.
-- [ ] Overwritten skills have their `installedAt` timestamps updated to the current time.
-- [ ] Installer test suite has tests verifying the consolidated prompting, skip/overwrite outcomes, and metadata preservation.
-- [ ] Integration validation runs pass cleanly.
+- [x] Unselected skills retain their pre-existing installation details and `installedAt` timestamps in `.framework-install.json`.
+- [x] Overwritten skills have their `installedAt` timestamps updated to the current time.
+- [x] Installer test suite has tests verifying the consolidated prompting, skip/overwrite outcomes, and metadata preservation.
+- [x] Integration validation runs pass cleanly.
 
 ## Sub-Tasks
 
 ### ST-01 - Preserve Skip Metadata in Install Records
 
-status: ready
+status: done
 model: medium
 escalate-if: []
 blocked-by: []
@@ -43,7 +43,7 @@ verification:
 
 ### ST-02 - Implement Unit/Integration Test Coverage
 
-status: ready
+status: done
 model: medium
 escalate-if: []
 blocked-by: []

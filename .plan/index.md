@@ -41,7 +41,7 @@
 | E-06 | Asset And Ownership Contract | done | — | `.plan/epics/06-asset-and-ownership-contract/epic.md` |
 | E-07 | Update State Contract | done | — | `.plan/epics/07-update-state-contract/epic.md` |
 | E-08 | Verification And Reconciliation | done | — | `.plan/epics/08-verification-and-reconciliation/epic.md` |
-| E-09 | Claude Provider Integration & Skills Installer Refactor | in-progress | — | `.plan/epics/09-claude-provider-and-installer-refactor/epic.md` |
+| E-09 | Claude Provider Integration & Skills Installer Refactor | done | — | `.plan/epics/09-claude-provider-and-installer-refactor/epic.md` |
 
 ## Tasks
 
@@ -69,4 +69,4 @@
 | T-20 | E-08 | Verification and documentation reconciliation against the hardened installer | done | — | `.plan/epics/08-verification-and-reconciliation/tasks/01-verification-and-documentation-reconciliation.md` |
 | T-21 | E-09 | Register Claude Agent and Runner Script Assets | done | — | `.plan/epics/09-claude-provider-and-installer-refactor/tasks/01-register-claude-assets-and-targets.md` |
 | T-22 | E-09 | Refactor Installer to Prompt in Bulk with Multi-select List | done | — | `.plan/epics/09-claude-provider-and-installer-refactor/tasks/02-bulk-overwrite-multiselect-prompt.md` |
-| T-23 | E-09 | Retain Metadata and Verification Testing | ready | T-22 | `.plan/epics/09-claude-provider-and-installer-refactor/tasks/03-metadata-retention-and-testing.md` |
+| T-23 | E-09 | Retain Metadata and Verification Testing | done | — | `.plan/epics/09-claude-provider-and-installer-refactor/tasks/03-metadata-retention-and-testing.md` |

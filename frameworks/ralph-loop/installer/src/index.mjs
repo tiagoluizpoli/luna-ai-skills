@@ -840,7 +840,7 @@ async function installAgentSpecificAssets({ sourceRoot, repoRoot, selectedAssets
   return installedAssets;
 }
 
-async function installSkills({ sourceRoot, repoRoot, resolvedSkills, targets, force, yesMode }) {
+async function installSkills({ sourceRoot, repoRoot, resolvedSkills, targets, force, yesMode, prompts = p }) {
   const installedSkills = [];
 
   const allItems = [];
@@ -861,7 +861,6 @@ async function installSkills({ sourceRoot, repoRoot, resolvedSkills, targets, fo
   }
 
   const conflictingItems = allItems.filter((item) => item.destinationExists);
-  const cleanItems = allItems.filter((item) => !item.destinationExists);
 
   let selectedKeys = new Set();
   if (conflictingItems.length > 0 && !force && !yesMode) {
@@ -874,12 +873,12 @@ async function installSkills({ sourceRoot, repoRoot, resolvedSkills, targets, fo
       };
     });
 
-    const result = await p.multiselect({
+    const result = await prompts.multiselect({
       message: "The following framework skills already exist. Select which ones to overwrite:",
       options
     });
 
-    if (p.isCancel(result)) {
+    if (prompts.isCancel(result)) {
       p.cancel("Installation cancelled during skill update.");
       process.exit(1);
     }
@@ -1021,6 +1020,16 @@ function writeFrameworkMetadata({
     };
   });
 
+  // Preserve existing skill records that were not overwritten in this run
+  const installedSkillKeys = new Set(
+    installedSkills.map((s) => `${s.publicName}::${s.target}`)
+  );
+  const preservedSkills = existingSkills.filter(
+    (es) => !installedSkillKeys.has(`${es.publicName}::${es.target}`)
+  );
+
+  const allSkills = [...updatedSkills, ...preservedSkills];
+
   fs.writeFileSync(markerPath, "ralph-loop\n");
 
   const manifest = {
@@ -1042,7 +1051,7 @@ function writeFrameworkMetadata({
     managedFiles: sharedAsset.managedFiles,
     workflowOwnedFiles: sharedAsset.workflowOwnedFiles,
     installedAssets: updatedAssets,
-    installedSkills: updatedSkills
+    installedSkills: allSkills
   };
 
   fs.writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
@@ -1169,6 +1178,7 @@ export {
   chooseAgentsFromArgs,
   concreteTargetId,
   getTrustworthyRecordedState,
+  installSkills,
   parseArgs,
   readJson,
   resolveMandatorySkillIds,
@@ -1176,5 +1186,6 @@ export {
   resolveSkillClosure,
   summarizeResolvedPlan,
   validateLegacySelectionArgs,
-  validateSelectionValues
+  validateSelectionValues,
+  writeFrameworkMetadata
 };

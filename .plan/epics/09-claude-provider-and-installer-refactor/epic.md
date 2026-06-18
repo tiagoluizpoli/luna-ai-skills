@@ -2,7 +2,7 @@
 type: epic
 id: E-09
 name: "Claude Provider Integration & Skills Installer Refactor"
-status: in-progress
+status: done
 blocked-by: []
 ---
 
@@ -21,7 +21,7 @@ This epic integrates the Claude CLI runner script as a framework asset and targe
 | --- | --- | --- | --- | --- |
 | T-21 | Register Claude Agent and Runner Script Assets | done | — | `.plan/epics/09-claude-provider-and-installer-refactor/tasks/01-register-claude-assets-and-targets.md` |
 | T-22 | Refactor Installer to Prompt in Bulk with Multi-select List | done | — | `.plan/epics/09-claude-provider-and-installer-refactor/tasks/02-bulk-overwrite-multiselect-prompt.md` |
-| T-23 | Retain Metadata and Verification Testing | ready | T-22 | `.plan/epics/09-claude-provider-and-installer-refactor/tasks/03-metadata-retention-and-testing.md` |
+| T-23 | Retain Metadata and Verification Testing | done | — | `.plan/epics/09-claude-provider-and-installer-refactor/tasks/03-metadata-retention-and-testing.md` |
 
 ---
 
