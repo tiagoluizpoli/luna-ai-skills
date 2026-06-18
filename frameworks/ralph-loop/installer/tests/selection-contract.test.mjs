@@ -297,7 +297,8 @@ test("installer fresh install provisions only the declared framework-managed and
   const frameworkFiles = readJson(path.join(repoRoot, "frameworks", "ralph-loop", "framework-files.json"));
   const declaredFiles = new Set([
     ...frameworkFiles.managedFiles,
-    ...frameworkFiles.workflowOwnedFiles
+    ...frameworkFiles.workflowOwnedFiles,
+    ...(frameworkFiles.consumerOwnedStarterFiles ?? [])
   ]);
 
   // Assert that every installed file in .plan is declared in the framework-files manifest

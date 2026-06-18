@@ -2,8 +2,8 @@
 type: task
 id: T-27
 epic: E-10
-status: ready
-blocked-by: [T-25, T-26]
+status: done
+blocked-by: []
 default-model: medium
 ---
 
@@ -21,20 +21,20 @@ Add installer tests to `frameworks/ralph-loop/installer/tests/index.test.mjs` co
 
 ## Acceptance Criteria
 
-- [ ] Test: fresh install creates `prompt.local.md` with starter content.
-- [ ] Test: fresh install creates `CONTEXT.md` with starter content.
-- [ ] Test: update run leaves pre-existing `prompt.local.md` unchanged.
-- [ ] Test: update run leaves pre-existing `CONTEXT.md` unchanged.
-- [ ] Test: update run leaves pre-existing `RULES.md` unchanged.
-- [ ] Test: `framework-files.json` has `prompt.local.md` absent from `managedFiles` and `workflowOwnedFiles`.
-- [ ] Test: `framework-files.json` has `CONTEXT.md` absent from `managedFiles` and `workflowOwnedFiles`.
-- [ ] All new tests pass: `cd frameworks/ralph-loop/installer && npm test`.
+- [x] Test: fresh install creates `prompt.local.md` with starter content.
+- [x] Test: fresh install creates `CONTEXT.md` with starter content.
+- [x] Test: update run leaves pre-existing `prompt.local.md` unchanged.
+- [x] Test: update run leaves pre-existing `CONTEXT.md` unchanged.
+- [x] Test: update run leaves pre-existing `RULES.md` unchanged.
+- [x] Test: `framework-files.json` has `prompt.local.md` absent from `managedFiles` and `workflowOwnedFiles`.
+- [x] Test: `framework-files.json` has `CONTEXT.md` absent from `managedFiles` and `workflowOwnedFiles`.
+- [x] All new tests pass: `cd frameworks/ralph-loop/installer && npm test`.
 
 ## Sub-Tasks
 
 ### ST-01 - Test fresh install scaffold for prompt.local.md and CONTEXT.md
 
-status: ready
+status: done
 model: medium
 escalate-if: []
 blocked-by: []
@@ -54,7 +54,7 @@ verification:
 
 ### ST-02 - Test update preserves consumer-owned files
 
-status: ready
+status: done
 model: medium
 escalate-if: []
 blocked-by: []
@@ -73,7 +73,7 @@ verification:
 
 ### ST-03 - Test framework-files.json classification
 
-status: ready
+status: done
 model: medium
 escalate-if: []
 blocked-by: []

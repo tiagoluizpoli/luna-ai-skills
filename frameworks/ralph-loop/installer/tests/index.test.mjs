@@ -7,6 +7,7 @@ import { execFileSync, spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
 import {
+  CONSUMER_STARTER_CONTENT,
   installSkills,
   readJson,
   resolveMandatorySkillIds,
@@ -354,4 +355,117 @@ test("all-agent install with claude includes ralph-loop-claude.sh alongside othe
   for (const agent of ["hermes", "codex", "agy", "claude"]) {
     assert.ok(assetIds.includes(`runner-${agent}`), `runner-${agent} should be in installedAssets`);
   }
+});
+
+// --- ST-01: fresh install scaffold for consumer-owned starter files ---
+
+test("fresh install creates prompt.local.md with starter content", () => {
+  const result = runInstaller({
+    args: ["--yes", "--agents", "hermes", "--availability", "local"]
+  });
+  assert.equal(result.status, 0, `${result.stdout}${result.stderr}`);
+
+  const promptLocalPath = path.join(result.repoDir, "prompt.local.md");
+  assert.ok(fs.existsSync(promptLocalPath), "prompt.local.md should exist after fresh install");
+  const content = fs.readFileSync(promptLocalPath, "utf8");
+  assert.equal(content, CONSUMER_STARTER_CONTENT["prompt.local.md"], "prompt.local.md content should match starter template");
+});
+
+test("fresh install creates CONTEXT.md with starter content", () => {
+  const result = runInstaller({
+    args: ["--yes", "--agents", "hermes", "--availability", "local"]
+  });
+  assert.equal(result.status, 0, `${result.stdout}${result.stderr}`);
+
+  const contextPath = path.join(result.repoDir, "CONTEXT.md");
+  assert.ok(fs.existsSync(contextPath), "CONTEXT.md should exist after fresh install");
+  const content = fs.readFileSync(contextPath, "utf8");
+  assert.equal(content, CONSUMER_STARTER_CONTENT["CONTEXT.md"], "CONTEXT.md content should match starter template");
+});
+
+// --- ST-02: update run preserves consumer-owned files ---
+
+test("update run leaves pre-existing prompt.local.md, CONTEXT.md, and RULES.md unchanged", () => {
+  const repoDir = createGitRepo();
+
+  const result1 = runInstaller({
+    args: ["--yes", "--agents", "hermes", "--availability", "local"],
+    repoDir
+  });
+  assert.equal(result1.status, 0, `${result1.stdout}${result1.stderr}`);
+
+  const customPromptLocal = "# My Custom Instructions\nDo something special\n";
+  const customContext = "# My Domain Context\nTerm: means something special\n";
+  const customRules = "# My Custom Rules\nRule 1: Always do X\n";
+
+  fs.writeFileSync(path.join(repoDir, "prompt.local.md"), customPromptLocal);
+  fs.writeFileSync(path.join(repoDir, "CONTEXT.md"), customContext);
+  fs.writeFileSync(path.join(repoDir, ".plan", "RULES.md"), customRules);
+
+  const result2 = runInstaller({
+    args: ["--yes", "--agents", "hermes", "--availability", "local"],
+    repoDir
+  });
+  assert.equal(result2.status, 0, `${result2.stdout}${result2.stderr}`);
+
+  assert.equal(
+    fs.readFileSync(path.join(repoDir, "prompt.local.md"), "utf8"),
+    customPromptLocal,
+    "prompt.local.md should be unchanged after update"
+  );
+  assert.equal(
+    fs.readFileSync(path.join(repoDir, "CONTEXT.md"), "utf8"),
+    customContext,
+    "CONTEXT.md should be unchanged after update"
+  );
+  assert.equal(
+    fs.readFileSync(path.join(repoDir, ".plan", "RULES.md"), "utf8"),
+    customRules,
+    "RULES.md should be unchanged after update"
+  );
+});
+
+// --- ST-03: framework-files.json classification ---
+
+test("framework-files.json: prompt.local.md and CONTEXT.md absent from managedFiles and workflowOwnedFiles", () => {
+  const allManagedFiles = [
+    ...(frameworkFiles.managedFiles ?? []),
+    ...(frameworkFiles.sharedAssets ?? []).flatMap((a) => a.managedFiles ?? [])
+  ];
+  const allWorkflowOwnedFiles = [
+    ...(frameworkFiles.workflowOwnedFiles ?? []),
+    ...(frameworkFiles.sharedAssets ?? []).flatMap((a) => a.workflowOwnedFiles ?? [])
+  ];
+
+  assert.ok(
+    !allManagedFiles.some((f) => f.includes("prompt.local.md")),
+    "prompt.local.md must not appear in any managedFiles array"
+  );
+  assert.ok(
+    !allManagedFiles.some((f) => f.includes("CONTEXT.md")),
+    "CONTEXT.md must not appear in any managedFiles array"
+  );
+  assert.ok(
+    !allWorkflowOwnedFiles.some((f) => f.includes("prompt.local.md")),
+    "prompt.local.md must not appear in any workflowOwnedFiles array"
+  );
+  assert.ok(
+    !allWorkflowOwnedFiles.some((f) => f.includes("CONTEXT.md")),
+    "CONTEXT.md must not appear in any workflowOwnedFiles array"
+  );
+
+  const topLevelStarters = frameworkFiles.consumerOwnedStarterFiles ?? [];
+  assert.ok(
+    topLevelStarters.some((f) => f.includes("prompt.local.md")),
+    "prompt.local.md must appear in top-level consumerOwnedStarterFiles"
+  );
+  assert.ok(
+    topLevelStarters.some((f) => f.includes("CONTEXT.md")),
+    "CONTEXT.md must appear in top-level consumerOwnedStarterFiles"
+  );
+
+  assert.ok(
+    !allManagedFiles.some((f) => f.includes("RULES.md")),
+    "RULES.md must not appear in any managedFiles array"
+  );
 });
