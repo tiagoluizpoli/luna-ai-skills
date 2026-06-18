@@ -3,7 +3,7 @@ type: task
 id: T-23
 epic: E-09
 status: ready
-blocked-by: [T-22]
+blocked-by: []
 default-model: medium
 ---
 
