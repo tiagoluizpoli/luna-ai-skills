@@ -9,9 +9,13 @@
       "category": "starter-workspace",
       "installRoot": "repo",
       "sourceRoot": "frameworks/ralph-loop/.plan",
+      "consumerOwnedStarterFiles": [
+        ".plan/RULES.md",
+        ".plan/CONTEXT.md",
+        ".plan/prompt.local.md"
+      ],
       "managedFiles": [
         ".plan/prompt.md",
-        ".plan/RULES.md",
         ".plan/helper-scripts/common.sh",
         ".plan/helper-scripts/archive-run.sh",
         ".plan/helper-scripts/get-current-grill-handoff.sh",
@@ -97,9 +101,13 @@
       "availabilityBehavior": "repo-root-for-all-modes"
     }
   ],
+  "consumerOwnedStarterFiles": [
+    ".plan/RULES.md",
+    ".plan/CONTEXT.md",
+    ".plan/prompt.local.md"
+  ],
   "managedFiles": [
     ".plan/prompt.md",
-    ".plan/RULES.md",
     ".plan/helper-scripts/common.sh",
     ".plan/helper-scripts/archive-run.sh",
     ".plan/helper-scripts/get-current-grill-handoff.sh",

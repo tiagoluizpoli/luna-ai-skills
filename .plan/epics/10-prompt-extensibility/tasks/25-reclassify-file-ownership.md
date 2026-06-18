@@ -2,7 +2,7 @@
 type: task
 id: T-25
 epic: E-10
-status: ready
+status: done
 blocked-by: []
 default-model: medium
 ---
@@ -22,20 +22,20 @@ Update `frameworks/ralph-loop/framework-files.json` to introduce a `consumerOwne
 
 ## Acceptance Criteria
 
-- [ ] `consumerOwnedStarterFiles` array exists in `framework-files.json`.
-- [ ] `RULES.md` absent from `managedFiles`.
-- [ ] `RULES.md` present in `consumerOwnedStarterFiles`.
-- [ ] `prompt.local.md` present in `consumerOwnedStarterFiles`.
-- [ ] `CONTEXT.md` present in `consumerOwnedStarterFiles`.
-- [ ] `prompt.local.md` absent from `managedFiles` and `workflowOwnedFiles`.
-- [ ] `CONTEXT.md` absent from `managedFiles` and `workflowOwnedFiles`.
-- [ ] JSON remains valid.
+- [x] `consumerOwnedStarterFiles` array exists in `framework-files.json`.
+- [x] `RULES.md` absent from `managedFiles`.
+- [x] `RULES.md` present in `consumerOwnedStarterFiles`.
+- [x] `prompt.local.md` present in `consumerOwnedStarterFiles`.
+- [x] `CONTEXT.md` present in `consumerOwnedStarterFiles`.
+- [x] `prompt.local.md` absent from `managedFiles` and `workflowOwnedFiles`.
+- [x] `CONTEXT.md` absent from `managedFiles` and `workflowOwnedFiles`.
+- [x] JSON remains valid.
 
 ## Sub-Tasks
 
 ### ST-01 - Add consumerOwnedStarterFiles array
 
-status: ready
+status: done
 model: medium
 escalate-if: []
 blocked-by: []
@@ -54,7 +54,7 @@ verification:
 
 ### ST-02 - Remove RULES.md from managedFiles
 
-status: ready
+status: done
 model: medium
 escalate-if: []
 blocked-by: []
@@ -71,7 +71,7 @@ verification:
 
 ### ST-03 - Verify prompt.local.md and CONTEXT.md absent from managed arrays
 
-status: ready
+status: done
 model: medium
 escalate-if: []
 blocked-by: []
