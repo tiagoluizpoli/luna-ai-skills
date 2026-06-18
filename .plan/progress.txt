@@ -60,3 +60,4 @@
 [2026-06-18 00:18:07] NO MORE TASKS
 [2026-06-18 01:28:53] 100% Complete — T-24 / ST-01: Expanded Mandatory Context reading order in frameworks/ralph-loop/.plan/prompt.md from 7 to 9 steps. Step 2 now reads CONTEXT.md if it exists; step 9 reads prompt.local.md if it exists with explicit instruction. All 5 acceptance criteria satisfied.
 [2026-06-18] T-25 / ST-01 done — added consumerOwnedStarterFiles to framework-files.json (RULES.md, CONTEXT.md, prompt.local.md); removed RULES.md from managedFiles in both top-level and sharedAssets[0]. T-26 unblocked.
+2026-06-18T04:32:30Z [DONE] T-25/ST-01: All acceptance criteria verified — consumerOwnedStarterFiles present, RULES.md reclassified, prompt.local.md and CONTEXT.md classified correctly. T-26 unblocked.

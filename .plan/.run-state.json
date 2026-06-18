@@ -1,19 +1,17 @@
 {
-  "currentRunId": "e-10-t-25-st-01",
+  "currentRunId": "e-10-t-26-st-01",
   "currentPrdId": "PRD-v5-prompt-extensibility",
   "currentEpicId": "E-10",
-  "currentTaskId": "T-25",
+  "currentTaskId": "T-26",
   "currentSubTaskId": "ST-01",
-  "attemptCount": 1,
-  "retrievalRound": 1,
+  "attemptCount": 0,
+  "retrievalRound": 0,
   "lastModel": "sonnet",
   "escalated": false,
   "lastFailureReason": null,
   "requiredModel": "medium",
   "runnerName": "claude",
   "escalateIf": [],
-  "filesToTouch": [
-    "frameworks/ralph-loop/framework-files.json"
-  ],
+  "filesToTouch": [],
   "lastCommitChanged": false
 }
