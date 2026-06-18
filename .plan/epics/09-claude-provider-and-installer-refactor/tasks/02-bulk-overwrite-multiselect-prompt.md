@@ -2,8 +2,8 @@
 type: task
 id: T-22
 epic: E-09
-status: ready
-blocked-by: [T-21]
+status: done
+blocked-by: []
 default-model: medium
 ---
 
@@ -17,16 +17,16 @@ The current `installSkills` function runs a loop over skills and prompts sequent
 
 ## Acceptance Criteria
 
-- [ ] Conflicts are scanned and identified upfront before copying begins.
-- [ ] A single `@clack/prompts` `multiselect` checklist is presented showing options formatted as `<skillName> (<targetName>)`.
-- [ ] Skills selected for override have their target directories deleted and updated with fresh files.
-- [ ] Skills not selected (skipped) are not deleted and keep their existing local files.
+- [x] Conflicts are scanned and identified upfront before copying begins.
+- [x] A single `@clack/prompts` `multiselect` checklist is presented showing options formatted as `<skillName> (<targetName>)`.
+- [x] Skills selected for override have their target directories deleted and updated with fresh files.
+- [x] Skills not selected (skipped) are not deleted and keep their existing local files.
 
 ## Sub-Tasks
 
 ### ST-01 - Consolidate Conflict Scanning and Prompting Logic
 
-status: ready
+status: done
 model: medium
 escalate-if: []
 blocked-by: []
@@ -45,7 +45,7 @@ verification:
 
 ### ST-02 - Integrate Copy and Skip Routing
 
-status: ready
+status: done
 model: medium
 escalate-if: []
 blocked-by: []

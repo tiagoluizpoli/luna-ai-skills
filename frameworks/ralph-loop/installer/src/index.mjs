@@ -1,4 +1,4 @@
-// Hardened update-state contract with confirm/override prompts and rejection logic (iteration 5 / ST-02)
+// Hardened update-state contract with confirm/override prompts and rejection logic (iteration 5 / ST-02 complete)
 import fs from "node:fs";
 import path from "node:path";
 import os from "node:os";
@@ -843,41 +843,68 @@ async function installAgentSpecificAssets({ sourceRoot, repoRoot, selectedAssets
 async function installSkills({ sourceRoot, repoRoot, resolvedSkills, targets, force, yesMode }) {
   const installedSkills = [];
 
+  const allItems = [];
   for (const target of targets) {
     for (const skill of resolvedSkills) {
       const sourceDir = path.join(sourceRoot, skill.sourcePath);
       const destinationDir = targetPathForSkill(skill, target, repoRoot);
       const destinationExists = fs.existsSync(destinationDir);
 
-      if (destinationExists && !force && !yesMode) {
-        const decision = await p.select({
-          message: `Framework skill already exists at ${destinationDir}`,
-          options: [
-            { value: "overwrite", label: "Overwrite with framework version" },
-            { value: "skip", label: "Keep local version and skip this skill" },
-            { value: "abort", label: "Abort update" }
-          ]
-        });
+      allItems.push({
+        skill,
+        target,
+        sourceDir,
+        destinationDir,
+        destinationExists
+      });
+    }
+  }
 
-        if (p.isCancel(decision) || decision === "abort") {
-          p.cancel("Installation cancelled during skill update.");
-          process.exit(1);
-        }
+  const conflictingItems = allItems.filter((item) => item.destinationExists);
+  const cleanItems = allItems.filter((item) => !item.destinationExists);
 
-        if (decision === "skip") {
-          continue;
-        }
-      }
+  let selectedKeys = new Set();
+  if (conflictingItems.length > 0 && !force && !yesMode) {
+    const options = conflictingItems.map((item) => {
+      const key = `${item.skill.id}::${item.target}`;
+      return {
+        value: key,
+        label: `${item.skill.publicName} (${item.target})`,
+        hint: item.destinationDir
+      };
+    });
 
-      fs.rmSync(destinationDir, { recursive: true, force: true });
-      ensureDirectory(destinationDir);
-      copyDirectory(sourceDir, destinationDir);
+    const result = await p.multiselect({
+      message: "The following framework skills already exist. Select which ones to overwrite:",
+      options
+    });
+
+    if (p.isCancel(result)) {
+      p.cancel("Installation cancelled during skill update.");
+      process.exit(1);
+    }
+
+    selectedKeys = new Set(result);
+  }
+
+  for (const item of allItems) {
+    let shouldInstall = false;
+    if (!item.destinationExists) {
+      shouldInstall = true;
+    } else if (force || yesMode || selectedKeys.has(`${item.skill.id}::${item.target}`)) {
+      shouldInstall = true;
+    }
+
+    if (shouldInstall) {
+      fs.rmSync(item.destinationDir, { recursive: true, force: true });
+      ensureDirectory(item.destinationDir);
+      copyDirectory(item.sourceDir, item.destinationDir);
 
       installedSkills.push({
-        publicName: skill.publicName,
-        sourcePath: skill.sourcePath,
-        target,
-        installPath: destinationDir,
+        publicName: item.skill.publicName,
+        sourcePath: item.skill.sourcePath,
+        target: item.target,
+        installPath: item.destinationDir,
         installedAt: new Date().toISOString()
       });
     }

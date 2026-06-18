@@ -246,7 +246,7 @@ EOF
 
   # CRITICAL: every iteration is a fresh session (no resume --last).
   # State lives in .plan/, agents.local.md, and git — not in the conversation.
-  codex exec --dangerously-bypass-approvals-and-sandbox "${model_args[@]}" "Start the Ralph Loop iteration $i. Read .plan/RULES.md FIRST (canonical engineering rules), then agents.local.md if it exists, then .plan/PRD.md, then .plan/index.md (single source of truth for epics and tasks), then the current epic and task files. Pick the next task, complete ONLY that task, then log your status to .plan/progress.txt. Recent commits: $recent_commits
+  codex exec --dangerously-bypass-approvals-and-sandbox "${model_args[@]}" "Start the Ralph Loop iteration $i. Read .plan/RULES.md FIRST (canonical engineering rules), then agents.local.md if it exists, then .plan/PRD.md, then .plan/index.md (single source of truth for epics and tasks), then the current epic and task files. Pick the next task, complete ONLY that task. Before logging your status to .plan/progress.txt and exiting, you MUST stage and commit all your changes (code, tests, planning files, and manifests) using a Conventional Commit message so that the git worktree is clean. Recent commits: $recent_commits
 
 $runtime_contract
 

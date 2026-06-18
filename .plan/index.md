@@ -68,5 +68,5 @@
 | T-19 | E-07 | Update-state hardening: rich metadata, visible reuse, explicit override | done | — | `.plan/epics/07-update-state-contract/tasks/01-update-state-hardening.md` |
 | T-20 | E-08 | Verification and documentation reconciliation against the hardened installer | done | — | `.plan/epics/08-verification-and-reconciliation/tasks/01-verification-and-documentation-reconciliation.md` |
 | T-21 | E-09 | Register Claude Agent and Runner Script Assets | done | — | `.plan/epics/09-claude-provider-and-installer-refactor/tasks/01-register-claude-assets-and-targets.md` |
-| T-22 | E-09 | Refactor Installer to Prompt in Bulk with Multi-select List | ready | T-21 | `.plan/epics/09-claude-provider-and-installer-refactor/tasks/02-bulk-overwrite-multiselect-prompt.md` |
+| T-22 | E-09 | Refactor Installer to Prompt in Bulk with Multi-select List | done | — | `.plan/epics/09-claude-provider-and-installer-refactor/tasks/02-bulk-overwrite-multiselect-prompt.md` |
 | T-23 | E-09 | Retain Metadata and Verification Testing | ready | T-22 | `.plan/epics/09-claude-provider-and-installer-refactor/tasks/03-metadata-retention-and-testing.md` |

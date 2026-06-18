@@ -15,6 +15,7 @@ This file is the consumer repository's canonical rules document.
   transition has been recorded.
 - Work at the sub-task level. A task or epic status is derived, not invented.
 - Pick one executable sub-task per iteration.
+- Before logging your status to `.plan/progress.txt` and exiting, you MUST stage and commit all your changes (code, tests, planning files, and manifests) using a Conventional Commit message so the git worktree is clean of your changes.
 - Use `.plan/helper-scripts/sync-state.sh` after atomic state changes.
 - Update `.plan/progress.txt` during the run, not only at the end.
 - Persist current machine state in `.plan/.run-state.json`.
