@@ -139,12 +139,12 @@ test("automation validation errors stay user-facing for legacy and invalid selec
       name: "legacy flags are rejected",
       args: ["--yes", "--all", "--agents", "hermes", "--availability", "local"],
       expectedText:
-        "Legacy installer flags are no longer supported: --all. Use --agents <hermes,codex,agy> and --availability <local|global> instead."
+        "Legacy installer flags are no longer supported: --all. Use --agents <hermes,codex,agy,claude> and --availability <local|global> instead."
     },
     {
       name: "invalid agent is rejected",
       args: ["--yes", "--agents", "hermes,ghost", "--availability", "local"],
-      expectedText: "Unsupported agent: ghost. Valid agent values: hermes, codex, agy"
+      expectedText: "Unsupported agent: ghost. Valid agent values: hermes, codex, agy, claude"
     },
     {
       name: "invalid availability is rejected",
@@ -156,7 +156,7 @@ test("automation validation errors stay user-facing for legacy and invalid selec
       name: "missing agents in non-interactive mode is rejected",
       args: ["--yes", "--availability", "local"],
       expectedText:
-        "Non-interactive runs must pass --agents. Valid agents: hermes, codex, agy"
+        "Non-interactive runs must pass --agents. Valid agents: hermes, codex, agy, claude"
     }
   ];
 
@@ -541,7 +541,7 @@ test("resolveSelection rejects stale or invalid recorded state and prompts fresh
   assert.equal(selection.availabilityMode, "local");
   // confirm should NOT be in the callOrder since invalid state was rejected and not offered for reuse
   assert.deepEqual(callOrder, [
-    { type: "multiselect", initialValues: ["hermes", "codex", "agy"] },
+    { type: "multiselect", initialValues: ["hermes", "codex", "agy", "claude"] },
     { type: "select", initialValue: undefined }
   ]);
 

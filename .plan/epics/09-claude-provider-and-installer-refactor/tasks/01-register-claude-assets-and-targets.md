@@ -2,7 +2,7 @@
 type: task
 id: T-21
 epic: E-09
-status: ready
+status: done
 blocked-by: []
 default-model: medium
 ---
@@ -17,18 +17,18 @@ The installer resolves supported agents and target installation paths from `skil
 
 ## Acceptance Criteria
 
-- [ ] `runner-claude` is registered as an agent-specific asset in `framework-files.json` pointing to `ralph-loop-claude.sh`.
-- [ ] `claude` is listed in `selectionContract.installAgents` inside `skills-manifest.json`.
-- [ ] All 18 skills list `"claude-local"` and `"claude-global"` targets in `skills-manifest.json`.
-- [ ] All 18 skills map `"claude-local"` to `.claude/skills/<skill-id>` and `"claude-global"` to `~/.claude/skills/<skill-id>` in `skills-manifest.json`.
-- [ ] `~/.claude/skills/` is added to the installer's external skill discovery helper list.
-- [ ] Legacy argument parsing warnings check includes `claude`.
+- [x] `runner-claude` is registered as an agent-specific asset in `framework-files.json` pointing to `ralph-loop-claude.sh`.
+- [x] `claude` is listed in `selectionContract.installAgents` inside `skills-manifest.json`.
+- [x] All 18 skills list `"claude-local"` and `"claude-global"` targets in `skills-manifest.json`.
+- [x] All 18 skills map `"claude-local"` to `.claude/skills/<skill-id>` and `"claude-global"` to `~/.claude/skills/<skill-id>` in `skills-manifest.json`.
+- [x] `~/.claude/skills/` is added to the installer's external skill discovery helper list.
+- [x] Legacy argument parsing warnings check includes `claude`.
 
 ## Sub-Tasks
 
 ### ST-01 - Register Claude Asset and Install Agent
 
-status: ready
+status: done
 model: medium
 escalate-if: []
 blocked-by: []
@@ -46,7 +46,7 @@ verification:
 
 ### ST-02 - Map Claude Target Installation Paths to Skills
 
-status: ready
+status: done
 model: medium
 escalate-if: []
 blocked-by: []
@@ -63,7 +63,7 @@ verification:
 
 ### ST-03 - Update Search Paths and Argument Warnings in Installer
 
-status: ready
+status: done
 model: medium
 escalate-if: []
 blocked-by: []

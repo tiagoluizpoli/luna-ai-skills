@@ -134,7 +134,8 @@ function findExternalSkill(skillName) {
   const candidatePaths = [
     path.join(os.homedir(), ".agents", "skills", skillName, "SKILL.md"),
     path.join(os.homedir(), ".hermes", "skills", skillName, "SKILL.md"),
-    path.join(os.homedir(), ".hermes", "skills", "devops", skillName, "SKILL.md")
+    path.join(os.homedir(), ".hermes", "skills", "devops", skillName, "SKILL.md"),
+    path.join(os.homedir(), ".claude", "skills", skillName, "SKILL.md")
   ];
 
   return candidatePaths.find((candidatePath) => fs.existsSync(candidatePath)) ?? null;
@@ -162,7 +163,7 @@ function validateLegacySelectionArgs(args) {
   }
 
   p.cancel(
-    `Legacy installer flags are no longer supported: ${usedLegacyFlags.map((flag) => `--${flag}`).join(", ")}. Use --agents <hermes,codex,agy> and --availability <local|global> instead.`
+    `Legacy installer flags are no longer supported: ${usedLegacyFlags.map((flag) => `--${flag}`).join(", ")}. Use --agents <hermes,codex,agy,claude> and --availability <local|global> instead.`
   );
   process.exit(1);
 }

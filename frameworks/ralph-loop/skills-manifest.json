@@ -1,6 +1,6 @@
 {
   "framework": "ralph-loop",
-  "comment": "Validated for shared vs agent-specific asset routing (iteration 10)",
+  "comment": "Validated for Claude provider integration and targets mapping",
   "selectionContract": {
     "installAgents": [
       {
@@ -25,6 +25,14 @@
         "description": "Install framework assets for AGY runs.",
         "assetIds": [
           "runner-agy"
+        ]
+      },
+      {
+        "id": "claude",
+        "label": "Claude",
+        "description": "Install framework assets for Claude runs.",
+        "assetIds": [
+          "runner-claude"
         ]
       }
     ],
@@ -67,7 +75,9 @@
         "codex-local",
         "codex-global",
         "agy-local",
-        "agy-global"
+        "agy-global",
+        "claude-local",
+        "claude-global"
       ],
       "installPathTemplates": {
         "hermes-local": ".hermes/skills/luna-ai/luna-grill-with-docs",
@@ -75,7 +85,9 @@
         "codex-local": ".agents/skills/luna-ai/luna-grill-with-docs",
         "codex-global": "~/.agents/skills/luna-ai/luna-grill-with-docs",
         "agy-local": ".agents/skills/luna-ai/luna-grill-with-docs",
-        "agy-global": "~/.agents/skills/luna-ai/luna-grill-with-docs"
+        "agy-global": "~/.agents/skills/luna-ai/luna-grill-with-docs",
+        "claude-local": ".claude/skills/luna-grill-with-docs",
+        "claude-global": "~/.claude/skills/luna-grill-with-docs"
       },
       "localDependencies": [],
       "externalPrerequisites": [
@@ -93,7 +105,9 @@
         "codex-local",
         "codex-global",
         "agy-local",
-        "agy-global"
+        "agy-global",
+        "claude-local",
+        "claude-global"
       ],
       "installPathTemplates": {
         "hermes-local": ".hermes/skills/luna-ai/luna-to-prd",
@@ -101,7 +115,9 @@
         "codex-local": ".agents/skills/luna-ai/luna-to-prd",
         "codex-global": "~/.agents/skills/luna-ai/luna-to-prd",
         "agy-local": ".agents/skills/luna-ai/luna-to-prd",
-        "agy-global": "~/.agents/skills/luna-ai/luna-to-prd"
+        "agy-global": "~/.agents/skills/luna-ai/luna-to-prd",
+        "claude-local": ".claude/skills/luna-to-prd",
+        "claude-global": "~/.claude/skills/luna-to-prd"
       },
       "localDependencies": [],
       "externalPrerequisites": [
@@ -119,7 +135,9 @@
         "codex-local",
         "codex-global",
         "agy-local",
-        "agy-global"
+        "agy-global",
+        "claude-local",
+        "claude-global"
       ],
       "installPathTemplates": {
         "hermes-local": ".hermes/skills/luna-ai/luna-to-issues",
@@ -127,7 +145,9 @@
         "codex-local": ".agents/skills/luna-ai/luna-to-issues",
         "codex-global": "~/.agents/skills/luna-ai/luna-to-issues",
         "agy-local": ".agents/skills/luna-ai/luna-to-issues",
-        "agy-global": "~/.agents/skills/luna-ai/luna-to-issues"
+        "agy-global": "~/.agents/skills/luna-ai/luna-to-issues",
+        "claude-local": ".claude/skills/luna-to-issues",
+        "claude-global": "~/.claude/skills/luna-to-issues"
       },
       "localDependencies": [],
       "externalPrerequisites": [
@@ -145,7 +165,9 @@
         "codex-local",
         "codex-global",
         "agy-local",
-        "agy-global"
+        "agy-global",
+        "claude-local",
+        "claude-global"
       ],
       "installPathTemplates": {
         "hermes-local": ".hermes/skills/luna-ai/commit",
@@ -153,7 +175,9 @@
         "codex-local": ".agents/skills/luna-ai/commit",
         "codex-global": "~/.agents/skills/luna-ai/commit",
         "agy-local": ".agents/skills/luna-ai/commit",
-        "agy-global": "~/.agents/skills/luna-ai/commit"
+        "agy-global": "~/.agents/skills/luna-ai/commit",
+        "claude-local": ".claude/skills/commit",
+        "claude-global": "~/.claude/skills/commit"
       },
       "localDependencies": [
         "conventional-commits"
@@ -171,7 +195,9 @@
         "codex-local",
         "codex-global",
         "agy-local",
-        "agy-global"
+        "agy-global",
+        "claude-local",
+        "claude-global"
       ],
       "installPathTemplates": {
         "hermes-local": ".hermes/skills/luna-ai/code-review",
@@ -179,7 +205,9 @@
         "codex-local": ".agents/skills/luna-ai/code-review",
         "codex-global": "~/.agents/skills/luna-ai/code-review",
         "agy-local": ".agents/skills/luna-ai/code-review",
-        "agy-global": "~/.agents/skills/luna-ai/code-review"
+        "agy-global": "~/.agents/skills/luna-ai/code-review",
+        "claude-local": ".claude/skills/code-review",
+        "claude-global": "~/.claude/skills/code-review"
       },
       "localDependencies": [],
       "externalPrerequisites": []
@@ -195,7 +223,9 @@
         "codex-local",
         "codex-global",
         "agy-local",
-        "agy-global"
+        "agy-global",
+        "claude-local",
+        "claude-global"
       ],
       "installPathTemplates": {
         "hermes-local": ".hermes/skills/luna-ai/backend-specialist",
@@ -203,7 +233,9 @@
         "codex-local": ".agents/skills/luna-ai/backend-specialist",
         "codex-global": "~/.agents/skills/luna-ai/backend-specialist",
         "agy-local": ".agents/skills/luna-ai/backend-specialist",
-        "agy-global": "~/.agents/skills/luna-ai/backend-specialist"
+        "agy-global": "~/.agents/skills/luna-ai/backend-specialist",
+        "claude-local": ".claude/skills/backend-specialist",
+        "claude-global": "~/.claude/skills/backend-specialist"
       },
       "localDependencies": [],
       "externalPrerequisites": []
@@ -219,7 +251,9 @@
         "codex-local",
         "codex-global",
         "agy-local",
-        "agy-global"
+        "agy-global",
+        "claude-local",
+        "claude-global"
       ],
       "installPathTemplates": {
         "hermes-local": ".hermes/skills/luna-ai/frontend-specialist",
@@ -227,7 +261,9 @@
         "codex-local": ".agents/skills/luna-ai/frontend-specialist",
         "codex-global": "~/.agents/skills/luna-ai/frontend-specialist",
         "agy-local": ".agents/skills/luna-ai/frontend-specialist",
-        "agy-global": "~/.agents/skills/luna-ai/frontend-specialist"
+        "agy-global": "~/.agents/skills/luna-ai/frontend-specialist",
+        "claude-local": ".claude/skills/frontend-specialist",
+        "claude-global": "~/.claude/skills/frontend-specialist"
       },
       "localDependencies": [],
       "externalPrerequisites": []
@@ -243,7 +279,9 @@
         "codex-local",
         "codex-global",
         "agy-local",
-        "agy-global"
+        "agy-global",
+        "claude-local",
+        "claude-global"
       ],
       "installPathTemplates": {
         "hermes-local": ".hermes/skills/luna-ai/react-architect",
@@ -251,7 +289,9 @@
         "codex-local": ".agents/skills/luna-ai/react-architect",
         "codex-global": "~/.agents/skills/luna-ai/react-architect",
         "agy-local": ".agents/skills/luna-ai/react-architect",
-        "agy-global": "~/.agents/skills/luna-ai/react-architect"
+        "agy-global": "~/.agents/skills/luna-ai/react-architect",
+        "claude-local": ".claude/skills/react-architect",
+        "claude-global": "~/.claude/skills/react-architect"
       },
       "localDependencies": [],
       "externalPrerequisites": []
@@ -267,7 +307,9 @@
         "codex-local",
         "codex-global",
         "agy-local",
-        "agy-global"
+        "agy-global",
+        "claude-local",
+        "claude-global"
       ],
       "installPathTemplates": {
         "hermes-local": ".hermes/skills/luna-ai/tailwind-architect",
@@ -275,7 +317,9 @@
         "codex-local": ".agents/skills/luna-ai/tailwind-architect",
         "codex-global": "~/.agents/skills/luna-ai/tailwind-architect",
         "agy-local": ".agents/skills/luna-ai/tailwind-architect",
-        "agy-global": "~/.agents/skills/luna-ai/tailwind-architect"
+        "agy-global": "~/.agents/skills/luna-ai/tailwind-architect",
+        "claude-local": ".claude/skills/tailwind-architect",
+        "claude-global": "~/.claude/skills/tailwind-architect"
       },
       "localDependencies": [],
       "externalPrerequisites": []
@@ -291,7 +335,9 @@
         "codex-local",
         "codex-global",
         "agy-local",
-        "agy-global"
+        "agy-global",
+        "claude-local",
+        "claude-global"
       ],
       "installPathTemplates": {
         "hermes-local": ".hermes/skills/luna-ai/shadcn-specialist",
@@ -299,7 +345,9 @@
         "codex-local": ".agents/skills/luna-ai/shadcn-specialist",
         "codex-global": "~/.agents/skills/luna-ai/shadcn-specialist",
         "agy-local": ".agents/skills/luna-ai/shadcn-specialist",
-        "agy-global": "~/.agents/skills/luna-ai/shadcn-specialist"
+        "agy-global": "~/.agents/skills/luna-ai/shadcn-specialist",
+        "claude-local": ".claude/skills/shadcn-specialist",
+        "claude-global": "~/.claude/skills/shadcn-specialist"
       },
       "localDependencies": [],
       "externalPrerequisites": []
@@ -315,7 +363,9 @@
         "codex-local",
         "codex-global",
         "agy-local",
-        "agy-global"
+        "agy-global",
+        "claude-local",
+        "claude-global"
       ],
       "installPathTemplates": {
         "hermes-local": ".hermes/skills/luna-ai/test-master",
@@ -323,7 +373,9 @@
         "codex-local": ".agents/skills/luna-ai/test-master",
         "codex-global": "~/.agents/skills/luna-ai/test-master",
         "agy-local": ".agents/skills/luna-ai/test-master",
-        "agy-global": "~/.agents/skills/luna-ai/test-master"
+        "agy-global": "~/.agents/skills/luna-ai/test-master",
+        "claude-local": ".claude/skills/test-master",
+        "claude-global": "~/.claude/skills/test-master"
       },
       "localDependencies": [
         "test-cases",
@@ -345,7 +397,9 @@
         "codex-local",
         "codex-global",
         "agy-local",
-        "agy-global"
+        "agy-global",
+        "claude-local",
+        "claude-global"
       ],
       "installPathTemplates": {
         "hermes-local": ".hermes/skills/luna-ai/diagnose",
@@ -353,7 +407,9 @@
         "codex-local": ".agents/skills/luna-ai/diagnose",
         "codex-global": "~/.agents/skills/luna-ai/diagnose",
         "agy-local": ".agents/skills/luna-ai/diagnose",
-        "agy-global": "~/.agents/skills/luna-ai/diagnose"
+        "agy-global": "~/.agents/skills/luna-ai/diagnose",
+        "claude-local": ".claude/skills/diagnose",
+        "claude-global": "~/.claude/skills/diagnose"
       },
       "localDependencies": [],
       "externalPrerequisites": []
@@ -369,7 +425,9 @@
         "codex-local",
         "codex-global",
         "agy-local",
-        "agy-global"
+        "agy-global",
+        "claude-local",
+        "claude-global"
       ],
       "installPathTemplates": {
         "hermes-local": ".hermes/skills/luna-ai/conventional-commits",
@@ -377,7 +435,9 @@
         "codex-local": ".agents/skills/luna-ai/conventional-commits",
         "codex-global": "~/.agents/skills/luna-ai/conventional-commits",
         "agy-local": ".agents/skills/luna-ai/conventional-commits",
-        "agy-global": "~/.agents/skills/luna-ai/conventional-commits"
+        "agy-global": "~/.agents/skills/luna-ai/conventional-commits",
+        "claude-local": ".claude/skills/conventional-commits",
+        "claude-global": "~/.claude/skills/conventional-commits"
       },
       "localDependencies": [],
       "externalPrerequisites": []
@@ -393,7 +453,9 @@
         "codex-local",
         "codex-global",
         "agy-local",
-        "agy-global"
+        "agy-global",
+        "claude-local",
+        "claude-global"
       ],
       "installPathTemplates": {
         "hermes-local": ".hermes/skills/luna-ai/test-cases",
@@ -401,7 +463,9 @@
         "codex-local": ".agents/skills/luna-ai/test-cases",
         "codex-global": "~/.agents/skills/luna-ai/test-cases",
         "agy-local": ".agents/skills/luna-ai/test-cases",
-        "agy-global": "~/.agents/skills/luna-ai/test-cases"
+        "agy-global": "~/.agents/skills/luna-ai/test-cases",
+        "claude-local": ".claude/skills/test-cases",
+        "claude-global": "~/.claude/skills/test-cases"
       },
       "localDependencies": [],
       "externalPrerequisites": []
@@ -417,7 +481,9 @@
         "codex-local",
         "codex-global",
         "agy-local",
-        "agy-global"
+        "agy-global",
+        "claude-local",
+        "claude-global"
       ],
       "installPathTemplates": {
         "hermes-local": ".hermes/skills/luna-ai/test-backend",
@@ -425,7 +491,9 @@
         "codex-local": ".agents/skills/luna-ai/test-backend",
         "codex-global": "~/.agents/skills/luna-ai/test-backend",
         "agy-local": ".agents/skills/luna-ai/test-backend",
-        "agy-global": "~/.agents/skills/luna-ai/test-backend"
+        "agy-global": "~/.agents/skills/luna-ai/test-backend",
+        "claude-local": ".claude/skills/test-backend",
+        "claude-global": "~/.claude/skills/test-backend"
       },
       "localDependencies": [],
       "externalPrerequisites": []
@@ -441,7 +509,9 @@
         "codex-local",
         "codex-global",
         "agy-local",
-        "agy-global"
+        "agy-global",
+        "claude-local",
+        "claude-global"
       ],
       "installPathTemplates": {
         "hermes-local": ".hermes/skills/luna-ai/test-frontend",
@@ -449,7 +519,9 @@
         "codex-local": ".agents/skills/luna-ai/test-frontend",
         "codex-global": "~/.agents/skills/luna-ai/test-frontend",
         "agy-local": ".agents/skills/luna-ai/test-frontend",
-        "agy-global": "~/.agents/skills/luna-ai/test-frontend"
+        "agy-global": "~/.agents/skills/luna-ai/test-frontend",
+        "claude-local": ".claude/skills/test-frontend",
+        "claude-global": "~/.claude/skills/test-frontend"
       },
       "localDependencies": [],
       "externalPrerequisites": []
@@ -465,7 +537,9 @@
         "codex-local",
         "codex-global",
         "agy-local",
-        "agy-global"
+        "agy-global",
+        "claude-local",
+        "claude-global"
       ],
       "installPathTemplates": {
         "hermes-local": ".hermes/skills/luna-ai/test-e2e",
@@ -473,7 +547,9 @@
         "codex-local": ".agents/skills/luna-ai/test-e2e",
         "codex-global": "~/.agents/skills/luna-ai/test-e2e",
         "agy-local": ".agents/skills/luna-ai/test-e2e",
-        "agy-global": "~/.agents/skills/luna-ai/test-e2e"
+        "agy-global": "~/.agents/skills/luna-ai/test-e2e",
+        "claude-local": ".claude/skills/test-e2e",
+        "claude-global": "~/.claude/skills/test-e2e"
       },
       "localDependencies": [],
       "externalPrerequisites": []
@@ -489,7 +565,9 @@
         "codex-local",
         "codex-global",
         "agy-local",
-        "agy-global"
+        "agy-global",
+        "claude-local",
+        "claude-global"
       ],
       "installPathTemplates": {
         "hermes-local": ".hermes/skills/luna-ai/test-coverage",
@@ -497,7 +575,9 @@
         "codex-local": ".agents/skills/luna-ai/test-coverage",
         "codex-global": "~/.agents/skills/luna-ai/test-coverage",
         "agy-local": ".agents/skills/luna-ai/test-coverage",
-        "agy-global": "~/.agents/skills/luna-ai/test-coverage"
+        "agy-global": "~/.agents/skills/luna-ai/test-coverage",
+        "claude-local": ".claude/skills/test-coverage",
+        "claude-global": "~/.claude/skills/test-coverage"
       },
       "localDependencies": [],
       "externalPrerequisites": []

@@ -85,6 +85,16 @@
       "installRoot": "repo",
       "installPath": "ralph-loop-agy.sh",
       "availabilityBehavior": "repo-root-for-all-modes"
+    },
+    {
+      "id": "runner-claude",
+      "class": "agent-specific",
+      "category": "runner-script",
+      "agent": "claude",
+      "sourcePath": "ralph-loop-claude.sh",
+      "installRoot": "repo",
+      "installPath": "ralph-loop-claude.sh",
+      "availabilityBehavior": "repo-root-for-all-modes"
     }
   ],
   "managedFiles": [
