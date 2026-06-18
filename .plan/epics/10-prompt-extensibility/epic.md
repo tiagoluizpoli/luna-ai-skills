@@ -2,7 +2,7 @@
 type: epic
 id: E-10
 name: "Prompt Extensibility"
-status: done
+status: in-progress
 blocked-by: []
 ---
 
@@ -25,7 +25,7 @@ Introduce two consumer-owned extension points in the Ralph Loop framework: `prom
 | T-24 | Update `prompt.md` reading order | done | — | `.plan/epics/10-prompt-extensibility/tasks/24-update-prompt-reading-order.md` |
 | T-25 | Reclassify file ownership in `framework-files.json` | done | — | `.plan/epics/10-prompt-extensibility/tasks/25-reclassify-file-ownership.md` |
 | T-26 | Installer scaffold logic for consumer-owned starter files | done | — | `.plan/epics/10-prompt-extensibility/tasks/26-installer-scaffold-logic.md` |
-| T-27 | Installer tests: scaffold and update preservation | done | — | `.plan/epics/10-prompt-extensibility/tasks/27-installer-scaffold-tests.md` |
+| T-27 | Installer tests: scaffold and update preservation | in-progress | — | `.plan/epics/10-prompt-extensibility/tasks/27-installer-scaffold-tests.md` |
 
 ---
 

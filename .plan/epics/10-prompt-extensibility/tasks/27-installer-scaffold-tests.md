@@ -2,7 +2,7 @@
 type: task
 id: T-27
 epic: E-10
-status: done
+status: in-progress
 blocked-by: []
 default-model: medium
 ---
@@ -73,7 +73,7 @@ verification:
 
 ### ST-03 - Test framework-files.json classification
 
-status: done
+status: in-progress
 model: medium
 escalate-if: []
 blocked-by: []

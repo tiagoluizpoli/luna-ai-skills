@@ -8,7 +8,7 @@
   "retrievalRound": 3,
   "lastModel": "sonnet",
   "escalated": false,
-  "lastFailureReason": null,
+  "lastFailureReason": "no-completion-signal",
   "requiredModel": "medium",
   "runnerName": "claude",
   "escalateIf": [],
