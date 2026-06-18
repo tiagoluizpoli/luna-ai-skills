@@ -108,9 +108,15 @@ get_latest_model_label() {
   echo "$model_line" | sed -E 's/.*label="([^"]+)".*/\1/; s/.*model="([^"]*)".*/\1/'
 }
 
+agy_model_exists() {
+  local candidate="$1"
+  agy models 2>/dev/null | grep -Fx "$candidate" >/dev/null 2>&1
+}
+
 resolve_model_override() {
   local current_model="$1"
   local tier="$2"
+  local candidate="$current_model"
 
   if [ -z "$current_model" ] || [ "$current_model" = "unknown" ]; then
     echo ""
@@ -126,21 +132,13 @@ resolve_model_override() {
   if [[ "$current_model" =~ (.*)\((Low|Medium|High)\) ]]; then
     local prefix="${BASH_REMATCH[1]}"
     if [ "$tier" = "high" ]; then
-      echo "${prefix}(High)"
+      candidate="${prefix}(High)"
     elif [ "$tier" = "low" ]; then
-      echo "${prefix}(Low)"
-    else
-      echo "$current_model"
+      candidate="${prefix}(Low)"
     fi
-    return
-  fi
 
-  # Swapping logic for models like gpt-5.4 / gpt-5.4-mini
-  if [[ "$current_model" =~ gpt-5\.4 ]]; then
-    if [ "$tier" = "high" ]; then
-      echo "gpt-5.4"
-    elif [ "$tier" = "low" ]; then
-      echo "gpt-5.4-mini"
+    if agy_model_exists "$candidate"; then
+      echo "$candidate"
     else
       echo "$current_model"
     fi
@@ -168,7 +166,9 @@ print_failure_model() {
 prepare_runtime_attempt() {
   local runner_name="$1"
   local runner_model="$2"
-  eval "$(bash .plan/helper-scripts/runtime-state.sh prepare-attempt --runner \"$runner_name\" --runner-model \"$runner_model\" --format shell)"
+  local state_output
+  state_output=$(bash .plan/helper-scripts/runtime-state.sh prepare-attempt --runner "$runner_name" --runner-model "$runner_model" --format shell)
+  eval "$state_output"
 }
 
 record_runtime_result() {
@@ -176,7 +176,9 @@ record_runtime_result() {
   local reason="$2"
   local commit_changed="$3"
   local runner_model="$4"
-  eval "$(bash .plan/helper-scripts/runtime-state.sh record-result --result \"$result\" --reason \"$reason\" --commit-changed \"$commit_changed\" --runner-model \"$runner_model\" --format shell)"
+  local state_output
+  state_output=$(bash .plan/helper-scripts/runtime-state.sh record-result --result "$result" --reason "$reason" --commit-changed "$commit_changed" --runner-model "$runner_model" --format shell)
+  eval "$state_output"
 }
 
 # Step 5: Execution Loop
@@ -339,6 +341,15 @@ $retrieval_bundle
   fi
 
   if [ -n "$new_progress_lines" ] && echo "$new_progress_lines" | grep -q -i -E "100% Complete"; then
+    # Check if there are any uncommitted changes left in git (dirty worktree)
+    git_status_output=$(git status --porcelain 2>/dev/null)
+    if [ -n "$git_status_output" ]; then
+      echo -e "${YELLOW}⚠️ Task marked 100% Complete but git is dirty (uncommitted changes). Retrying same task...${NC}"
+      record_runtime_result "retry" "dirty-worktree-no-commit" "$commit_changed" "$(get_latest_model_label)"
+      rm -f "$tmpfile"
+      continue
+    fi
+
     record_runtime_result "success" "" "$commit_changed" "$(get_latest_model_label)"
     if [ -n "$end_commit" ] && [ "$start_commit" != "$end_commit" ]; then
       latest_commit=$(get_latest_ralph_commit)
