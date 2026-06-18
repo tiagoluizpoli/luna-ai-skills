@@ -9,13 +9,17 @@ issueId: auto
 Read in this order:
 
 1. `.plan/RULES.md`
-2. `agents.local.md` if it exists
-3. `.plan/PRD.md`
-4. `.plan/index.md`
-5. current pointer files under `.plan/grilling/`, `.plan/prds/`, and
+2. `CONTEXT.md` if it exists
+3. `agents.local.md` if it exists
+4. `.plan/PRD.md`
+5. `.plan/index.md`
+6. current pointer files under `.plan/grilling/`, `.plan/prds/`, and
    `.plan/handoffs/` when the selected phase depends on them
-6. the current epic and task files for the selected work
-7. `.plan/.run-summary.md`
+7. the current epic and task files for the selected work
+8. `.plan/.run-summary.md`
+9. `prompt.local.md` if it exists
+
+If `prompt.local.md` exists at the repo root, read it now.
 
 ## Work Selection
 

@@ -2,7 +2,7 @@
 type: task
 id: T-24
 epic: E-10
-status: ready
+status: done
 blocked-by: []
 default-model: medium
 ---
@@ -22,17 +22,17 @@ Update `frameworks/ralph-loop/.plan/prompt.md` to expand the Mandatory Context r
 
 ## Acceptance Criteria
 
-- [ ] Reading order list has exactly 9 steps.
-- [ ] Step 2 reads `CONTEXT.md` if it exists at repo root.
-- [ ] Step 9 reads `prompt.local.md` if it exists at repo root.
-- [ ] Step 9 includes explicit instruction: "If `prompt.local.md` exists at the repo root, read it now."
-- [ ] No other changes to `prompt.md` content.
+- [x] Reading order list has exactly 9 steps.
+- [x] Step 2 reads `CONTEXT.md` if it exists at repo root.
+- [x] Step 9 reads `prompt.local.md` if it exists at repo root.
+- [x] Step 9 includes explicit instruction: "If `prompt.local.md` exists at the repo root, read it now."
+- [x] No other changes to `prompt.md` content.
 
 ## Sub-Tasks
 
 ### ST-01 - Update Mandatory Context reading order in prompt.md
 
-status: ready
+status: done
 model: medium
 escalate-if: []
 blocked-by: []

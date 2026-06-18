@@ -58,3 +58,4 @@
 [2026-06-18 00:00:00] 100% Complete — T-23 / ST-01: Modified installSkills to accept injectable prompts and added preservedSkills merge in writeFrameworkMetadata so skipped skill records retain their timestamps. Exported installSkills and writeFrameworkMetadata.
 [2026-06-18 00:01:00] 100% Complete — T-23 / ST-02: Created installer/tests/index.test.mjs with 6 tests covering conflict-prompt consolidation, skip/overwrite outcomes, metadata preservation, claude provider routing, and all-agent install. All 33 tests pass. E-09 done.
 [2026-06-18 00:18:07] NO MORE TASKS
+[2026-06-18 01:28:53] 100% Complete — T-24 / ST-01: Expanded Mandatory Context reading order in frameworks/ralph-loop/.plan/prompt.md from 7 to 9 steps. Step 2 now reads CONTEXT.md if it exists; step 9 reads prompt.local.md if it exists with explicit instruction. All 5 acceptance criteria satisfied.

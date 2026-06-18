@@ -1,17 +1,19 @@
 {
-  "currentRunId": null,
-  "currentPrdId": "PRD-v4-claude-provider-and-skills-installer-refactor",
-  "currentEpicId": null,
-  "currentTaskId": null,
-  "currentSubTaskId": null,
-  "attemptCount": 0,
+  "currentRunId": "e-10-t-24-st-01",
+  "currentPrdId": "PRD-v5-prompt-extensibility",
+  "currentEpicId": "E-10",
+  "currentTaskId": "T-24",
+  "currentSubTaskId": "ST-01",
+  "attemptCount": 1,
   "retrievalRound": 0,
   "lastModel": "sonnet",
   "escalated": false,
   "lastFailureReason": null,
-  "requiredModel": null,
+  "requiredModel": "medium",
   "runnerName": "claude",
   "escalateIf": [],
-  "filesToTouch": [],
-  "lastCommitChanged": false
+  "filesToTouch": [
+    "frameworks/ralph-loop/.plan/prompt.md"
+  ],
+  "lastCommitChanged": true
 }
