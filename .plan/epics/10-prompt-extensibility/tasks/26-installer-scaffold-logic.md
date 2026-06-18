@@ -2,8 +2,8 @@
 type: task
 id: T-26
 epic: E-10
-status: ready
-blocked-by: [T-25]
+status: done
+blocked-by: []
 default-model: medium
 ---
 
@@ -22,18 +22,18 @@ Update `frameworks/ralph-loop/installer/src/index.mjs` to scaffold `prompt.local
 
 ## Acceptance Criteria
 
-- [ ] Fresh install writes `prompt.local.md` with starter content to repo root.
-- [ ] Fresh install writes `CONTEXT.md` with starter content to repo root.
-- [ ] Update skips `prompt.local.md` if file already exists.
-- [ ] Update skips `CONTEXT.md` if file already exists.
-- [ ] Update skips `RULES.md` if file already exists.
-- [ ] Starter content matches PRD v5 §4 templates exactly.
+- [x] Fresh install writes `prompt.local.md` with starter content to repo root.
+- [x] Fresh install writes `CONTEXT.md` with starter content to repo root.
+- [x] Update skips `prompt.local.md` if file already exists.
+- [x] Update skips `CONTEXT.md` if file already exists.
+- [x] Update skips `RULES.md` if file already exists.
+- [x] Starter content matches PRD v5 §4 templates exactly.
 
 ## Sub-Tasks
 
 ### ST-01 - Add prompt.local.md scaffold on fresh install
 
-status: ready
+status: done
 model: medium
 escalate-if: ["starter content logic is more complex than a single write call"]
 blocked-by: []
@@ -58,7 +58,7 @@ verification:
 
 ### ST-02 - Add CONTEXT.md scaffold on fresh install
 
-status: ready
+status: done
 model: medium
 escalate-if: []
 blocked-by: []
@@ -83,7 +83,7 @@ verification:
 
 ### ST-03 - Skip consumerOwnedStarterFiles on update if they exist
 
-status: ready
+status: done
 model: medium
 escalate-if: ["update path does not have a clear exists-check seam"]
 blocked-by: []

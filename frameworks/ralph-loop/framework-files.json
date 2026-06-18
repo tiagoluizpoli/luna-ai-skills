@@ -11,8 +11,8 @@
       "sourceRoot": "frameworks/ralph-loop/.plan",
       "consumerOwnedStarterFiles": [
         ".plan/RULES.md",
-        ".plan/CONTEXT.md",
-        ".plan/prompt.local.md"
+        "CONTEXT.md",
+        "prompt.local.md"
       ],
       "managedFiles": [
         ".plan/prompt.md",
@@ -103,8 +103,8 @@
   ],
   "consumerOwnedStarterFiles": [
     ".plan/RULES.md",
-    ".plan/CONTEXT.md",
-    ".plan/prompt.local.md"
+    "CONTEXT.md",
+    "prompt.local.md"
   ],
   "managedFiles": [
     ".plan/prompt.md",

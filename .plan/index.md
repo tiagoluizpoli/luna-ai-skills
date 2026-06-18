@@ -75,5 +75,5 @@
 | T-23 | E-09 | Retain Metadata and Verification Testing | done | — | `.plan/epics/09-claude-provider-and-installer-refactor/tasks/03-metadata-retention-and-testing.md` |
 | T-24 | E-10 | Update `prompt.md` reading order | done | — | `.plan/epics/10-prompt-extensibility/tasks/24-update-prompt-reading-order.md` |
 | T-25 | E-10 | Reclassify file ownership in `framework-files.json` | done | — | `.plan/epics/10-prompt-extensibility/tasks/25-reclassify-file-ownership.md` |
-| T-26 | E-10 | Installer scaffold logic for consumer-owned starter files | ready | T-25 | `.plan/epics/10-prompt-extensibility/tasks/26-installer-scaffold-logic.md` |
-| T-27 | E-10 | Installer tests: scaffold and update preservation | ready | T-25, T-26 | `.plan/epics/10-prompt-extensibility/tasks/27-installer-scaffold-tests.md` |
+| T-26 | E-10 | Installer scaffold logic for consumer-owned starter files | done | — | `.plan/epics/10-prompt-extensibility/tasks/26-installer-scaffold-logic.md` |
+| T-27 | E-10 | Installer tests: scaffold and update preservation | ready | — | `.plan/epics/10-prompt-extensibility/tasks/27-installer-scaffold-tests.md` |

@@ -8,6 +8,25 @@ import * as p from "@clack/prompts";
 
 const LEGACY_SELECTION_FLAGS = ["all", "bundles", "skills", "targets"];
 
+const CONSUMER_STARTER_CONTENT = {
+  "prompt.local.md": [
+    "# Project-Specific Runtime Instructions",
+    "",
+    "<!-- This file is yours. The framework's prompt.md reads it last, after loading all framework context. -->",
+    "<!-- Add project-specific runtime instructions here: verification commands, communication style, guardrails. -->",
+    '<!-- Example: "After every code change, run: bun run test && bun run check-types" -->',
+    "<!-- This file is never overwritten by the framework installer. -->"
+  ].join("\n") + "\n",
+  "CONTEXT.md": [
+    "# Domain Context",
+    "",
+    "<!-- This file is your domain glossary. Add project-specific terms and their precise definitions. -->",
+    "<!-- The grill-with-docs skill (via domain-modeling) creates and maintains this file. -->",
+    "<!-- The framework reads this file after RULES.md on every loop execution. -->",
+    "<!-- This file is never overwritten by the framework installer. -->"
+  ].join("\n") + "\n"
+};
+
 function parseArgs(argv) {
   const args = {};
 
@@ -796,6 +815,25 @@ async function installSharedAsset({ sourceRoot, repoRoot, sharedAsset, installMo
     installedAt: new Date().toISOString()
   });
 
+  // Consumer-owned starter files: scaffold if missing; never overwrite
+  for (const relPath of (sharedAsset.consumerOwnedStarterFiles ?? [])) {
+    const targetPath = path.join(repoRoot, relPath);
+    if (fs.existsSync(targetPath)) {
+      continue;
+    }
+    ensureDirectory(path.dirname(targetPath));
+    const fileName = path.basename(relPath);
+    if (CONSUMER_STARTER_CONTENT[fileName] !== undefined) {
+      fs.writeFileSync(targetPath, CONSUMER_STARTER_CONTENT[fileName]);
+    } else {
+      const sourcePath = path.join(sourcePlanDir, relPath.replace(/^\.plan\//, ""));
+      if (fs.existsSync(sourcePath)) {
+        fs.copyFileSync(sourcePath, targetPath);
+        fs.chmodSync(targetPath, fs.statSync(sourcePath).mode);
+      }
+    }
+  }
+
   return installedAssets;
 }
 
@@ -1177,8 +1215,10 @@ export {
   chooseAvailabilityFromArgs,
   chooseAgentsFromArgs,
   concreteTargetId,
+  CONSUMER_STARTER_CONTENT,
   getTrustworthyRecordedState,
   installSkills,
+  installSharedAsset,
   parseArgs,
   readJson,
   resolveMandatorySkillIds,
