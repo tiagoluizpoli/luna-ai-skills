@@ -68,3 +68,5 @@
 2026-06-18T04:43:13Z [done] T-27/ST-03: state sync complete — T-27 done, E-10 done, 37 tests pass
 
 [2026-06-18] T-27/ST-03 state sync: all 37 tests pass (ST-01–03 all done). E-10 fully complete.
+
+2026-06-18 [Ralph Loop iteration 2] T-27/ST-03 done — framework-files.json classification test already implemented in working tree; all 37 tests pass; marking E-10 complete. State files restored from runtime regression.
