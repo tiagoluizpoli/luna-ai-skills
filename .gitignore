@@ -1,0 +1,7 @@
+# Standard project ignores
+/node_modules/
+.DS_Store
+*.log
+.cache/
+tmp/
+temp/

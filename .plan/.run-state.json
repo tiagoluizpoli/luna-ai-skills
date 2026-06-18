@@ -1,24 +1,20 @@
 {
-  "currentRunId": null,
-  "currentPrdId": "PRD-v3-installer-target-model-hardening",
-  "currentEpicId": "E-08",
-  "currentTaskId": "T-20",
-  "currentSubTaskId": "ST-02",
+  "currentRunId": "e-09-t-21-st-01",
+  "currentPrdId": "PRD-v4-claude-provider-and-skills-installer-refactor",
+  "currentEpicId": "E-09",
+  "currentTaskId": "T-21",
+  "currentSubTaskId": "ST-01",
   "attemptCount": 1,
-  "retrievalRound": 0,
-  "lastModel": "Claude Sonnet 4.6 (Thinking)",
+  "retrievalRound": 1,
+  "lastModel": "Gemini 3.5 Flash (Medium)",
   "escalated": false,
   "lastFailureReason": null,
   "requiredModel": "medium",
   "runnerName": "agy",
   "escalateIf": [],
   "filesToTouch": [
-    "README.md",
-    "frameworks/ralph-loop/README.md",
-    "docs/ralph-loop-framework.md",
-    ".plan/summaries/2026-06-16-installer-bug-audit.md",
-    ".plan/index.md",
-    ".plan/.run-summary.md"
+    "frameworks/ralph-loop/framework-files.json",
+    "frameworks/ralph-loop/skills-manifest.json"
   ],
   "lastCommitChanged": false
 }
