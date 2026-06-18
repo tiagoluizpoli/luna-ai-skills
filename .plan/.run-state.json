@@ -4,7 +4,7 @@
   "currentEpicId": "E-10",
   "currentTaskId": "T-27",
   "currentSubTaskId": "ST-03",
-  "attemptCount": 3,
+  "attemptCount": 4,
   "retrievalRound": 3,
   "lastModel": "sonnet",
   "escalated": false,
@@ -12,6 +12,8 @@
   "requiredModel": "medium",
   "runnerName": "claude",
   "escalateIf": [],
-  "filesToTouch": [],
+  "filesToTouch": [
+    "frameworks/ralph-loop/installer/tests/index.test.mjs"
+  ],
   "lastCommitChanged": true
 }
