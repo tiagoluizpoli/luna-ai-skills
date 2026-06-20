@@ -120,6 +120,53 @@ test("installSkills conflict prompt shows consolidated multiselect with all conf
   );
 });
 
+test("installSkills conflict prompt groups by provider and asks multiple times", async () => {
+  const tmpTarget = createTempDir("rl-install-grouped-conflict-");
+  const targetHermes = "hermes-global";
+  const targetCodex = "codex-global";
+  const skill = resolvedSkills[0];
+
+  const destHermes = path.join(tmpTarget, "hermes", skill.publicName);
+  const destCodex = path.join(tmpTarget, "codex", skill.publicName);
+  fs.mkdirSync(destHermes, { recursive: true });
+  fs.writeFileSync(path.join(destHermes, "SKILL.md"), "# existing\n");
+  fs.mkdirSync(destCodex, { recursive: true });
+  fs.writeFileSync(path.join(destCodex, "SKILL.md"), "# existing\n");
+
+  const promptsCalled = [];
+  const prompts = {
+    async multiselect(config) {
+      promptsCalled.push(config.message);
+      return []; // skip all
+    },
+    isCancel() {
+      return false;
+    }
+  };
+
+  const patchedSkills = resolvedSkills.map((s) => ({
+    ...s,
+    installPathTemplates: {
+      [targetHermes]: path.join(tmpTarget, "hermes", s.publicName),
+      [targetCodex]: path.join(tmpTarget, "codex", s.publicName)
+    }
+  }));
+
+  await installSkills({
+    sourceRoot: repoRoot,
+    repoRoot: tmpTarget,
+    resolvedSkills: patchedSkills,
+    targets: [targetHermes, targetCodex],
+    force: false,
+    yesMode: false,
+    prompts
+  });
+
+  assert.equal(promptsCalled.length, 2);
+  assert.ok(promptsCalled.some(msg => msg.includes("for Hermes")), "should prompt for Hermes");
+  assert.ok(promptsCalled.some(msg => msg.includes("for Codex")), "should prompt for Codex");
+});
+
 test("installSkills skips unselected conflicting skills and overwrites selected ones", async () => {
   const tmpTarget = createTempDir("rl-skip-overwrite-");
   // Use global target so targetPathForSkill returns absolute path directly

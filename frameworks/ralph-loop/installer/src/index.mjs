@@ -155,7 +155,8 @@ function findExternalSkill(skillName) {
     path.join(os.homedir(), ".agents", "skills", skillName, "SKILL.md"),
     path.join(os.homedir(), ".hermes", "skills", skillName, "SKILL.md"),
     path.join(os.homedir(), ".hermes", "skills", "devops", skillName, "SKILL.md"),
-    path.join(os.homedir(), ".claude", "skills", skillName, "SKILL.md")
+    path.join(os.homedir(), ".claude", "skills", skillName, "SKILL.md"),
+    path.join(os.homedir(), ".gemini", "config", "skills", skillName, "SKILL.md")
   ];
 
   return candidatePaths.find((candidatePath) => fs.existsSync(candidatePath)) ?? null;
@@ -902,26 +903,48 @@ async function installSkills({ sourceRoot, repoRoot, resolvedSkills, targets, fo
 
   let selectedKeys = new Set();
   if (conflictingItems.length > 0 && !force && !yesMode) {
-    const options = conflictingItems.map((item) => {
-      const key = `${item.skill.id}::${item.target}`;
-      return {
-        value: key,
-        label: `${item.skill.publicName} (${item.target})`,
-        hint: item.destinationDir
-      };
-    });
-
-    const result = await prompts.multiselect({
-      message: "The following framework skills already exist. Select which ones to overwrite:",
-      options
-    });
-
-    if (prompts.isCancel(result)) {
-      p.cancel("Installation cancelled during skill update.");
-      process.exit(1);
+    const conflictsByAgent = {};
+    for (const item of conflictingItems) {
+      const agentId = item.target.split("-")[0];
+      if (!conflictsByAgent[agentId]) {
+        conflictsByAgent[agentId] = [];
+      }
+      conflictsByAgent[agentId].push(item);
     }
 
-    selectedKeys = new Set(result);
+    const agentLabels = {
+      hermes: "Hermes",
+      codex: "Codex",
+      agy: "AGY",
+      claude: "Claude"
+    };
+
+    for (const agentId of Object.keys(conflictsByAgent)) {
+      const agentLabel = agentLabels[agentId] || (agentId.charAt(0).toUpperCase() + agentId.slice(1));
+      const items = conflictsByAgent[agentId];
+      const options = items.map((item) => {
+        const key = `${item.skill.id}::${item.target}`;
+        return {
+          value: key,
+          label: `${item.skill.publicName} (${item.target})`,
+          hint: item.destinationDir
+        };
+      });
+
+      const result = await prompts.multiselect({
+        message: `The following framework skills for ${agentLabel} already exist. Select which ones to overwrite:`,
+        options
+      });
+
+      if (prompts.isCancel(result)) {
+        p.cancel("Installation cancelled during skill update.");
+        process.exit(1);
+      }
+
+      for (const val of result) {
+        selectedKeys.add(val);
+      }
+    }
   }
 
   for (const item of allItems) {
