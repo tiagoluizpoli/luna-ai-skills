@@ -120,7 +120,7 @@ test("installSkills conflict prompt shows consolidated multiselect with all conf
   );
 });
 
-test("installSkills conflict prompt groups by provider and asks multiple times", async () => {
+test("installSkills conflict prompt consolidates all conflicting skills in a single prompt", async () => {
   const tmpTarget = createTempDir("rl-install-grouped-conflict-");
   const targetHermes = "hermes-global";
   const targetCodex = "codex-global";
@@ -134,9 +134,11 @@ test("installSkills conflict prompt groups by provider and asks multiple times",
   fs.writeFileSync(path.join(destCodex, "SKILL.md"), "# existing\n");
 
   const promptsCalled = [];
+  let capturedOptions = [];
   const prompts = {
     async multiselect(config) {
       promptsCalled.push(config.message);
+      capturedOptions = config.options;
       return []; // skip all
     },
     isCancel() {
@@ -162,9 +164,11 @@ test("installSkills conflict prompt groups by provider and asks multiple times",
     prompts
   });
 
-  assert.equal(promptsCalled.length, 2);
-  assert.ok(promptsCalled.some(msg => msg.includes("for Hermes")), "should prompt for Hermes");
-  assert.ok(promptsCalled.some(msg => msg.includes("for Codex")), "should prompt for Codex");
+  assert.equal(promptsCalled.length, 1);
+  assert.match(promptsCalled[0], /skills already exist/);
+  const optionValues = capturedOptions.map((o) => o.value);
+  assert.ok(optionValues.includes(`${skill.id}::${targetHermes}`), "should include Hermes option");
+  assert.ok(optionValues.includes(`${skill.id}::${targetCodex}`), "should include Codex option");
 });
 
 test("installSkills skips unselected conflicting skills and overwrites selected ones", async () => {

@@ -2,6 +2,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import os from "node:os";
+import readline from "node:readline";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import * as p from "@clack/prompts";
@@ -879,6 +880,165 @@ async function installAgentSpecificAssets({ sourceRoot, repoRoot, selectedAssets
   return installedAssets;
 }
 
+async function selectGroupedConflicts(conflictingItems) {
+  const conflictsByAgent = {};
+  for (const item of conflictingItems) {
+    const agentId = item.target.split("-")[0];
+    if (!conflictsByAgent[agentId]) {
+      conflictsByAgent[agentId] = [];
+    }
+    conflictsByAgent[agentId].push(item);
+  }
+
+  const agentLabels = {
+    hermes: "Hermes",
+    codex: "Codex",
+    agy: "AGY",
+    claude: "Claude"
+  };
+
+  const lines = [];
+  for (const agentId of Object.keys(conflictsByAgent)) {
+    const items = conflictsByAgent[agentId];
+    const groupHeader = {
+      type: "group",
+      agentId,
+      label: agentLabels[agentId] || (agentId.charAt(0).toUpperCase() + agentId.slice(1)),
+      items: items.map((item) => `${item.skill.id}::${item.target}`)
+    };
+    lines.push(groupHeader);
+    for (const item of items) {
+      lines.push({
+        type: "item",
+        agentId,
+        key: `${item.skill.id}::${item.target}`,
+        label: `${item.skill.publicName} (${item.target})`,
+        hint: item.destinationDir,
+        item
+      });
+    }
+  }
+
+  const selectedKeys = new Set();
+  let cursor = 0;
+
+  const stdin = process.stdin;
+  const stdout = process.stdout;
+
+  const wasRaw = stdin.isTTY ? stdin.isRaw : false;
+  if (stdin.isTTY) {
+    stdin.setRawMode(true);
+  }
+  stdin.resume();
+  readline.emitKeypressEvents(stdin);
+
+  // Hide cursor
+  stdout.write("\u001B[?25l");
+
+  let lastRenderedLineCount = 0;
+
+  function render() {
+    if (lastRenderedLineCount > 0) {
+      readline.cursorTo(stdout, 0);
+      readline.moveCursor(stdout, 0, -lastRenderedLineCount);
+      readline.clearScreenDown(stdout);
+    }
+
+    let output = "";
+    output += `│  The following framework skills already exist. Select which ones to overwrite:\n`;
+    output += `│  (Use ↑/↓ to navigate, Space to toggle/toggle-group, Enter to confirm)\n`;
+    output += `│\n`;
+
+    let lineCount = 3;
+
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+      const isCurrent = i === cursor;
+      const pointer = isCurrent ? `\x1b[36m▸\x1b[0m ` : `  `;
+
+      if (line.type === "group") {
+        const groupItems = line.items;
+        const selectedCount = groupItems.filter(k => selectedKeys.has(k)).length;
+        let checkbox = `[ ]`;
+        if (selectedCount === groupItems.length) {
+          checkbox = `[\x1b[32m✔\x1b[0m]`;
+        } else if (selectedCount > 0) {
+          checkbox = `[\x1b[33m-\x1b[0m]`;
+        }
+        output += `│  ${pointer}${checkbox} \x1b[1m\x1b[35m${line.label} Group\x1b[0m (Toggle all)\n`;
+      } else {
+        const isSelected = selectedKeys.has(line.key);
+        const checkbox = isSelected ? `[\x1b[32m✔\x1b[0m]` : `[ ]`;
+        output += `│     ${pointer}${checkbox} ${line.label} \x1b[90m(${line.hint})\x1b[0m\n`;
+      }
+      lineCount++;
+    }
+
+    output += `│\n`;
+    lineCount++;
+
+    stdout.write(output);
+    lastRenderedLineCount = lineCount;
+  }
+
+  render();
+
+  return new Promise((resolve) => {
+    function onKeypress(str, key) {
+      if (key.ctrl && key.name === "c") {
+        cleanup();
+        stdout.write("\u001B[?25h");
+        p.cancel("Installation cancelled.");
+        process.exit(1);
+      }
+
+      if (key.name === "up" || key.name === "k") {
+        cursor = (cursor - 1 + lines.length) % lines.length;
+        render();
+      } else if (key.name === "down" || key.name === "j") {
+        cursor = (cursor + 1) % lines.length;
+        render();
+      } else if (key.name === "space") {
+        const line = lines[cursor];
+        if (line.type === "group") {
+          const groupItems = line.items;
+          const selectedCount = groupItems.filter(k => selectedKeys.has(k)).length;
+          if (selectedCount === groupItems.length) {
+            for (const k of groupItems) {
+              selectedKeys.delete(k);
+            }
+          } else {
+            for (const k of groupItems) {
+              selectedKeys.add(k);
+            }
+          }
+        } else {
+          if (selectedKeys.has(line.key)) {
+            selectedKeys.delete(line.key);
+          } else {
+            selectedKeys.add(line.key);
+          }
+        }
+        render();
+      } else if (key.name === "return") {
+        cleanup();
+        resolve(selectedKeys);
+      }
+    }
+
+    function cleanup() {
+      stdin.removeListener("keypress", onKeypress);
+      if (stdin.isTTY) {
+        stdin.setRawMode(wasRaw);
+      }
+      stdin.pause();
+      stdout.write("\u001B[?25h");
+    }
+
+    stdin.on("keypress", onKeypress);
+  });
+}
+
 async function installSkills({ sourceRoot, repoRoot, resolvedSkills, targets, force, yesMode, prompts = p }) {
   const installedSkills = [];
 
@@ -903,26 +1063,11 @@ async function installSkills({ sourceRoot, repoRoot, resolvedSkills, targets, fo
 
   let selectedKeys = new Set();
   if (conflictingItems.length > 0 && !force && !yesMode) {
-    const conflictsByAgent = {};
-    for (const item of conflictingItems) {
-      const agentId = item.target.split("-")[0];
-      if (!conflictsByAgent[agentId]) {
-        conflictsByAgent[agentId] = [];
-      }
-      conflictsByAgent[agentId].push(item);
-    }
-
-    const agentLabels = {
-      hermes: "Hermes",
-      codex: "Codex",
-      agy: "AGY",
-      claude: "Claude"
-    };
-
-    for (const agentId of Object.keys(conflictsByAgent)) {
-      const agentLabel = agentLabels[agentId] || (agentId.charAt(0).toUpperCase() + agentId.slice(1));
-      const items = conflictsByAgent[agentId];
-      const options = items.map((item) => {
+    if (typeof prompts.selectGroupedConflicts === "function") {
+      const result = await prompts.selectGroupedConflicts(conflictingItems);
+      selectedKeys = new Set(result);
+    } else if (!process.stdin.isTTY || (prompts !== p && typeof prompts.multiselect === "function")) {
+      const options = conflictingItems.map((item) => {
         const key = `${item.skill.id}::${item.target}`;
         return {
           value: key,
@@ -930,20 +1075,18 @@ async function installSkills({ sourceRoot, repoRoot, resolvedSkills, targets, fo
           hint: item.destinationDir
         };
       });
-
       const result = await prompts.multiselect({
-        message: `The following framework skills for ${agentLabel} already exist. Select which ones to overwrite:`,
-        options
+        message: `The following framework skills already exist. Select which ones to overwrite:`,
+        options,
+        required: false
       });
-
       if (prompts.isCancel(result)) {
         p.cancel("Installation cancelled during skill update.");
         process.exit(1);
       }
-
-      for (const val of result) {
-        selectedKeys.add(val);
-      }
+      selectedKeys = new Set(result);
+    } else {
+      selectedKeys = await selectGroupedConflicts(conflictingItems);
     }
   }
 
