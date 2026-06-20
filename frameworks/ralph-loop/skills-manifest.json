@@ -85,7 +85,7 @@
         "codex-local": ".agents/skills/luna-ai/luna-grill-with-docs",
         "codex-global": "~/.agents/skills/luna-ai/luna-grill-with-docs",
         "agy-local": ".agents/skills/luna-ai/luna-grill-with-docs",
-        "agy-global": "~/.agents/skills/luna-ai/luna-grill-with-docs",
+        "agy-global": "~/.gemini/config/skills/luna-grill-with-docs",
         "claude-local": ".claude/skills/luna-grill-with-docs",
         "claude-global": "~/.claude/skills/luna-grill-with-docs"
       },
@@ -115,7 +115,7 @@
         "codex-local": ".agents/skills/luna-ai/luna-to-prd",
         "codex-global": "~/.agents/skills/luna-ai/luna-to-prd",
         "agy-local": ".agents/skills/luna-ai/luna-to-prd",
-        "agy-global": "~/.agents/skills/luna-ai/luna-to-prd",
+        "agy-global": "~/.gemini/config/skills/luna-to-prd",
         "claude-local": ".claude/skills/luna-to-prd",
         "claude-global": "~/.claude/skills/luna-to-prd"
       },
@@ -145,7 +145,7 @@
         "codex-local": ".agents/skills/luna-ai/luna-to-issues",
         "codex-global": "~/.agents/skills/luna-ai/luna-to-issues",
         "agy-local": ".agents/skills/luna-ai/luna-to-issues",
-        "agy-global": "~/.agents/skills/luna-ai/luna-to-issues",
+        "agy-global": "~/.gemini/config/skills/luna-to-issues",
         "claude-local": ".claude/skills/luna-to-issues",
         "claude-global": "~/.claude/skills/luna-to-issues"
       },
@@ -175,7 +175,7 @@
         "codex-local": ".agents/skills/luna-ai/commit",
         "codex-global": "~/.agents/skills/luna-ai/commit",
         "agy-local": ".agents/skills/luna-ai/commit",
-        "agy-global": "~/.agents/skills/luna-ai/commit",
+        "agy-global": "~/.gemini/config/skills/commit",
         "claude-local": ".claude/skills/commit",
         "claude-global": "~/.claude/skills/commit"
       },
@@ -205,7 +205,7 @@
         "codex-local": ".agents/skills/luna-ai/code-review",
         "codex-global": "~/.agents/skills/luna-ai/code-review",
         "agy-local": ".agents/skills/luna-ai/code-review",
-        "agy-global": "~/.agents/skills/luna-ai/code-review",
+        "agy-global": "~/.gemini/config/skills/code-review",
         "claude-local": ".claude/skills/code-review",
         "claude-global": "~/.claude/skills/code-review"
       },
@@ -233,7 +233,7 @@
         "codex-local": ".agents/skills/luna-ai/backend-specialist",
         "codex-global": "~/.agents/skills/luna-ai/backend-specialist",
         "agy-local": ".agents/skills/luna-ai/backend-specialist",
-        "agy-global": "~/.agents/skills/luna-ai/backend-specialist",
+        "agy-global": "~/.gemini/config/skills/backend-specialist",
         "claude-local": ".claude/skills/backend-specialist",
         "claude-global": "~/.claude/skills/backend-specialist"
       },
@@ -261,7 +261,7 @@
         "codex-local": ".agents/skills/luna-ai/frontend-specialist",
         "codex-global": "~/.agents/skills/luna-ai/frontend-specialist",
         "agy-local": ".agents/skills/luna-ai/frontend-specialist",
-        "agy-global": "~/.agents/skills/luna-ai/frontend-specialist",
+        "agy-global": "~/.gemini/config/skills/frontend-specialist",
         "claude-local": ".claude/skills/frontend-specialist",
         "claude-global": "~/.claude/skills/frontend-specialist"
       },
@@ -289,7 +289,7 @@
         "codex-local": ".agents/skills/luna-ai/react-architect",
         "codex-global": "~/.agents/skills/luna-ai/react-architect",
         "agy-local": ".agents/skills/luna-ai/react-architect",
-        "agy-global": "~/.agents/skills/luna-ai/react-architect",
+        "agy-global": "~/.gemini/config/skills/react-architect",
         "claude-local": ".claude/skills/react-architect",
         "claude-global": "~/.claude/skills/react-architect"
       },
@@ -317,7 +317,7 @@
         "codex-local": ".agents/skills/luna-ai/tailwind-architect",
         "codex-global": "~/.agents/skills/luna-ai/tailwind-architect",
         "agy-local": ".agents/skills/luna-ai/tailwind-architect",
-        "agy-global": "~/.agents/skills/luna-ai/tailwind-architect",
+        "agy-global": "~/.gemini/config/skills/tailwind-architect",
         "claude-local": ".claude/skills/tailwind-architect",
         "claude-global": "~/.claude/skills/tailwind-architect"
       },
@@ -345,7 +345,7 @@
         "codex-local": ".agents/skills/luna-ai/shadcn-specialist",
         "codex-global": "~/.agents/skills/luna-ai/shadcn-specialist",
         "agy-local": ".agents/skills/luna-ai/shadcn-specialist",
-        "agy-global": "~/.agents/skills/luna-ai/shadcn-specialist",
+        "agy-global": "~/.gemini/config/skills/shadcn-specialist",
         "claude-local": ".claude/skills/shadcn-specialist",
         "claude-global": "~/.claude/skills/shadcn-specialist"
       },
@@ -373,7 +373,7 @@
         "codex-local": ".agents/skills/luna-ai/test-master",
         "codex-global": "~/.agents/skills/luna-ai/test-master",
         "agy-local": ".agents/skills/luna-ai/test-master",
-        "agy-global": "~/.agents/skills/luna-ai/test-master",
+        "agy-global": "~/.gemini/config/skills/test-master",
         "claude-local": ".claude/skills/test-master",
         "claude-global": "~/.claude/skills/test-master"
       },
@@ -407,7 +407,7 @@
         "codex-local": ".agents/skills/luna-ai/diagnose",
         "codex-global": "~/.agents/skills/luna-ai/diagnose",
         "agy-local": ".agents/skills/luna-ai/diagnose",
-        "agy-global": "~/.agents/skills/luna-ai/diagnose",
+        "agy-global": "~/.gemini/config/skills/diagnose",
         "claude-local": ".claude/skills/diagnose",
         "claude-global": "~/.claude/skills/diagnose"
       },
@@ -435,7 +435,7 @@
         "codex-local": ".agents/skills/luna-ai/conventional-commits",
         "codex-global": "~/.agents/skills/luna-ai/conventional-commits",
         "agy-local": ".agents/skills/luna-ai/conventional-commits",
-        "agy-global": "~/.agents/skills/luna-ai/conventional-commits",
+        "agy-global": "~/.gemini/config/skills/conventional-commits",
         "claude-local": ".claude/skills/conventional-commits",
         "claude-global": "~/.claude/skills/conventional-commits"
       },
@@ -463,7 +463,7 @@
         "codex-local": ".agents/skills/luna-ai/test-cases",
         "codex-global": "~/.agents/skills/luna-ai/test-cases",
         "agy-local": ".agents/skills/luna-ai/test-cases",
-        "agy-global": "~/.agents/skills/luna-ai/test-cases",
+        "agy-global": "~/.gemini/config/skills/test-cases",
         "claude-local": ".claude/skills/test-cases",
         "claude-global": "~/.claude/skills/test-cases"
       },
@@ -491,7 +491,7 @@
         "codex-local": ".agents/skills/luna-ai/test-backend",
         "codex-global": "~/.agents/skills/luna-ai/test-backend",
         "agy-local": ".agents/skills/luna-ai/test-backend",
-        "agy-global": "~/.agents/skills/luna-ai/test-backend",
+        "agy-global": "~/.gemini/config/skills/test-backend",
         "claude-local": ".claude/skills/test-backend",
         "claude-global": "~/.claude/skills/test-backend"
       },
@@ -519,7 +519,7 @@
         "codex-local": ".agents/skills/luna-ai/test-frontend",
         "codex-global": "~/.agents/skills/luna-ai/test-frontend",
         "agy-local": ".agents/skills/luna-ai/test-frontend",
-        "agy-global": "~/.agents/skills/luna-ai/test-frontend",
+        "agy-global": "~/.gemini/config/skills/test-frontend",
         "claude-local": ".claude/skills/test-frontend",
         "claude-global": "~/.claude/skills/test-frontend"
       },
@@ -547,7 +547,7 @@
         "codex-local": ".agents/skills/luna-ai/test-e2e",
         "codex-global": "~/.agents/skills/luna-ai/test-e2e",
         "agy-local": ".agents/skills/luna-ai/test-e2e",
-        "agy-global": "~/.agents/skills/luna-ai/test-e2e",
+        "agy-global": "~/.gemini/config/skills/test-e2e",
         "claude-local": ".claude/skills/test-e2e",
         "claude-global": "~/.claude/skills/test-e2e"
       },
@@ -575,7 +575,7 @@
         "codex-local": ".agents/skills/luna-ai/test-coverage",
         "codex-global": "~/.agents/skills/luna-ai/test-coverage",
         "agy-local": ".agents/skills/luna-ai/test-coverage",
-        "agy-global": "~/.agents/skills/luna-ai/test-coverage",
+        "agy-global": "~/.gemini/config/skills/test-coverage",
         "claude-local": ".claude/skills/test-coverage",
         "claude-global": "~/.claude/skills/test-coverage"
       },
